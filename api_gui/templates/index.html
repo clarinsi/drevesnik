@@ -1,0 +1,415 @@
+<html>
+<head>
+<link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Noun_883674_cc_Symbolon_tree_icon.svg/480px-Noun_883674_cc_Symbolon_tree_icon.svg.png?20170413114733">
+</head>
+
+<style>
+.truncate {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+  #container {
+    background-color: powderblue;
+    border: 2px solid black;
+    border-radius: 5px;
+    max-width: 50%;
+    padding-right: 20px;
+  }
+
+  #langs {
+    background-color: powderblue;
+    border: 2px solid black;
+    border-radius: 5px;
+    max-width: 50%;
+    padding-right: 20px;
+  }
+
+  #query {
+    background-color: powderblue;
+    border: 2px solid black;
+    border-radius: 5px;
+    max-width: 50%;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  input[type=button]{
+  background-color: royalblue; /* Green */
+  border: 1px solid black;
+  border-radius: 2px;
+  color: white;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+input[type=button]:hover {
+  background-color: skyblue; /* Green */
+  color: white;
+}
+
+
+</style>
+
+
+
+<body>
+    <script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<!--<script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
+<!-- <script src="{{ approot }}/drevesnik/static/dist/tree.min.js"></script> --> 
+<script src="http://depsearch-depsearch.rahtiapp.fi/ds_demo/static/dist/tree.min.js"></script>
+<h2>Query</h2>
+<div style="display:inline">
+<div id='query'>
+<input id="qrt" type="textarea" name="vehicle1" value="_ <nsubj _"><br>
+Result Limit:<br>
+<input id="limitfield" type="textarea" name="vehicle2" value="100"><br>
+<input type="checkbox" id="xcasex" name="xcasex">Case Insensitive<br>
+  <input id="sbtn" type="button" value="Submit">
+</div>
+<div id="error" style="border: 2px solid red;border-radius: 5px;max-width: 50%;left-padding: 20px;"></div>
+</div>
+Query Language is documented <a href="https://bionlp.utu.fi/searchexpressions-new.html">here</a>
+<br><h2>Databases</h2>
+<div>
+<div style="background-color:lightblue; float: none;" id="container">
+</div>
+<br>
+</div>
+
+
+<br>
+<br><h2>Available languages</h2>
+Selecting languages limit search to these, no selection means all languages are queried.
+<br>
+<div style="background-color:lightblue; float:none;" id="langs">
+  <input type="checkbox" name="lang_all" value="all">all<br>
+</div>
+<br>
+<div id="tagss" style="border: 2px solid black;border-radius: 5px;width: 50%;left-padding: 20px;float: left;"></div>
+<script>
+var global_dbs = "";
+var tree = "";
+var approot = "{{ approot }}";
+    
+
+
+function prependChild(parentEle, newFirstChildEle) {
+    parentEle.insertBefore(newFirstChildEle, parentEle.firstChild)
+}
+
+
+
+function is_in_lang_list(lang){
+    var retval = false;
+    $('#langs').children().each(function(idx, itm){if (itm.value==lang){retval=true;};});
+    return retval;
+}
+
+function set_xx(vv){
+$("#qrt").val(vv);
+}
+
+$( document ).ready(function() { 
+
+    $('#error').hide();
+    $.getJSON(approot + '/drevesnik/get_dbs_json', function(data) {
+    	console.log(data)
+        
+        tree = new Tree('#container', {
+        //data: [{ id: '-1', text: 'root', children: data , state: {disabled: true}}],
+        data: data,
+        loaded: function () {
+            console.log(this.selectedNodes);
+            console.log(this.values);
+            $('.treejs-switcher').click();
+
+        },
+        onChange: function () {
+            global_dbs = this.values;
+        }
+    });
+    });
+
+    
+    $('#langs').click(function() {
+        //alert(':M');
+        //Okay, lets update the langs
+        //Let's check which dbs are checked
+        var xx = global_dbs;
+        console.log(xx);
+        //wipe langs
+        //get relevant langs and update langs
+        
+        var xx = global_dbs;
+        console.log(xx);
+        var dbs = [];
+        for (var it in xx){
+            console.log(xx[it]);
+            dbs.push(xx[it]);
+        }
+
+        var xx = $( ".bln" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
+        console.log(xx);
+        var langs = [];
+        for (var it in xx){
+            console.log(it);
+            langs.push(xx[it]);
+        }
+        console.log(langs);
+
+        lang_str = "";
+        for (lang in langs){
+            if (lang > 0){
+                lang_str = lang_str + ',';
+            }
+            lang_str = lang_str + langs[lang];
+        }
+
+
+        
+        $.post(approot + '/drevesnik/get_tags/', {'dbs': dbs.join(','), 'langs': lang_str}, function(data, status){
+        
+            var ihtml = "";
+            ihtml = '<h2>Dependency types</h2>'
+            var cc = 0;
+            for (hh in data[0]){
+                ihtml += '<div onclick="set_xx(\'_ <' + data[0][hh] + ' _\');" style="display: inline;" id="' + data[0][hh] + '_link">' + data[0][hh] + '</div> '
+                cc += 1
+            }
+            ihtml += '<h2>POS tags</h2>'
+            var cc = 0;
+            for (hh in data[1]){
+                ihtml += '<div onclick="set_xx(\'' + data[1][hh] + '\');" style="display: inline;" id="' + data[1][hh] + '_link">' + data[1][hh] + '</div> '
+                cc += 1
+            }
+
+            ihtml += '<h2>Morphological tags</h2>'
+            var cc = 0;
+            for (hh in data[2]){
+                ihtml += '<div onclick="set_xx(\'' + data[2][hh] + '\');" style="display: inline;" id="' + data[2][hh] + '_link">' + data[2][hh] + '</div> '
+                cc += 1
+            }
+                
+        
+            $('#tagss').html(ihtml);//data[0].join('<br>') + '<p>' + data[1].join('<br>') + '<p>' + data[2].join('<br>') + '<p>' );
+            $('#tagss').show();
+        });
+         
+
+    });
+
+
+    // Okay, when touched, update langs
+    $('#container').click(function() {
+        //alert(':M');
+        //Okay, lets update the langs
+        //Let's check which dbs are checked
+        var xx = global_dbs;
+        console.log(xx);
+        //wipe langs
+        $('#langs').html(' ')
+        //get relevant langs and update langs
+        
+        
+        $.post(approot +  "/drevesnik/get_langs_post/", {"data": xx}, function(data) {
+            lang_list = [];
+            for (var xitem in data){
+                if (($.inArray(data[xitem], lang_list) == -1) && !(is_in_lang_list(data[xitem]))) {
+                    $('#langs').append('<input type="checkbox" class="bln" name="ln_' + data[xitem] + '" value="' + data[xitem] +'">' + data[xitem] + '<br>');
+                }
+                lang_list.push(data[xitem]);
+            }
+	});
+        
+
+
+        var xx = global_dbs;
+        console.log(xx);
+        var dbs = [];
+        for (var it in xx){
+            console.log(xx[it]);
+            dbs.push(xx[it]);
+        }
+
+
+
+        var xx = $( ".bln" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
+        console.log(xx);
+        var langs = [];
+        for (var it in xx){
+            console.log(it);
+            langs.push(xx[it]);
+        }
+        console.log(langs);
+
+        lang_str = "";
+        for (lang in langs){
+            if (lang > 0){
+                lang_str = lang_str + ',';
+            }
+            lang_str = lang_str + langs[lang];
+        }
+
+
+        
+        $.post(approot + '/drevesnik/get_tags/', {'dbs': dbs.join(','), 'langs': lang_str}, function(data, status){
+        
+            var ihtml = "";
+            ihtml = '<h2>Dependency types</h2>'
+            var cc = 0;
+            for (hh in data[0]){
+                ihtml += '<div onclick="set_xx(\'_ <' + data[0][hh] + ' _\');" style="display: inline;" id="' + data[0][hh] + '_link">' + data[0][hh] + '</div> '
+                cc += 1
+            }
+            ihtml += '<h2>POS tags</h2>'
+            var cc = 0;
+            for (hh in data[1]){
+                ihtml += '<div onclick="set_xx(\'' + data[1][hh] + '\');" style="display: inline;" id="' + data[1][hh] + '_link">' + data[1][hh] + '</div> '
+                cc += 1
+            }
+
+            ihtml += '<h2>Morphological tags</h2>'
+            var cc = 0;
+            for (hh in data[2]){
+                ihtml += '<div onclick="set_xx(\'' + data[2][hh] + '\');" style="display: inline;" id="' + data[2][hh] + '_link">' + data[2][hh] + '</div> '
+                cc += 1
+            }
+                
+        
+            $('#tagss').html(ihtml);//data[0].join('<br>') + '<p>' + data[1].join('<br>') + '<p>' + data[2].join('<br>') + '<p>' );
+            $('#tagss').show();
+        });
+
+
+
+       
+    });
+
+
+    $('#sbtn').click(function(){
+
+        //create the url
+        //"/start_query/<dbs>/<query>/<langs>"
+
+        //query
+        var query = $('#qrt').val();
+        //langs
+        var xx = $( ".bln" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
+        console.log(xx);
+        var langs = [];
+        for (var it in xx){
+            console.log(it);
+            langs.push(xx[it]);
+        }
+        console.log(langs);
+
+        //dbs
+        var xx = global_dbs;
+        console.log(xx);
+        var dbs = [];
+        for (var it in xx){
+            console.log(it);
+            dbs.push(xx[it]);
+        }
+        console.log(dbs);
+
+        lang_str = "";
+        for (lang in langs){
+            if (lang > 0){
+                lang_str = lang_str + ',';
+            }
+            lang_str = lang_str + langs[lang];
+        }
+        
+        db_str = "";
+        for (lang in dbs){
+            if (lang > 0){
+                db_str = db_str + ',';
+            }
+            db_str = db_str + dbs[lang];
+        }        
+
+        var limit = $('#limitfield').val();
+
+
+        var checkBox = document.getElementById("xcasex");
+
+
+        var casex = false;
+        if (checkBox.checked){
+            casex = true;
+        }
+
+        console.log(checkBox.checked);
+        var queryUrl;
+        if (lang_str) {
+            queryUrl = approot + '/drevesnik/start_query/'+db_str+'/'+ query + '/' + lang_str + '/' + limit + '/' + casex;
+        } else {
+            queryUrl = approot + '/drevesnik/start_query/'+db_str+'/'+ query + '/' + limit + '/' + casex;
+        }
+        console.log(queryUrl);
+
+
+
+
+        console.log('case', casex);
+        //launch
+        
+        
+        $.post(approot + '/drevesnik/check_query_syntax/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex }, function(data, status){
+            console.log('!!!', data);
+
+            if (data[0]){
+                   $('#error').hide();
+		    $.post(approot + '/drevesnik/start_query/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex }, function(data, status){
+			    var a = document.createElement('a');
+			    var nn = query + '  ' + lang_str + '  ' + db_str;
+			    if (nn.length > 50){ nn = nn.substr(1,50)}
+			    var linkText = document.createTextNode(nn);
+			    a.appendChild(linkText);
+			    a.href = approot + '/drevesnik/show/' + data + '/' + langs[0] + '/0/10';
+			    document.body.appendChild(a);
+			    var a = document.createElement('br');
+			    document.body.appendChild(a);
+			    window.open(approot + '/drevesnik/show/' + data + '/' + langs[0] + '/0/10', '_blank');
+
+		});
+            
+            }else{
+            //show the error
+                $('#error').show();
+                $('#error').html('<pre>' + data[1] + '</pre>')            
+            }
+
+
+
+        });        
+        
+        
+        
+
+
+    });
+
+
+
+});
+
+
+
+
+
+</script>
+</body>
+
+</html>

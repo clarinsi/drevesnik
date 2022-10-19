@@ -1,0 +1,34 @@
+SSJ	hodim	sl	100	false	true	true	demo1a
+SSJ	Delo	sl	100	false	true	true	demo2a
+SSJ	L=hoditi	sl	100	false	true	true	demo2b
+SSJ	X=Ncfsl	sl	100	false	true	true	demo3a
+SSJ	X=Ncf.l	sl	100	false	true	true	demo4a
+SSJ	X=Ncf.*	sl	100	false	true	true	demo5a
+SSJ	NOUN	sl	100	false	true	true	demo6a
+SSJ	VerbForm=Inf	sl	100	false	true	true	demo7a
+SSJ	lepo&X=R.*	sl	100	false	true	true	demo8a
+SSJ	L=delati|L=narediti	sl	100	false	true	true	demo9a
+SSJ	NOUN&Number=Plur	sl	100	false	true	true	demo10a
+SSJ	L=prst&Gender=Masc	sl	100	false	true	true	demo11a
+SSJ	L=biti&!AUX	sl	100	false	true	true	demo12a
+SSJ	ADJ&!X=A.*	sl	100	false	true	true	demo13a
+SSJ	delo < _	sl	100	false	true	true	demo14a
+SSJ	delo > _	sl	100	false	true	true	demo15a
+SSJ	_ < delo	sl	100	false	true	true	demo16a
+SSJ	_ <cop _	sl	100	false	true	true	demo17a
+SSJ	_ >nsubj _	sl	100	false	true	true	demo18a
+SSJ	_ <nsubj|<csubj _	sl	100	false	true	true	demo19a
+SSJ	_ >obj _ >iobj _	sl	100	false	true	true	demo20a
+SSJ	_ <amod _ >advmod _	sl	100	false	true	true	demo21a
+SSJ	_ >nmod _ >nmod _	sl	100	false	true	true	demo22a
+SSJ	_ >nmod _ >nmod _	sl	100	false	true	true	demo23a
+SSJ	_ >nmod (_ >nmod _)	sl	100	false	true	true	demo24a
+SSJ	_ >nmod _ !>case _	sl	100	false	true	true	demo25a
+SSJ	_ >nmod _ >!case _	sl	100	false	true	true	demo26a
+SSJ	_ <nsubj _ !(>amod|>acl) _	sl	100	false	true	true	demo27a
+SSJ	VERB >nsubj@R _	sl	100	false	true	true	demo28a
+SSJ	_ >amod@L _ >amod@R _	sl	100	false	true	true	demo29a
+SSJ	_ <case@L _	sl	100	false	true	false	demo30a
+SSJ	VERB >aux _ + Tense=Pres	sl	100	false	true	true	demo31a
+SSJ	_ -> NOUN	sl	100	false	true	true	demo32a
+SSJ	NOUN -> NOUN >amod _	sl	100	false	true	true	demo33a

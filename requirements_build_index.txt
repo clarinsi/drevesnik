@@ -1,0 +1,4 @@
+pysolr==3.9.0
+zstandard==0.17.0
+lz4==4.0.0
+lmdb==1.3.0

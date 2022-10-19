@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+
+  dep_search:
+    restart: on-failure
+    container_name: dep_search
+    build: 
+        context: .
+        dockerfile: Dockerfile_api_gui
+    ports:
+      - "5000:5000"
+    networks:
+      - net
+    volumes:
+      - ../../logs/:/api_gui/logs/
+      - ../../volume:/corpus
+
+  nginx:
+      build: 
+        context: .
+        dockerfile: DockerfileNginx
+      restart: always
+      ports:
+        - "80:80"
+      depends_on:
+        - dep_search
+      networks:
+        - net
+
+      
+
+networks:
+  net:
+

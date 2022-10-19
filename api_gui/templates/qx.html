@@ -1,0 +1,188 @@
+<html>
+<head>
+<link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Noun_883674_cc_Symbolon_tree_icon.svg/480px-Noun_883674_cc_Symbolon_tree_icon.svg.png?20170413114733">
+</head>
+<body>
+<script
+<script src="/static/dist/tree.min.js"></script>
+Query:<br>
+<input id="qrt" type="textarea" name="vehicle1" value="_ <nsubj _"><br>
+Result Limit:<br>
+<input id="limitfield" type="textarea" name="vehicle2" value="10000"><br>
+<input type="checkbox" id="xcasex" name="xcasex">Case Insensitive<br>
+  <input id="sbtn" type="button" value="Submit">
+
+
+<div style="background-color:lightblue" class="container">
+DBs<br>
+</div>
+
+
+<div style="background-color:lightblue" id="dbs">
+DBs<br>
+</div>
+
+<br>
+
+<div style="background-color:lightblue" id="langs">
+  <input type="checkbox" name="lang_all" value="all">all<br>
+</div>
+
+
+<script>
+
+function prependChild(parentEle, newFirstChildEle) {
+    parentEle.insertBefore(newFirstChildEle, parentEle.firstChild)
+}
+
+
+let tree = new Tree('.container', {url: '/get_dbs_json',});
+
+
+
+$( document ).ready(function() { 
+
+
+
+
+        $.getJSON("./get_dbs/", function(data, status){
+        //alert(data)
+        var arrayLength = data.length;
+        for (var i = 0; i < arrayLength; i++) {
+          var xx = data[i];
+          var text = document.createElement('input');
+          text.setAttribute('type','checkbox');
+          text.setAttribute('value', xx);
+          text.append(xx);
+          //text.innerHTML = xx;
+          $("#dbs").append('<input type="checkbox" class="bdb" name="db_' + xx + '" value="' + xx +'">' + xx + '<br>');
+          //alert(data[i]);
+        }
+    });
+
+
+    // Okay, when touched, update langs
+    $('#dbs').click(function() {
+        //alert(':M');
+        //Okay, lets update the langs
+        //Let's check which dbs are checked
+        var xx = $( ".bdb" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
+        console.log(xx);
+        //wipe langs
+        $('#langs').html('')
+        //get relevant langs and update langs
+        for (var item in xx){
+            
+            console.log(xx[item]);
+            $.getJSON('./get_langs/' + xx[item], function (data, status){
+
+            console.log(data);
+            //append to langs
+            lang_list = [];
+            for (var xitem in data){
+                if ($.inArray(data[xitem], lang_list) == -1) {
+                    $('#langs').append('<input type="checkbox" class="bln" name="ln_' + data[xitem] + '" value="' + data[xitem] +'">' + data[xitem] + '<br>');
+                }
+                lang_list.push(data[xitem]);
+            }
+            });
+        }
+    });
+
+    $('#sbtn').click(function(){
+
+        //create the url
+        //"/start_query/<dbs>/<query>/<langs>"
+
+        //query
+        var query = $('#qrt').val();
+        //langs
+        var xx = $( ".bln" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
+        console.log(xx);
+        var langs = [];
+        for (var it in xx){
+            console.log(it);
+            langs.push(xx[it]);
+        }
+        console.log(langs);
+
+        //dbs
+        var xx = $( ".bdb" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
+        console.log(xx);
+        var dbs = [];
+        for (var it in xx){
+            console.log(it);
+            dbs.push(xx[it]);
+        }
+        console.log(dbs);
+
+        lang_str = "";
+        for (lang in langs){
+            if (lang > 0){
+                lang_str = lang_str + ',';
+            }
+            lang_str = lang_str + langs[lang];
+        }
+        
+        db_str = "";
+        for (lang in dbs){
+            if (lang > 0){
+                db_str = db_str + ',';
+            }
+            db_str = db_str + dbs[lang];
+        }        
+
+        var limit = $('#limitfield').val();
+
+
+        var checkBox = document.getElementById("xcasex");
+
+
+        var casex = "false";
+        if (checkBox.checked){
+            casex = "true";
+        }
+
+        console.log(checkBox.checked);
+        var queryUrl;
+        if (lang_str) {
+            queryUrl = './start_query/'+db_str+'/'+ query + '/' + lang_str + '/' + limit + '/' + casex;
+        } else {
+            queryUrl = './start_query/'+db_str+'/'+ query + '/' + limit + '/' + casex;
+        }
+        console.log(queryUrl);
+
+
+
+
+
+        //launch
+        $.get(queryUrl, function(data, status){
+
+
+            //"/show/<ticket>/<lang>/<int:start>/<int:end>"
+            //document.body.append('<a href="/show/' + data + '/' + langs[0] + '/0/10' + '">' + query + '</a>');
+            //console.log(data);
+            var a = document.createElement('a');
+            var linkText = document.createTextNode(query + '  ' + lang_str + '  ' + db_str);
+            a.appendChild(linkText);
+            a.href = './show/' + data + '/' + langs[0] + '/0/10';
+            document.body.appendChild(a);
+            //$('#langs').insertAdjacentElement('afterend', a)
+            var a = document.createElement('br');
+            document.body.appendChild(a);
+            //$('#langs').insertAdjacentElement('afterend', a)
+            window.open('./show/' + data + '/' + langs[0] + '/0/10', '_blank');
+
+        });
+
+    });
+
+
+
+});
+</script>
+
+</body>
+
+</html>

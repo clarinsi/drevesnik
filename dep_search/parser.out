@@ -1,0 +1,1032 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> search
+Rule 1     search -> setnode
+Rule 2     setnode -> BGN setnode
+Rule 3     setnode -> setnode END
+Rule 4     setnode -> tokendef XDOT setnode
+Rule 5     setnode -> setnode ECOM
+Rule 6     setnode -> setnode depres
+Rule 7     depres -> depnode tokendef
+Rule 8     tokendef -> LPAR setnode RPAR
+Rule 9     depdef -> LPAR depnode RPAR
+Rule 10    depdef -> DEPOP
+Rule 11    setnode -> tokendef
+Rule 12    depnode -> depdef
+Rule 13    tokendef -> WORD
+Rule 14    tokendef -> TEXT
+Rule 15    tokendef -> ANYTOKEN
+Rule 16    depnode -> depnode AND depnode
+Rule 17    tokendef -> tokendef AND tokendef
+Rule 18    tokendef -> tokendef OR tokendef
+Rule 19    setnode -> setnode PLUS setnode
+Rule 20    setnode -> setnode EQ setnode
+Rule 21    setnode -> setnode SE setnode
+Rule 22    depnode -> depnode OR depnode
+Rule 23    depdef -> NEG depdef
+Rule 24    tokendef -> NEG tokendef
+
+Terminals, with rules where they appear
+
+AND                  : 16 17
+ANYTOKEN             : 15
+BGN                  : 2
+DEPOP                : 10
+ECOM                 : 5
+END                  : 3
+EQ                   : 20
+LPAR                 : 8 9
+NEG                  : 23 24
+OR                   : 18 22
+PLUS                 : 19
+RPAR                 : 8 9
+SE                   : 21
+TEXT                 : 14
+WORD                 : 13
+XDOT                 : 4
+error                : 
+
+Nonterminals, with rules where they appear
+
+depdef               : 12 23
+depnode              : 7 9 16 16 22 22
+depres               : 6
+search               : 0
+setnode              : 1 2 3 4 5 6 8 19 19 20 20 21 21
+tokendef             : 4 7 11 17 17 18 18 24
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . search
+    (1) search -> . setnode
+    (2) setnode -> . BGN setnode
+    (3) setnode -> . setnode END
+    (4) setnode -> . tokendef XDOT setnode
+    (5) setnode -> . setnode ECOM
+    (6) setnode -> . setnode depres
+    (11) setnode -> . tokendef
+    (19) setnode -> . setnode PLUS setnode
+    (20) setnode -> . setnode EQ setnode
+    (21) setnode -> . setnode SE setnode
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    BGN             shift and go to state 3
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    search                         shift and go to state 1
+    setnode                        shift and go to state 2
+    tokendef                       shift and go to state 4
+
+state 1
+
+    (0) S' -> search .
+
+
+
+state 2
+
+    (1) search -> setnode .
+    (3) setnode -> setnode . END
+    (5) setnode -> setnode . ECOM
+    (6) setnode -> setnode . depres
+    (19) setnode -> setnode . PLUS setnode
+    (20) setnode -> setnode . EQ setnode
+    (21) setnode -> setnode . SE setnode
+    (7) depres -> . depnode tokendef
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    $end            reduce using rule 1 (search -> setnode .)
+    END             shift and go to state 10
+    ECOM            shift and go to state 11
+    PLUS            shift and go to state 13
+    EQ              shift and go to state 14
+    SE              shift and go to state 15
+    LPAR            shift and go to state 18
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+    depres                         shift and go to state 12
+    depnode                        shift and go to state 16
+    depdef                         shift and go to state 17
+
+state 3
+
+    (2) setnode -> BGN . setnode
+    (2) setnode -> . BGN setnode
+    (3) setnode -> . setnode END
+    (4) setnode -> . tokendef XDOT setnode
+    (5) setnode -> . setnode ECOM
+    (6) setnode -> . setnode depres
+    (11) setnode -> . tokendef
+    (19) setnode -> . setnode PLUS setnode
+    (20) setnode -> . setnode EQ setnode
+    (21) setnode -> . setnode SE setnode
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    BGN             shift and go to state 3
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    setnode                        shift and go to state 21
+    tokendef                       shift and go to state 4
+
+state 4
+
+    (4) setnode -> tokendef . XDOT setnode
+    (11) setnode -> tokendef .
+    (17) tokendef -> tokendef . AND tokendef
+    (18) tokendef -> tokendef . OR tokendef
+
+    XDOT            shift and go to state 22
+    END             reduce using rule 11 (setnode -> tokendef .)
+    ECOM            reduce using rule 11 (setnode -> tokendef .)
+    PLUS            reduce using rule 11 (setnode -> tokendef .)
+    EQ              reduce using rule 11 (setnode -> tokendef .)
+    SE              reduce using rule 11 (setnode -> tokendef .)
+    LPAR            reduce using rule 11 (setnode -> tokendef .)
+    DEPOP           reduce using rule 11 (setnode -> tokendef .)
+    NEG             reduce using rule 11 (setnode -> tokendef .)
+    $end            reduce using rule 11 (setnode -> tokendef .)
+    RPAR            reduce using rule 11 (setnode -> tokendef .)
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+
+state 5
+
+    (8) tokendef -> LPAR . setnode RPAR
+    (2) setnode -> . BGN setnode
+    (3) setnode -> . setnode END
+    (4) setnode -> . tokendef XDOT setnode
+    (5) setnode -> . setnode ECOM
+    (6) setnode -> . setnode depres
+    (11) setnode -> . tokendef
+    (19) setnode -> . setnode PLUS setnode
+    (20) setnode -> . setnode EQ setnode
+    (21) setnode -> . setnode SE setnode
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    BGN             shift and go to state 3
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    setnode                        shift and go to state 25
+    tokendef                       shift and go to state 4
+
+state 6
+
+    (13) tokendef -> WORD .
+
+    XDOT            reduce using rule 13 (tokendef -> WORD .)
+    AND             reduce using rule 13 (tokendef -> WORD .)
+    OR              reduce using rule 13 (tokendef -> WORD .)
+    END             reduce using rule 13 (tokendef -> WORD .)
+    ECOM            reduce using rule 13 (tokendef -> WORD .)
+    PLUS            reduce using rule 13 (tokendef -> WORD .)
+    EQ              reduce using rule 13 (tokendef -> WORD .)
+    SE              reduce using rule 13 (tokendef -> WORD .)
+    LPAR            reduce using rule 13 (tokendef -> WORD .)
+    DEPOP           reduce using rule 13 (tokendef -> WORD .)
+    NEG             reduce using rule 13 (tokendef -> WORD .)
+    $end            reduce using rule 13 (tokendef -> WORD .)
+    RPAR            reduce using rule 13 (tokendef -> WORD .)
+
+
+state 7
+
+    (14) tokendef -> TEXT .
+
+    XDOT            reduce using rule 14 (tokendef -> TEXT .)
+    AND             reduce using rule 14 (tokendef -> TEXT .)
+    OR              reduce using rule 14 (tokendef -> TEXT .)
+    END             reduce using rule 14 (tokendef -> TEXT .)
+    ECOM            reduce using rule 14 (tokendef -> TEXT .)
+    PLUS            reduce using rule 14 (tokendef -> TEXT .)
+    EQ              reduce using rule 14 (tokendef -> TEXT .)
+    SE              reduce using rule 14 (tokendef -> TEXT .)
+    LPAR            reduce using rule 14 (tokendef -> TEXT .)
+    DEPOP           reduce using rule 14 (tokendef -> TEXT .)
+    NEG             reduce using rule 14 (tokendef -> TEXT .)
+    $end            reduce using rule 14 (tokendef -> TEXT .)
+    RPAR            reduce using rule 14 (tokendef -> TEXT .)
+
+
+state 8
+
+    (15) tokendef -> ANYTOKEN .
+
+    XDOT            reduce using rule 15 (tokendef -> ANYTOKEN .)
+    AND             reduce using rule 15 (tokendef -> ANYTOKEN .)
+    OR              reduce using rule 15 (tokendef -> ANYTOKEN .)
+    END             reduce using rule 15 (tokendef -> ANYTOKEN .)
+    ECOM            reduce using rule 15 (tokendef -> ANYTOKEN .)
+    PLUS            reduce using rule 15 (tokendef -> ANYTOKEN .)
+    EQ              reduce using rule 15 (tokendef -> ANYTOKEN .)
+    SE              reduce using rule 15 (tokendef -> ANYTOKEN .)
+    LPAR            reduce using rule 15 (tokendef -> ANYTOKEN .)
+    DEPOP           reduce using rule 15 (tokendef -> ANYTOKEN .)
+    NEG             reduce using rule 15 (tokendef -> ANYTOKEN .)
+    $end            reduce using rule 15 (tokendef -> ANYTOKEN .)
+    RPAR            reduce using rule 15 (tokendef -> ANYTOKEN .)
+
+
+state 9
+
+    (24) tokendef -> NEG . tokendef
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    tokendef                       shift and go to state 26
+
+state 10
+
+    (3) setnode -> setnode END .
+
+    END             reduce using rule 3 (setnode -> setnode END .)
+    ECOM            reduce using rule 3 (setnode -> setnode END .)
+    PLUS            reduce using rule 3 (setnode -> setnode END .)
+    EQ              reduce using rule 3 (setnode -> setnode END .)
+    SE              reduce using rule 3 (setnode -> setnode END .)
+    LPAR            reduce using rule 3 (setnode -> setnode END .)
+    DEPOP           reduce using rule 3 (setnode -> setnode END .)
+    NEG             reduce using rule 3 (setnode -> setnode END .)
+    $end            reduce using rule 3 (setnode -> setnode END .)
+    RPAR            reduce using rule 3 (setnode -> setnode END .)
+
+
+state 11
+
+    (5) setnode -> setnode ECOM .
+
+    END             reduce using rule 5 (setnode -> setnode ECOM .)
+    ECOM            reduce using rule 5 (setnode -> setnode ECOM .)
+    PLUS            reduce using rule 5 (setnode -> setnode ECOM .)
+    EQ              reduce using rule 5 (setnode -> setnode ECOM .)
+    SE              reduce using rule 5 (setnode -> setnode ECOM .)
+    LPAR            reduce using rule 5 (setnode -> setnode ECOM .)
+    DEPOP           reduce using rule 5 (setnode -> setnode ECOM .)
+    NEG             reduce using rule 5 (setnode -> setnode ECOM .)
+    $end            reduce using rule 5 (setnode -> setnode ECOM .)
+    RPAR            reduce using rule 5 (setnode -> setnode ECOM .)
+
+
+state 12
+
+    (6) setnode -> setnode depres .
+
+    END             reduce using rule 6 (setnode -> setnode depres .)
+    ECOM            reduce using rule 6 (setnode -> setnode depres .)
+    PLUS            reduce using rule 6 (setnode -> setnode depres .)
+    EQ              reduce using rule 6 (setnode -> setnode depres .)
+    SE              reduce using rule 6 (setnode -> setnode depres .)
+    LPAR            reduce using rule 6 (setnode -> setnode depres .)
+    DEPOP           reduce using rule 6 (setnode -> setnode depres .)
+    NEG             reduce using rule 6 (setnode -> setnode depres .)
+    $end            reduce using rule 6 (setnode -> setnode depres .)
+    RPAR            reduce using rule 6 (setnode -> setnode depres .)
+
+
+state 13
+
+    (19) setnode -> setnode PLUS . setnode
+    (2) setnode -> . BGN setnode
+    (3) setnode -> . setnode END
+    (4) setnode -> . tokendef XDOT setnode
+    (5) setnode -> . setnode ECOM
+    (6) setnode -> . setnode depres
+    (11) setnode -> . tokendef
+    (19) setnode -> . setnode PLUS setnode
+    (20) setnode -> . setnode EQ setnode
+    (21) setnode -> . setnode SE setnode
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    BGN             shift and go to state 3
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    setnode                        shift and go to state 27
+    tokendef                       shift and go to state 4
+
+state 14
+
+    (20) setnode -> setnode EQ . setnode
+    (2) setnode -> . BGN setnode
+    (3) setnode -> . setnode END
+    (4) setnode -> . tokendef XDOT setnode
+    (5) setnode -> . setnode ECOM
+    (6) setnode -> . setnode depres
+    (11) setnode -> . tokendef
+    (19) setnode -> . setnode PLUS setnode
+    (20) setnode -> . setnode EQ setnode
+    (21) setnode -> . setnode SE setnode
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    BGN             shift and go to state 3
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    setnode                        shift and go to state 28
+    tokendef                       shift and go to state 4
+
+state 15
+
+    (21) setnode -> setnode SE . setnode
+    (2) setnode -> . BGN setnode
+    (3) setnode -> . setnode END
+    (4) setnode -> . tokendef XDOT setnode
+    (5) setnode -> . setnode ECOM
+    (6) setnode -> . setnode depres
+    (11) setnode -> . tokendef
+    (19) setnode -> . setnode PLUS setnode
+    (20) setnode -> . setnode EQ setnode
+    (21) setnode -> . setnode SE setnode
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    BGN             shift and go to state 3
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    setnode                        shift and go to state 29
+    tokendef                       shift and go to state 4
+
+state 16
+
+    (7) depres -> depnode . tokendef
+    (16) depnode -> depnode . AND depnode
+    (22) depnode -> depnode . OR depnode
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    AND             shift and go to state 31
+    OR              shift and go to state 32
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    tokendef                       shift and go to state 30
+
+state 17
+
+    (12) depnode -> depdef .
+
+    AND             reduce using rule 12 (depnode -> depdef .)
+    OR              reduce using rule 12 (depnode -> depdef .)
+    LPAR            reduce using rule 12 (depnode -> depdef .)
+    WORD            reduce using rule 12 (depnode -> depdef .)
+    TEXT            reduce using rule 12 (depnode -> depdef .)
+    ANYTOKEN        reduce using rule 12 (depnode -> depdef .)
+    NEG             reduce using rule 12 (depnode -> depdef .)
+    RPAR            reduce using rule 12 (depnode -> depdef .)
+
+
+state 18
+
+    (9) depdef -> LPAR . depnode RPAR
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    LPAR            shift and go to state 18
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+    depnode                        shift and go to state 33
+    depdef                         shift and go to state 17
+
+state 19
+
+    (10) depdef -> DEPOP .
+
+    AND             reduce using rule 10 (depdef -> DEPOP .)
+    OR              reduce using rule 10 (depdef -> DEPOP .)
+    LPAR            reduce using rule 10 (depdef -> DEPOP .)
+    WORD            reduce using rule 10 (depdef -> DEPOP .)
+    TEXT            reduce using rule 10 (depdef -> DEPOP .)
+    ANYTOKEN        reduce using rule 10 (depdef -> DEPOP .)
+    NEG             reduce using rule 10 (depdef -> DEPOP .)
+    RPAR            reduce using rule 10 (depdef -> DEPOP .)
+
+
+state 20
+
+    (23) depdef -> NEG . depdef
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    LPAR            shift and go to state 18
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+    depdef                         shift and go to state 34
+
+state 21
+
+    (2) setnode -> BGN setnode .
+    (3) setnode -> setnode . END
+    (5) setnode -> setnode . ECOM
+    (6) setnode -> setnode . depres
+    (19) setnode -> setnode . PLUS setnode
+    (20) setnode -> setnode . EQ setnode
+    (21) setnode -> setnode . SE setnode
+    (7) depres -> . depnode tokendef
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    ECOM            reduce using rule 2 (setnode -> BGN setnode .)
+    PLUS            reduce using rule 2 (setnode -> BGN setnode .)
+    EQ              reduce using rule 2 (setnode -> BGN setnode .)
+    SE              reduce using rule 2 (setnode -> BGN setnode .)
+    LPAR            reduce using rule 2 (setnode -> BGN setnode .)
+    DEPOP           reduce using rule 2 (setnode -> BGN setnode .)
+    NEG             reduce using rule 2 (setnode -> BGN setnode .)
+    $end            reduce using rule 2 (setnode -> BGN setnode .)
+    RPAR            reduce using rule 2 (setnode -> BGN setnode .)
+    END             shift and go to state 10
+
+  ! END             [ reduce using rule 2 (setnode -> BGN setnode .) ]
+  ! ECOM            [ shift and go to state 11 ]
+  ! PLUS            [ shift and go to state 13 ]
+  ! EQ              [ shift and go to state 14 ]
+  ! SE              [ shift and go to state 15 ]
+  ! LPAR            [ shift and go to state 18 ]
+  ! DEPOP           [ shift and go to state 19 ]
+  ! NEG             [ shift and go to state 20 ]
+
+    depres                         shift and go to state 12
+    depnode                        shift and go to state 16
+    depdef                         shift and go to state 17
+
+state 22
+
+    (4) setnode -> tokendef XDOT . setnode
+    (2) setnode -> . BGN setnode
+    (3) setnode -> . setnode END
+    (4) setnode -> . tokendef XDOT setnode
+    (5) setnode -> . setnode ECOM
+    (6) setnode -> . setnode depres
+    (11) setnode -> . tokendef
+    (19) setnode -> . setnode PLUS setnode
+    (20) setnode -> . setnode EQ setnode
+    (21) setnode -> . setnode SE setnode
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    BGN             shift and go to state 3
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    tokendef                       shift and go to state 4
+    setnode                        shift and go to state 35
+
+state 23
+
+    (17) tokendef -> tokendef AND . tokendef
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    tokendef                       shift and go to state 36
+
+state 24
+
+    (18) tokendef -> tokendef OR . tokendef
+    (8) tokendef -> . LPAR setnode RPAR
+    (13) tokendef -> . WORD
+    (14) tokendef -> . TEXT
+    (15) tokendef -> . ANYTOKEN
+    (17) tokendef -> . tokendef AND tokendef
+    (18) tokendef -> . tokendef OR tokendef
+    (24) tokendef -> . NEG tokendef
+
+    LPAR            shift and go to state 5
+    WORD            shift and go to state 6
+    TEXT            shift and go to state 7
+    ANYTOKEN        shift and go to state 8
+    NEG             shift and go to state 9
+
+    tokendef                       shift and go to state 37
+
+state 25
+
+    (8) tokendef -> LPAR setnode . RPAR
+    (3) setnode -> setnode . END
+    (5) setnode -> setnode . ECOM
+    (6) setnode -> setnode . depres
+    (19) setnode -> setnode . PLUS setnode
+    (20) setnode -> setnode . EQ setnode
+    (21) setnode -> setnode . SE setnode
+    (7) depres -> . depnode tokendef
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    RPAR            shift and go to state 38
+    END             shift and go to state 10
+    ECOM            shift and go to state 11
+    PLUS            shift and go to state 13
+    EQ              shift and go to state 14
+    SE              shift and go to state 15
+    LPAR            shift and go to state 18
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+    depres                         shift and go to state 12
+    depnode                        shift and go to state 16
+    depdef                         shift and go to state 17
+
+state 26
+
+    (24) tokendef -> NEG tokendef .
+    (17) tokendef -> tokendef . AND tokendef
+    (18) tokendef -> tokendef . OR tokendef
+
+    XDOT            reduce using rule 24 (tokendef -> NEG tokendef .)
+    AND             reduce using rule 24 (tokendef -> NEG tokendef .)
+    OR              reduce using rule 24 (tokendef -> NEG tokendef .)
+    END             reduce using rule 24 (tokendef -> NEG tokendef .)
+    ECOM            reduce using rule 24 (tokendef -> NEG tokendef .)
+    PLUS            reduce using rule 24 (tokendef -> NEG tokendef .)
+    EQ              reduce using rule 24 (tokendef -> NEG tokendef .)
+    SE              reduce using rule 24 (tokendef -> NEG tokendef .)
+    LPAR            reduce using rule 24 (tokendef -> NEG tokendef .)
+    DEPOP           reduce using rule 24 (tokendef -> NEG tokendef .)
+    NEG             reduce using rule 24 (tokendef -> NEG tokendef .)
+    $end            reduce using rule 24 (tokendef -> NEG tokendef .)
+    RPAR            reduce using rule 24 (tokendef -> NEG tokendef .)
+
+  ! AND             [ shift and go to state 23 ]
+  ! OR              [ shift and go to state 24 ]
+
+
+state 27
+
+    (19) setnode -> setnode PLUS setnode .
+    (3) setnode -> setnode . END
+    (5) setnode -> setnode . ECOM
+    (6) setnode -> setnode . depres
+    (19) setnode -> setnode . PLUS setnode
+    (20) setnode -> setnode . EQ setnode
+    (21) setnode -> setnode . SE setnode
+    (7) depres -> . depnode tokendef
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    LPAR            reduce using rule 19 (setnode -> setnode PLUS setnode .)
+    $end            reduce using rule 19 (setnode -> setnode PLUS setnode .)
+    RPAR            reduce using rule 19 (setnode -> setnode PLUS setnode .)
+    END             shift and go to state 10
+    ECOM            shift and go to state 11
+    PLUS            shift and go to state 13
+    EQ              shift and go to state 14
+    SE              shift and go to state 15
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+  ! END             [ reduce using rule 19 (setnode -> setnode PLUS setnode .) ]
+  ! ECOM            [ reduce using rule 19 (setnode -> setnode PLUS setnode .) ]
+  ! PLUS            [ reduce using rule 19 (setnode -> setnode PLUS setnode .) ]
+  ! EQ              [ reduce using rule 19 (setnode -> setnode PLUS setnode .) ]
+  ! SE              [ reduce using rule 19 (setnode -> setnode PLUS setnode .) ]
+  ! DEPOP           [ reduce using rule 19 (setnode -> setnode PLUS setnode .) ]
+  ! NEG             [ reduce using rule 19 (setnode -> setnode PLUS setnode .) ]
+  ! LPAR            [ shift and go to state 18 ]
+
+    depres                         shift and go to state 12
+    depnode                        shift and go to state 16
+    depdef                         shift and go to state 17
+
+state 28
+
+    (20) setnode -> setnode EQ setnode .
+    (3) setnode -> setnode . END
+    (5) setnode -> setnode . ECOM
+    (6) setnode -> setnode . depres
+    (19) setnode -> setnode . PLUS setnode
+    (20) setnode -> setnode . EQ setnode
+    (21) setnode -> setnode . SE setnode
+    (7) depres -> . depnode tokendef
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    PLUS            reduce using rule 20 (setnode -> setnode EQ setnode .)
+    LPAR            reduce using rule 20 (setnode -> setnode EQ setnode .)
+    $end            reduce using rule 20 (setnode -> setnode EQ setnode .)
+    RPAR            reduce using rule 20 (setnode -> setnode EQ setnode .)
+    END             shift and go to state 10
+    ECOM            shift and go to state 11
+    EQ              shift and go to state 14
+    SE              shift and go to state 15
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+  ! END             [ reduce using rule 20 (setnode -> setnode EQ setnode .) ]
+  ! ECOM            [ reduce using rule 20 (setnode -> setnode EQ setnode .) ]
+  ! EQ              [ reduce using rule 20 (setnode -> setnode EQ setnode .) ]
+  ! SE              [ reduce using rule 20 (setnode -> setnode EQ setnode .) ]
+  ! DEPOP           [ reduce using rule 20 (setnode -> setnode EQ setnode .) ]
+  ! NEG             [ reduce using rule 20 (setnode -> setnode EQ setnode .) ]
+  ! PLUS            [ shift and go to state 13 ]
+  ! LPAR            [ shift and go to state 18 ]
+
+    depres                         shift and go to state 12
+    depnode                        shift and go to state 16
+    depdef                         shift and go to state 17
+
+state 29
+
+    (21) setnode -> setnode SE setnode .
+    (3) setnode -> setnode . END
+    (5) setnode -> setnode . ECOM
+    (6) setnode -> setnode . depres
+    (19) setnode -> setnode . PLUS setnode
+    (20) setnode -> setnode . EQ setnode
+    (21) setnode -> setnode . SE setnode
+    (7) depres -> . depnode tokendef
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    PLUS            reduce using rule 21 (setnode -> setnode SE setnode .)
+    EQ              reduce using rule 21 (setnode -> setnode SE setnode .)
+    LPAR            reduce using rule 21 (setnode -> setnode SE setnode .)
+    $end            reduce using rule 21 (setnode -> setnode SE setnode .)
+    RPAR            reduce using rule 21 (setnode -> setnode SE setnode .)
+    END             shift and go to state 10
+    ECOM            shift and go to state 11
+    SE              shift and go to state 15
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+  ! END             [ reduce using rule 21 (setnode -> setnode SE setnode .) ]
+  ! ECOM            [ reduce using rule 21 (setnode -> setnode SE setnode .) ]
+  ! SE              [ reduce using rule 21 (setnode -> setnode SE setnode .) ]
+  ! DEPOP           [ reduce using rule 21 (setnode -> setnode SE setnode .) ]
+  ! NEG             [ reduce using rule 21 (setnode -> setnode SE setnode .) ]
+  ! PLUS            [ shift and go to state 13 ]
+  ! EQ              [ shift and go to state 14 ]
+  ! LPAR            [ shift and go to state 18 ]
+
+    depres                         shift and go to state 12
+    depnode                        shift and go to state 16
+    depdef                         shift and go to state 17
+
+state 30
+
+    (7) depres -> depnode tokendef .
+    (17) tokendef -> tokendef . AND tokendef
+    (18) tokendef -> tokendef . OR tokendef
+
+    END             reduce using rule 7 (depres -> depnode tokendef .)
+    ECOM            reduce using rule 7 (depres -> depnode tokendef .)
+    PLUS            reduce using rule 7 (depres -> depnode tokendef .)
+    EQ              reduce using rule 7 (depres -> depnode tokendef .)
+    SE              reduce using rule 7 (depres -> depnode tokendef .)
+    LPAR            reduce using rule 7 (depres -> depnode tokendef .)
+    DEPOP           reduce using rule 7 (depres -> depnode tokendef .)
+    NEG             reduce using rule 7 (depres -> depnode tokendef .)
+    $end            reduce using rule 7 (depres -> depnode tokendef .)
+    RPAR            reduce using rule 7 (depres -> depnode tokendef .)
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+
+state 31
+
+    (16) depnode -> depnode AND . depnode
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    LPAR            shift and go to state 18
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+    depnode                        shift and go to state 39
+    depdef                         shift and go to state 17
+
+state 32
+
+    (22) depnode -> depnode OR . depnode
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    LPAR            shift and go to state 18
+    DEPOP           shift and go to state 19
+    NEG             shift and go to state 20
+
+    depnode                        shift and go to state 40
+    depdef                         shift and go to state 17
+
+state 33
+
+    (9) depdef -> LPAR depnode . RPAR
+    (16) depnode -> depnode . AND depnode
+    (22) depnode -> depnode . OR depnode
+
+    RPAR            shift and go to state 41
+    AND             shift and go to state 31
+    OR              shift and go to state 32
+
+
+state 34
+
+    (23) depdef -> NEG depdef .
+
+    AND             reduce using rule 23 (depdef -> NEG depdef .)
+    OR              reduce using rule 23 (depdef -> NEG depdef .)
+    LPAR            reduce using rule 23 (depdef -> NEG depdef .)
+    WORD            reduce using rule 23 (depdef -> NEG depdef .)
+    TEXT            reduce using rule 23 (depdef -> NEG depdef .)
+    ANYTOKEN        reduce using rule 23 (depdef -> NEG depdef .)
+    NEG             reduce using rule 23 (depdef -> NEG depdef .)
+    RPAR            reduce using rule 23 (depdef -> NEG depdef .)
+
+
+state 35
+
+    (4) setnode -> tokendef XDOT setnode .
+    (3) setnode -> setnode . END
+    (5) setnode -> setnode . ECOM
+    (6) setnode -> setnode . depres
+    (19) setnode -> setnode . PLUS setnode
+    (20) setnode -> setnode . EQ setnode
+    (21) setnode -> setnode . SE setnode
+    (7) depres -> . depnode tokendef
+    (12) depnode -> . depdef
+    (16) depnode -> . depnode AND depnode
+    (22) depnode -> . depnode OR depnode
+    (9) depdef -> . LPAR depnode RPAR
+    (10) depdef -> . DEPOP
+    (23) depdef -> . NEG depdef
+
+    ECOM            reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    PLUS            reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    EQ              reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    SE              reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    LPAR            reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    DEPOP           reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    NEG             reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    $end            reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    RPAR            reduce using rule 4 (setnode -> tokendef XDOT setnode .)
+    END             shift and go to state 10
+
+  ! END             [ reduce using rule 4 (setnode -> tokendef XDOT setnode .) ]
+  ! ECOM            [ shift and go to state 11 ]
+  ! PLUS            [ shift and go to state 13 ]
+  ! EQ              [ shift and go to state 14 ]
+  ! SE              [ shift and go to state 15 ]
+  ! LPAR            [ shift and go to state 18 ]
+  ! DEPOP           [ shift and go to state 19 ]
+  ! NEG             [ shift and go to state 20 ]
+
+    depres                         shift and go to state 12
+    depnode                        shift and go to state 16
+    depdef                         shift and go to state 17
+
+state 36
+
+    (17) tokendef -> tokendef AND tokendef .
+    (17) tokendef -> tokendef . AND tokendef
+    (18) tokendef -> tokendef . OR tokendef
+
+    XDOT            reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    OR              reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    END             reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    ECOM            reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    PLUS            reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    EQ              reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    SE              reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    LPAR            reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    DEPOP           reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    NEG             reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    $end            reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    RPAR            reduce using rule 17 (tokendef -> tokendef AND tokendef .)
+    AND             shift and go to state 23
+
+  ! AND             [ reduce using rule 17 (tokendef -> tokendef AND tokendef .) ]
+  ! OR              [ shift and go to state 24 ]
+
+
+state 37
+
+    (18) tokendef -> tokendef OR tokendef .
+    (17) tokendef -> tokendef . AND tokendef
+    (18) tokendef -> tokendef . OR tokendef
+
+    XDOT            reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    END             reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    ECOM            reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    PLUS            reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    EQ              reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    SE              reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    LPAR            reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    DEPOP           reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    NEG             reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    $end            reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    RPAR            reduce using rule 18 (tokendef -> tokendef OR tokendef .)
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+  ! AND             [ reduce using rule 18 (tokendef -> tokendef OR tokendef .) ]
+  ! OR              [ reduce using rule 18 (tokendef -> tokendef OR tokendef .) ]
+
+
+state 38
+
+    (8) tokendef -> LPAR setnode RPAR .
+
+    XDOT            reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    AND             reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    OR              reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    END             reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    ECOM            reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    PLUS            reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    EQ              reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    SE              reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    LPAR            reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    DEPOP           reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    NEG             reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    $end            reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+    RPAR            reduce using rule 8 (tokendef -> LPAR setnode RPAR .)
+
+
+state 39
+
+    (16) depnode -> depnode AND depnode .
+    (16) depnode -> depnode . AND depnode
+    (22) depnode -> depnode . OR depnode
+
+    OR              reduce using rule 16 (depnode -> depnode AND depnode .)
+    LPAR            reduce using rule 16 (depnode -> depnode AND depnode .)
+    WORD            reduce using rule 16 (depnode -> depnode AND depnode .)
+    TEXT            reduce using rule 16 (depnode -> depnode AND depnode .)
+    ANYTOKEN        reduce using rule 16 (depnode -> depnode AND depnode .)
+    NEG             reduce using rule 16 (depnode -> depnode AND depnode .)
+    RPAR            reduce using rule 16 (depnode -> depnode AND depnode .)
+    AND             shift and go to state 31
+
+  ! AND             [ reduce using rule 16 (depnode -> depnode AND depnode .) ]
+  ! OR              [ shift and go to state 32 ]
+
+
+state 40
+
+    (22) depnode -> depnode OR depnode .
+    (16) depnode -> depnode . AND depnode
+    (22) depnode -> depnode . OR depnode
+
+    LPAR            reduce using rule 22 (depnode -> depnode OR depnode .)
+    WORD            reduce using rule 22 (depnode -> depnode OR depnode .)
+    TEXT            reduce using rule 22 (depnode -> depnode OR depnode .)
+    ANYTOKEN        reduce using rule 22 (depnode -> depnode OR depnode .)
+    NEG             reduce using rule 22 (depnode -> depnode OR depnode .)
+    RPAR            reduce using rule 22 (depnode -> depnode OR depnode .)
+    AND             shift and go to state 31
+    OR              shift and go to state 32
+
+  ! AND             [ reduce using rule 22 (depnode -> depnode OR depnode .) ]
+  ! OR              [ reduce using rule 22 (depnode -> depnode OR depnode .) ]
+
+
+state 41
+
+    (9) depdef -> LPAR depnode RPAR .
+
+    AND             reduce using rule 9 (depdef -> LPAR depnode RPAR .)
+    OR              reduce using rule 9 (depdef -> LPAR depnode RPAR .)
+    LPAR            reduce using rule 9 (depdef -> LPAR depnode RPAR .)
+    WORD            reduce using rule 9 (depdef -> LPAR depnode RPAR .)
+    TEXT            reduce using rule 9 (depdef -> LPAR depnode RPAR .)
+    ANYTOKEN        reduce using rule 9 (depdef -> LPAR depnode RPAR .)
+    NEG             reduce using rule 9 (depdef -> LPAR depnode RPAR .)
+    RPAR            reduce using rule 9 (depdef -> LPAR depnode RPAR .)
+

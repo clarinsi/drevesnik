@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+     <meta charset="utf-8">
+     <meta name="description" content="">
+     <meta name="author" content="">
+ 
+     <title>Drevesnik</title>
+	<link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Noun_883674_cc_Symbolon_tree_icon.svg/480px-Noun_883674_cc_Symbolon_tree_icon.svg.png?20170413114733">
+     <script type="text/javascript">
+       $APP_ROOT= "/dep_search";
+     </script>
+ 
+     <!-- Bootstrap core CSS -->
+     <link href="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//css/bootstrap.min.css" rel="stylesheet">
+     <link href="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//css/jquery-ui.css" rel="stylesheet">
+     <link href="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//css/turkunlp.css" rel="stylesheet">
+
+     <!-- Custom styles for this template -->
+     <script src="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//js/jquery.min.js"> </script>
+     <script src="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//js/bootstrap.min.js"> </script>
+     <script src="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//js/he.js"></script>
+     <script src="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//js/jquery-ui.js"></script>
+
+
+     
+	<!-- annotation visualization stuff --> 
+	<!-- <link rel="stylesheet" href=http://epsilon-it.utu.fi/{{ approot }}/static//css/jquery-ui-redmond.css"/> -->
+	<link rel="stylesheet" href="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//css/annodoc-main.css"/>
+	<link rel="stylesheet" href="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//css/style-vis.css"/>
+	<!-- <link rel="stylesheet" href="http://bionlp-www.utu.fi//css/depsearch.css"> -->
+	<script type="text/javascript" src="http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//js/head.min.js"></script>
+	<!-- end annotation visualization stuff -->
+
+
+</head>
+
+<body>
+
+<!-- annotation visualization stuff --> 
+<script type="text/javascript">
+    var root = "http://epsilon-it.utu.fi/{{ approot }}/drevesnik/static//";
+    head.js(
+        // External libraries
+        root + 'js/jquery.min.js',
+        root + 'js/jquery.svg.min.js',
+        root + 'js/jquery.svgdom.min.js',
+        root + 'js/jquery-ui.min.js',
+        root + 'js/waypoints.min.js',
+        // brat helper modules
+        root + 'js/brat/configuration.js',
+        root + 'js/brat/util.js',
+        root + 'js/brat/annotation_log.js',
+        root + 'js/webfont.js',
+        // brat main modules
+        root + 'js/brat/dispatcher.js',
+        root + 'js/brat/url_monitor.js',
+        root + 'js/brat/visualizer.js',
+        // external parsing libraries
+        root + 'js/conllu.js/conllu.js',
+        // annotation documentation support
+        root + 'js/local/annodoc.js',
+        // project-specific collection data
+        root + 'js/local/collections.js',
+        // project-specific configuration
+        root + 'js/local/config.js'
+    );
+
+    var webFontURLs = [
+        root + 'fonts/PT_Sans-Caption-Web-Regular.ttf',
+        root + 'fonts/Liberation_Sans-Regular.ttf'
+    ];
+
+    head.ready(function() {
+        // mark current collection (filled in by Jekyll)
+        Collections.listing['_current'] = ';'
+
+	// performs all embedding and support functions
+    console.log("Activating Annodoc");
+    Annodoc.activate(Config.bratCollData, Collections.listing);
+    console.log("Done activating Annodoc");
+    });
+</script>
+<!-- end annotation visualization stuff -->
+
+
+
+
+<tbody>
+<div style="background-color:lightblue"  id="queryinfo">
+<div id="queryjs">
+</div>
+<div id="qff">
+</div>
+<div id="err">
+</div>
+
+<div id="res_count">
+</div>
+<a href="/{{ approot }}/drevesnik/download/{{ idx }}">Download All Results</a><br>
+<a href="/{{ approot }}/drevesnik/download/{{ idx }}/{{ lang }}">Download {{ lang }} Results</a><br>
+
+
+</div>
+
+
+<div>
+<div id='query_result'> &nbsp;</div>
+</div>
+
+<div style="background-color:lightblue">
+
+
+    <input id="pgnum" type="text" name="FirstName"> <div id="pages">120</div>
+
+    <button id="gobtn" type="button">Go</button>   <button id="bbtn" type="button"><</button>   <button id="fwbtn" type="button">></button> 
+
+</div>
+
+<p>&nbsp;</p>
+<script>
+
+
+var xpagelen = "";
+var start = {{ start }};
+var end = {{ end }};
+var lang = "{{ lang }}";
+var idx = "{{ idx }}";
+var langs = []
+var done = false;
+var page_tree_count = 0;
+
+
+
+
+function updatetrees(idx, start, end, lang){
+
+    var target = document.getElementById( "query_result" );
+
+    //$.get("/get_trees/2016642315595390675/b'pl'/1/25", function(data, status){
+
+
+    $.get("/{{ approot }}/drevesnik/get_page_tree_count/" + idx + "/" + lang + "/" + start + "/" + end, function(data, status){
+
+        console.log('XXX');
+        console.log(data, page_tree_count);
+        if (data > page_tree_count){
+ 
+            console.log("ebin");
+            page_tree_count = data;
+            loadtrees(idx, start, end, lang);
+        }
+
+
+    });
+
+
+
+
+
+
+}
+
+
+
+
+
+
+function loadtrees(idx, start, end, lang){
+
+    var target = document.getElementById( "query_result" );
+
+    //$.get("/get_trees/2016642315595390675/b'pl'/1/25", function(data, status){
+
+    $.get("/{{ approot }}/drevesnik/get_trees/" + idx + "/" + lang + "/" + start + "/" + end, function(data, status){
+       $('#query_result').html(data);
+
+       $('.conllu').each(function() {
+           Annodoc.embedAnnotation($(this), Annodoc.parseConllU, Config.bratCollData);});
+       //});
+
+
+    });
+
+
+
+
+}
+
+
+
+
+function update_stuff(){
+
+
+   if (done == false){
+
+     updatetrees(idx, start, end, lang);
+
+
+    $.get("/{{ approot }}/drevesnik/is_query_finished/" + idx, function(xdata, status){
+        if (xdata){
+        done = true;
+        infoxx = "Query has finished!";
+        $('#qff').html("");
+        var text = document.createTextNode(infoxx);
+        $('#qff').append(text);
+        }
+
+    }); 
+
+    $.get("/{{ approot }}/drevesnik/get_result_count/" + idx, function(data, status){
+       
+       $('#res_count').html("");
+       for(var key in data) {
+           var value = data[key];
+           console.log(data);
+           var text = document.createTextNode(key + "   " + value + "+    ");
+           $('#res_count').append(text);
+       }
+    }); 
+
+
+    //langs in q
+    $.get("/{{ approot }}/drevesnik/get_result_langs/" + idx, function(data, status){
+        //
+        var arrayLength = data.length;
+        for (var i = 0; i < arrayLength; i++) {
+            var xx = data[i];
+            //langs.push(xx);
+            //alert(data[i]);
+            //Add button
+
+            if (!langs.includes(xx)){
+
+                langs.push(xx);
+
+                var button = document.createElement("button");
+                button.setAttribute("id", "lang_btn_" + xx);
+                button.setAttribute("lang", xx);
+                button.setAttribute("onclick", "xmove(this);");
+                button.innerHTML = data[i];
+
+                var body = document.getElementById("queryinfo");
+                body.appendChild(button);
+            }
+            //alert(body);
+
+            //Add link
+         
+        }
+
+    });
+
+
+
+
+
+    }
+}
+
+
+
+function xmove(xx){
+
+    console.log(xx["lang"]);
+    window.location.href = "/{{ approot }}/drevesnik/show/" + idx + "/" + xx["lang"] + "/0/" + xpagelen;
+
+
+}
+
+
+
+$( document ).ready(function() {
+
+    //load results
+    updatetrees(idx, start, end, lang);
+
+
+
+
+    //page number
+    var pagelen = end - start
+    var pagenum = start/pagelen
+    xpagelen = pagelen;
+    $('#pgnum').val(pagenum);
+    
+    //page count
+    $.get("/{{ approot }}/drevesnik/get_result_count/" + idx, function(data, status){
+       $('#pages').html(Math.round(data[lang]/pagelen + 1));
+    });
+
+    //page buttons
+    $('#fwbtn').click(function() {
+        window.location.href = "/{{ approot }}/drevesnik/show/" + idx + "/" + lang + "/" + (start + pagelen) + "/" + (end + pagelen);
+    });
+
+    $('#bbtn').click(function() {
+        window.location.href = "/{{ approot }}/drevesnik/show/" + idx + "/" + lang + "/" + (start - pagelen) + "/" + (end - pagelen);
+    });
+
+    $('#gobtn').click(function() {
+        window.location.href = "/{{ approot }}/drevesnik/show/" + idx + "/" + lang + "/" + (parseInt($('#pgnum').val()) * pagelen) + "/" + ((parseInt($('#pgnum').val()) * pagelen) + pagelen);
+    });
+
+    //langs in q
+    $.get("/{{ approot }}/drevesnik/get_result_langs/" + idx, function(data, status){
+        //
+        var arrayLength = data.length;
+        for (var i = 0; i < arrayLength; i++) {
+            var xx = data[i];
+            langs.push(xx);
+            //alert(data[i]);
+            //Add button
+            var button = document.createElement("button");
+            button.setAttribute("id", "lang_btn_" + xx);
+            button.setAttribute("lang", xx);
+            button.setAttribute("onclick", "xmove(this);");
+            button.innerHTML = data[i];
+
+            var body = document.getElementById("queryinfo");
+            body.appendChild(button);
+            //alert(body);
+
+            //Add link
+         
+        }
+
+    var arrayLength = langs.length;
+    console.log(arrayLength);
+    console.log(langs);
+    for (var i = 0; i < arrayLength; i++) {
+
+        //get button
+        var xx = "" + langs[i];
+        console.log(xx);
+        var button = document.getElementById("lang_btn_" + xx);
+
+        //add el
+
+
+    }
+
+
+    
+
+    });    
+
+    //Lang button links
+    //var body = document.getElementsById("lang_btn");
+    //alert("ebin");
+
+    //$('#pages').html(Math.round(data/pagelen + 1));
+
+    $.get("/{{ approot }}/drevesnik/query_info/" + idx, function(xdata, status){
+        console.log(xdata);
+        var text = document.createTextNode(xdata);
+        //alert(xdata);
+        $('#queryjs').append(text);
+    }); 
+
+    $.get("/{{ approot }}/drevesnik/is_query_finished/" + idx, function(xdata, status){
+        console.log(xdata);
+        var infoxx = "Query is still running ...";
+        if (xdata){
+            infoxx = "Query has finished!";
+        }
+        var text = document.createTextNode(infoxx);
+        //alert(xdata);
+        $('#qff').append(text);
+    }); 
+    $.get("/{{ approot }}/drevesnik/get_err/" + idx, function(xdata, status){
+        console.log(xdata);
+        var text = document.createTextNode(xdata);
+        //alert(xdata);
+        $('#err').append(text);
+    }); 
+
+
+     setInterval(update_stuff, 3000);
+
+
+    //lang "tabs"
+
+
+
+
+     //
+     //$(query_result).html("<td>Hello <b>World</b>!</td>");
+
+});
+</script>
+</body>
+</html>

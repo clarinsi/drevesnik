@@ -33,27 +33,38 @@ main_page_timer = time.time()
 query_log_timer = time.time()
 main_page_call_lock = threading.Lock()
 query_log_lock = threading.Lock()
+config_folder = os.getenv('CONFIG_FOLDER', '/configs/')
+if not config_folder.endswith('/'):
+    config_folder += '/'
+log_folder = os.getenv('LOG_FOLDER', '/api_gui/logs/')
+if not log_folder.endswith('/'):
+    log_folder += '/'
+index_folder = os.getenv('INDEX_FOLDER', '/indexes/')
+if not index_folder.endswith('/'):
+    index_folder += '/'
 
 
 def update_main_page_called_file(main_page_calls):
-    if os.path.exists("logs/main_page_called.txt"):
-        with open("logs/main_page_called.txt", "r") as file:
+    global log_folder
+    if os.path.exists(log_folder + "main_page_called.txt"):
+        with open(log_folder + "main_page_called.txt", "r") as file:
             try:
                 saved_number_of_calls = int(file.read().strip())
             except:
                 saved_number_of_calls = 0
     else:
         saved_number_of_calls = 0
-    with open("logs/main_page_called.txt", "w") as file:
+    with open(log_folder + "main_page_called.txt", "w") as file:
         file.write(str(saved_number_of_calls + main_page_calls))
     
   
 def update_query_logs(new_query_logs):
-    with open("logs/queries.txt", "a") as file:
+    global log_folder
+    with open(log_folder + "queries.txt", "a") as file:
         file.write(new_query_logs)
 
 
-with open("xpos_tags.json", "r") as xpos_tags_file:
+with open(index_folder + "xpos_tags.json", "r") as xpos_tags_file:
     xpos_tags = json.load(xpos_tags_file)
 
 
@@ -115,6 +126,7 @@ def res_file(basename):
 def query_process(dbs, query, langs, ticket, limit=10000, case=False, rand=False, save_to_logs=True):
     global unsaved_query_logs
     global query_log_timer
+    global config_folder
     if save_to_logs:
         query_log_lock.acquire()
         
@@ -134,7 +146,7 @@ def query_process(dbs, query, langs, ticket, limit=10000, case=False, rand=False
     try:
 
 
-        inf = open('config.json','r')
+        inf = open(config_folder + 'config.json','r')
         xx = json.load(inf)
         inf.close()
         print(xx)
@@ -152,7 +164,7 @@ def query_process(dbs, query, langs, ticket, limit=10000, case=False, rand=False
     except:
         pass
 
-    xdbs = get_flat_dbs()
+    xdbs = get_db_locations()
     print(xdbs)
 
     #Replace with call
@@ -281,84 +293,40 @@ def get_passhash(passw):
     salt = 'erthya!!!4235'
     return hashlib.sha256(salt.encode() + passw.encode()).hexdigest()
 
-@app.route('/drevesnik/login', methods=['POST'])
-def signin():
-    passw = request.form['pass']
-    passhash = get_passhash(passw)
-
-    inf = open('config.json', 'r')
-    xx = json.load(inf)
-    inf.close()
-    if xx['admin_pass'] == passhash or (xx['admin_pass'] == ''):
-        session_id = get_uuid()
-        outf = open('sessions', 'wt')
-        outf.write(session_id + '\t' + str(time.time() + 60*60*3))
-
-        res = make_response(redirect("/db_config"))
-        res.set_cookie("session_id", value=session_id)
-        return res
-    else:
-        return render_template('login.html')
         
-
-@app.route('/drevesnik/help/')
-def help():
-
-    inf = open('dep-search_query-lang_original.md', 'r')
+@app.route('/drevesnik/help/', defaults={'site_lang': 'sl'})
+@app.route('/drevesnik/help/<site_lang>/')
+def help(site_lang):
+    global config_folder
+    inf = open(config_folder + f'dep-search_query-lang_original_{site_lang}.md', 'r')
     md_text = inf.read()
     inf.close()
     return "<html><head><style>body\n{\n  padding-left: 40px; font-family: 'Open Sans'; font-size: 14px;}\n}\n></style><body>" + markdown.markdown(md_text)  + "</head></body></html>"
-
-
-@app.route('/drevesnik/help/en/')
-def help_en():
-    inf = open('dep-search_query-lang_original_en.md', 'r')
-    md_text = inf.read()
-    inf.close()
-    return "<html><head><style>body\n{\n  padding-left: 40px; font-family: 'Open Sans'; font-size: 14px;}\n}\n></style><body>" + markdown.markdown(md_text)  + "</head></body></html>"
-
-
-@app.route('/drevesnik/change_pw', methods=['POST'])
-def cshange_pw():
-
-    passw = request.form['pass']
-    passhash = get_passhash(passw)
-    
-    inf = open('config.json', 'r')
-    xx = json.load(inf)
-    inf.close()
-    
-    if check_creds(request):
-        xx['admin_pass'] = passhash
-        outf = open('config.json','wt')
-        outf.write(json.dumps(xx))
-        outf.close()
-        return redirect(xx['approot'] + "/db_config")
-    else:
-        return render_template("login.html", approot=xx['approot'])
 
 
 @app.route('/drevesnik/remove_db/<db_name>')
 def rmdb(db_name):
+    global config_folder
 
     db_r = db_name
-    inf = open('config.json', 'r')
+    inf = open(config_folder + 'config.json', 'r')
     xx = json.load(inf)
     inf.close()
     
-    fd = get_flat_dbs()
+    fd = get_db_locations()
 
     if check_creds(request):
         os.system('rm -rf ' + fd[db_r])
         os.system('cd ..; python3 docker_add_dbs.py')
-        return redirect(xx['approot'] + "/db_config")
+        return redirect("/db_config")
     else:
-        return render_template("login.html", approot=xx['approot'])
+        return render_template("login.html")
 
 @app.route('/drevesnik/index_db', methods=['POST'])
 def chansge_pw():
+    global config_folder
 
-    inf = open('config.json', 'r')
+    inf = open(config_folder + 'config.json', 'r')
     xx = json.load(inf)
     inf.close()
     
@@ -379,13 +347,14 @@ def chansge_pw():
         #os.system('cd ..; cat ' + xx['db_folder'] + filename + ' | python3 build_index.py -d ' + xx['db_folder'] + '/' + db_name + ' --lang ' + db_lang + ' 1&2> ' + xx['db_folder'] + filename + '.log')
         #os.system('cd ..; python3 docker_add_dbs.py')
         
-    return redirect(xx['approot'] + "/check_index/" + filename + '.log')
+    return redirect("/check_index/" + filename + '.log')
 
 
 @app.route('/drevesnik/check_index/<filename>')
 def rrt(filename):
+    global config_folder
     if check_creds(request):
-        inf = open('config.json', 'r')
+        inf = open(config_folder + 'config.json', 'r')
         xx = json.load(inf)
         inf.close()
         inf = open(xx['db_folder'] + filename,'rt')
@@ -396,31 +365,28 @@ def rrt(filename):
 
 @app.route('/drevesnik/db_config')
 def db_config():
+    global config_folder
 
-    inf = open('config.json', 'r')
+    inf = open(config_folder + 'config.json', 'r')
     xx = json.load(inf)
     inf.close() 
 
     xxx = ''
-    dd = get_flat_dbs()
+    dd = get_db_locations()
     for k in dd.keys():
         #
-        #xxx += '<a href=' + xx['approot'] + '/remove_db/' + k + '>Remove ' + k + '</a><br>'
-        xxx += '<input type="button" value="Remove ' + k + '" onclick="if(window.confirm(\'Sure?\')){window.location = \'' + xx['approot'] + '/remove_db/' + k + '\';}" /><br>'
+        #xxx += '<a href=' + '/remove_db/' + k + '>Remove ' + k + '</a><br>'
+        xxx += '<input type="button" value="Remove ' + k + '" onclick="if(window.confirm(\'Sure?\')){window.location = \'' + '/remove_db/' + k + '\';}" /><br>'
 
 
     if check_creds(request):
-        return render_template("db_config.html", approot=xx['approot'], dbs=xxx)
-    return render_template('login.html', approot=xx['approot'])
+        return render_template("db_config.html", dbs=xxx)
+    return render_template('login.html')
 
 
 def check_creds(req):
     
     try:
-        inf = open('config.json', 'r')
-        xx = json.load(inf)
-        inf.close()
-
         session_id = req.cookies.get('session_id')
         
         inf = open('sessions','rt')
@@ -428,7 +394,7 @@ def check_creds(req):
         inf.close()
         right_sess_id, xtime = xln.strip().split('\t')
         print (session_id, right_sess_id, float(xtime) > time.time())
-        if session_id == right_sess_id and time.time() < float(xtime) and xx['allow_remote_admin']:
+        if session_id == right_sess_id and time.time() < float(xtime):
             return True
         else:
             return False
@@ -439,7 +405,7 @@ def check_creds(req):
 @app.route('/drevesnik/do_query/<dbs>/<query>/<m>/<langs>/')
 def xxquery_process(dbs, query, m, langs):
 
-    xdbs = get_flat_dbs()
+    xdbs = get_db_locations()
 
     limit = 5000
     if len(langs) > 0:
@@ -466,10 +432,23 @@ def send_js(path):
     return send_from_directory('static', path)
 
 
-@app.route('/drevesnik/')
-def mnf():
+@app.route('/drevesnik/translations/<path:path>')
+def send_translations(path):
+    print (f'{config_folder}html_translations',path)
+    return send_from_directory(f'{config_folder}html_translations', path)
+
+
+@app.route('/drevesnik/get_branding')
+def send_branding():
+    return send_from_directory(f'{config_folder}', 'branding.json')
+
+
+@app.route('/drevesnik/', defaults={'site_lang':'sl'})
+@app.route('/drevesnik/<site_lang>')
+def mnf(site_lang):
     global main_page_called
     global main_page_timer
+    global config_folder
     main_page_call_lock.acquire()
     main_page_called += 1
     if time.time() - main_page_timer > 20:
@@ -477,56 +456,16 @@ def mnf():
         update_main_page_called_file(main_page_called)
         main_page_called = 0
     main_page_call_lock.release()
-    inf = open('config.json', 'r')
-    xx = json.load(inf)
-    inf.close()
-
-    approot = xx['approot']
-
-    return render_template("qx_hack.html", approot=approot)
-
-
-@app.route('/drevesnik/en/')
-def mnfen():
-    global main_page_called
-    global main_page_timer
-    main_page_call_lock.acquire()
-    main_page_called += 1
-    if time.time() - main_page_timer > 20:
-        main_page_timer = time.time()
-        update_main_page_called_file(main_page_called)
-        main_page_called = 0
-    main_page_call_lock.release()
-    inf = open('config.json', 'r')
-    xx = json.load(inf)
-    inf.close()
-
-    approot = xx['approot']
-
-    return render_template("qx_hack_en.html", approot=approot)
-
-
-@app.route('/drevesnik/get_dbs_json')
-def gdsb():
-    inf = open('dbs.json','rt')
-    dbs = json.load(inf)
-    inf.close()
-    inf = open("db_desc.json", 'rt')
-    dbs_desc = json.load(inf)
-    inf.close()
-    return jsonify(get_node_with_kids(dbs, dbs_desc, '')) 
     
+    return render_template("qx_hack.html", site_lang=site_lang)
 
-
-@app.route('/drevesnik/get_dbs_json/en/')
-def gdsb_en():
-    inf = open('dbs.json','rt')
+@app.route('/drevesnik/get_dbs_json/')
+def gdsb():
+    global index_folder
+    inf = open(index_folder + 'dbs.json','rt')
     dbs = json.load(inf)
     inf.close()
-    inf = open("db_desc_en.json", 'rt')
-    dbs_desc = json.load(inf)
-    inf.close()
-    return jsonify(get_node_with_kids(dbs, dbs_desc, '')) 
+    return jsonify([dbs[key] for key in dbs])
 
 
 def flatten(current, key='', result=dict()):
@@ -539,12 +478,14 @@ def flatten(current, key='', result=dict()):
     return result
 
 
-def get_flat_dbs():
+def get_db_locations():
+    global index_folder
 
-
-    inf = open('dbs.json','rt')
+    inf = open(index_folder + 'dbs.json','rt')
     dbs = json.load(inf)
     inf.close()
+    
+    dbs = {name: index_folder + name for name in dbs}
 
     flat_dict = flatten(dbs)
         
@@ -583,9 +524,7 @@ def get_node_with_kids(dd, db_desc, xid):
 
 @app.route("/drevesnik/get_dbs/")
 def gdb():
-    inf = open('dbs.json','rt')
-    dbs = json.load(inf)
-    inf.close()
+    dbs = get_db_locations()
     xx = []
     for k in dbs:
         xx.append(k)
@@ -594,7 +533,7 @@ def gdb():
 @app.route("/drevesnik/get_langs/<db>")
 def dbl(db):
 
-    dbs = get_flat_dbs()
+    dbs = get_db_locations()
     
     inf = open(dbs[db] + '/langs', 'rt')
     
@@ -614,11 +553,12 @@ def dbdl():
     return jsonify(get_db_langs(dbs))
     
 def get_db_langs(dbs):
-    fdbs = get_flat_dbs()
+    fdbs = get_db_locations()
     print (fdbs)
     xx = []
     for db in dbs:
-        inf = open('/corpus/' + fdbs[db][8:] + '/langs', 'rt')
+        print(fdbs[db] + '/langs')
+        inf = open(fdbs[db] + '/langs', 'rt')
         for ln in inf:
             xx.append(ln.strip())
 
@@ -686,7 +626,7 @@ def start_query_for_cache(cached_calls):
                 cache_file.write(ticket + "\n")
 
 
-start_query_for_cache("cache_calls.txt")
+start_query_for_cache(config_folder + "cache_calls.txt")
 
 
 @app.route("/drevesnik/download/<ticket>")
@@ -735,50 +675,26 @@ def kdll(ticket, lang):
 
     return response
 
+relx = ["dependent_words","dependent_lemmas", "left_words","left_lemmas", "right_words","right_lemmas","parent_words","parent_lemmas","deptypes_as_dependent","deptypes_as_parent","hit_words","hit_lemmas"]
 
 
-@app.route("/drevesnik/freqs/<ticket>")
-def ffr(ticket):
-
-    ret = get_freqs(res_file('*_' + ticket + '*.conllu'), eng=False)
-    relx = ["Podrejene besede", "Podrejene leme", "Besede na levi", "Leme na levi", "Besede na desni", "Leme na desni", "Nadrejene besede", "Nadrejene leme", "Relacije v vlogi podrejenega elementa", "Relacije v vlogi nadrejenega elementa", "Oblike besed", "Oblike lem"]
-    return render_template('freqs.html', ret=ret, relx=relx, xurl="/drevesnik/json_freqs/" + ticket)
-
- 
-@app.route("/drevesnik/freqs/en/<ticket>")
-def ffr_en(ticket):
-
-    ret = get_freqs(res_file('*_' + ticket + '*.conllu'))
-    relx = ["dependent_words","dependent_lemmas", "left_words","left_lemmas", "right_words","right_lemmas","parent_words","parent_lemmas","deptypes_as_dependent","deptypes_as_parent","hit_words","hit_lemmas"]    
-    return render_template('freqs_en.html', ret=ret, relx=relx, xurl="/drevesnik/json_freqs/en/" + ticket)
+@app.route('/drevesnik/freqs/<ticket>', defaults={'site_lang':'sl'})
+@app.route("/drevesnik/freqs/<site_lang>/<ticket>")
+def ffr(ticket, site_lang):
+    global relx
+    global config_folder
+    with open(f'{config_folder}statistics_translations_{site_lang}.json') as translation_file:
+        translations = json.load(translation_file)
+    ret = get_freqs(res_file('*_' + ticket + '*.conllu'), site_lang)
+    return render_template(f'freqs.html', ret=ret, relx=[translations[i] for i in relx], most_common = translations["most_common"],
+        count = translations["count"], xurl=f"/drevesnik/json_freqs/{site_lang}/" + ticket, site_lang=site_lang)
 
 
-@app.route("/drevesnik/freqs/<ticket>/<lang>")
-def frf(ticket, lang):
+@app.route('/drevesnik/json_freqs/<ticket>', defaults={'site_lang':'sl'})
+@app.route("/drevesnik/json_freqs/<site_lang>/<ticket>")
+def fffr(ticket, site_lang):
 
-    ret = get_freqs(res_file(lang + '_' + ticket + '*.conllu'))
-    relx = ["dependent_words","dependent_lemmas", "left_words","left_lemmas", "right_words","right_lemmas","parent_words","parent_lemmas","deptypes_as_dependent","deptypes_as_parent","hit_words","hit_lemmas", "left_words","left_lemmas"]
-
-    return render_template('freqs.html', ret=ret, relx=relx, xurl="/drevesnik/json_freqs/en/" + ticket + '/' + lang) 
-
-
-@app.route("/drevesnik/json_freqs/<ticket>")
-def fffr(ticket):
-
-    ret = json.dumps(get_freqs(res_file('*_' + ticket + '*.conllu'), eng=False), indent=4, sort_keys=True)
-
-    response = Response(stream_with_context(ret))
-
-    response.headers['Content-Type'] = "application/octet-stream"
-    response.headers['Content-Disposition'] = "inline; filename=" + ticket + '.json'
-
-    return response
-
-
-@app.route("/drevesnik/json_freqs/en/<ticket>")
-def fffr_en(ticket):
-
-    ret = json.dumps(get_freqs(res_file('*_' + ticket + '*.conllu')), indent=4, sort_keys=True)
+    ret = json.dumps(get_freqs(res_file('*_' + ticket + '*.conllu'), site_lang), indent=4, sort_keys=True)
 
     response = Response(stream_with_context(ret))
 
@@ -861,7 +777,7 @@ def tagset():
     dbs = request.form['dbs']
     langs = request.form['langs']
     
-    xdbs = get_flat_dbs()
+    xdbs = get_db_locations()
 
     xdb_string = []
     langs = langs.split(',')
@@ -992,8 +908,11 @@ def get_tree_count(ticket, lang):
     return json.dumps(trees)
 
 import time
-@app.route("/drevesnik/show/<ticket>/<lang>/<start>/<end>")
-def get_xtrees(ticket, lang, start, end):
+@app.route("/drevesnik/show/<ticket>/<lang>/<start>/<end>", defaults={"site_lang": "sl"})
+@app.route("/drevesnik/show/<site_lang>/<ticket>/<lang>/<start>/<end>")
+def get_xtrees(ticket, lang, start, end, site_lang):
+    global config_folder
+    global index_folder
 
     try:
         start = int(start)
@@ -1002,11 +921,9 @@ def get_xtrees(ticket, lang, start, end):
         start = 0
         end = 10
 
-    inf = open('config.json', 'r')
+    inf = open(config_folder + 'config.json', 'r')
     xx = json.load(inf)
     inf.close()
-
-    approot = xx['approot']
 
 
     trees = []
@@ -1027,89 +944,27 @@ def get_xtrees(ticket, lang, start, end):
             db = db["dbs"]
             inf.close()
         except:
-            return render_template('query.html', start=start, end=end, lang=lang, idx=ticket, approot=approot)
+            return render_template(f'query.html', start=start, end=end, lang=lang, idx=ticket, site_lang=site_lang)
 
-        dbs = get_flat_dbs()
+        dbs = get_db_locations()
 
         for dib in db.split(','):
-            inf = open('/corpus/' + dbs[dib][8:] + '/langs', 'rt')
+            inf = open(index_folder + dbs[dib][8:] + '/langs', 'rt')
             xx = []
             for ln in inf:
                 xx.append(ln.strip())
 
             inf.close()
-        return render_template('query.html', start=start, end=end, lang=xx[0], idx=ticket, approot=approot)
+        return render_template(f'query.html', start=start, end=end, lang=xx[0], idx=ticket, site_lang=site_lang)
         #except:
-        #    return render_template('query.html', start=0, end=(end-start), lang='unknown', idx=ticket, approot=approot)
+        #    return render_template('query.html', start=0, end=(end-start), lang='unknown', idx=ticket)
   
-    return render_template('query.html', start=start, end=end, lang=lang, idx=ticket, approot=approot)
-    
-    
-@app.route("/drevesnik/show/en/<ticket>/<lang>/<start>/<end>")
-def get_xtrees_en(ticket, lang, start, end):
-
-    try:
-        start = int(start)
-        end = int(end)
-    except:
-        start = 0
-        end = 10
-
-    inf = open('config.json', 'r')
-    xx = json.load(inf)
-    inf.close()
-
-    approot = xx['approot']
+    return render_template(f'query.html', start=start, end=end, lang=lang, idx=ticket, site_lang=site_lang)           
 
 
-    trees = []
-
-    tc = 0
-    curr_tree = []
-    try:
-        inf = open(res_file(ticket+'.json'), 'r')
-        inf.close()
-    except:
-        time.sleep(0.5)
-
-    if lang == 'undefined':
-        #
-        try:
-            inf = open(res_file(ticket+'.json'), 'r')
-            db = json.load(inf)
-            db = db["dbs"]
-            inf.close()
-        except:
-            return render_template('query.html', start=start, end=end, lang=lang, idx=ticket, approot=approot)
-
-        dbs = get_flat_dbs()
-
-        for dib in db.split(','):
-            inf = open('/corpus/' + dbs[dib][8:] + '/langs', 'rt')
-            xx = []
-            for ln in inf:
-                xx.append(ln.strip())
-
-            inf.close()
-        return render_template('query.html', start=start, end=end, lang=xx[0], idx=ticket, approot=approot)
-        #except:
-        #    return render_template('query.html', start=0, end=(end-start), lang='unknown', idx=ticket, approot=approot)
-  
-    return render_template('query_en.html', start=start, end=end, lang=lang, idx=ticket, approot=approot)
-    
-
-
-@app.route("/drevesnik/test")
-def test_tree_creation():
-    #global nlp
-    lang = "sl"
-    #conl_data = nlp("France Prešeren je rojen v Vrbi. Slovenija je članica EU.")
-    
-    
-
-
-@app.route("/drevesnik/get_trees/<iseng>/<ticket>/<lang>/<int:start>/<int:end>")
-def get_trees(iseng, ticket, lang, start, end):
+@app.route("/drevesnik/get_trees/<ticket>/<lang>/<start>/<end>", defaults={"site_lang": "sl"})
+@app.route("/drevesnik/get_trees/<site_lang>/<ticket>/<lang>/<int:start>/<int:end>")
+def get_trees(site_lang, ticket, lang, start, end):
 
     trees = []
 
@@ -1146,12 +1001,8 @@ def get_trees(iseng, ticket, lang, start, end):
         inf.close()
 
     src = ''.join(trees).split('\n')
-    if iseng == "0":
-        ret = render_template(u"result_tbl.html",trees=yield_trees(src))
-    else:
-        ret = render_template(u"result_tbl_en.html",trees=yield_trees(src))
+    return render_template(f"result_tbl.html",trees=yield_trees(src))
 
-    return ret
 
 @app.route("/drevesnik/get_page_tree_count/<ticket>/<lang>/<int:start>/<int:end>")
 def get_page_tree_count(ticket, lang, start, end):

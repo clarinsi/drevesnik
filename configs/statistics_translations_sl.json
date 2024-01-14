@@ -1,0 +1,22 @@
+{
+    "dependent_words": "Podrejene besede",
+    "dependent_lemmas": "Podrejene leme",
+    "right_words": "Besede na desni",
+    "right_lemmas": "Leme na desni",
+    "parent_words": "Nadrejene besede",
+    "parent_lemmas": "Nadrejene leme",
+    "deptypes_as_dependent": "Relacije v vlogi podrejenega elementa",
+    "deptypes_as_parent": "Relacije v vlogi nadrejenega elementa",
+    "hit_words": "Oblike besed",
+    "hit_lemmas": "Oblike lem",
+    "left_words": "Besede na levi",
+    "left_lemmas": "Leme na levi",
+	"count": "pogosto",
+	"most_common": "skupno",
+	"hits": "Zadetki",
+	"trees": "Drevesa",
+	"all_tokens": "Vse pojavnice",
+	"docs": "Dokumenti",
+	"uniq_lemmas": "Različnice lem",
+	"uniq_wordforms": "Različnice besed"
+}

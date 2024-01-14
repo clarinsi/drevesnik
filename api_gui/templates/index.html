@@ -65,7 +65,7 @@ input[type=button]:hover {
   crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 <!--<script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
-<!-- <script src="{{ approot }}/drevesnik/static/dist/tree.min.js"></script> --> 
+<!-- <script src="/drevesnik/static/dist/tree.min.js"></script> --> 
 <script src="http://depsearch-depsearch.rahtiapp.fi/ds_demo/static/dist/tree.min.js"></script>
 <h2>Query</h2>
 <div style="display:inline">
@@ -99,7 +99,6 @@ Selecting languages limit search to these, no selection means all languages are 
 <script>
 var global_dbs = "";
 var tree = "";
-var approot = "{{ approot }}";
     
 
 
@@ -122,7 +121,7 @@ $("#qrt").val(vv);
 $( document ).ready(function() { 
 
     $('#error').hide();
-    $.getJSON(approot + '/drevesnik/get_dbs_json', function(data) {
+    $.getJSON('/drevesnik/get_dbs_json', function(data) {
     	console.log(data)
         
         tree = new Tree('#container', {
@@ -177,7 +176,7 @@ $( document ).ready(function() {
 
 
         
-        $.post(approot + '/drevesnik/get_tags/', {'dbs': dbs.join(','), 'langs': lang_str}, function(data, status){
+        $.post('/drevesnik/get_tags/', {'dbs': dbs.join(','), 'langs': lang_str}, function(data, status){
         
             var ihtml = "";
             ihtml = '<h2>Dependency types</h2>'
@@ -221,7 +220,7 @@ $( document ).ready(function() {
         //get relevant langs and update langs
         
         
-        $.post(approot +  "/drevesnik/get_langs_post/", {"data": xx}, function(data) {
+        $.post("/drevesnik/get_langs_post/", {"data": xx}, function(data) {
             lang_list = [];
             for (var xitem in data){
                 if (($.inArray(data[xitem], lang_list) == -1) && !(is_in_lang_list(data[xitem]))) {
@@ -262,7 +261,7 @@ $( document ).ready(function() {
 
 
         
-        $.post(approot + '/drevesnik/get_tags/', {'dbs': dbs.join(','), 'langs': lang_str}, function(data, status){
+        $.post('/drevesnik/get_tags/', {'dbs': dbs.join(','), 'langs': lang_str}, function(data, status){
         
             var ihtml = "";
             ihtml = '<h2>Dependency types</h2>'
@@ -353,9 +352,9 @@ $( document ).ready(function() {
         console.log(checkBox.checked);
         var queryUrl;
         if (lang_str) {
-            queryUrl = approot + '/drevesnik/start_query/'+db_str+'/'+ query + '/' + lang_str + '/' + limit + '/' + casex;
+            queryUrl = '/drevesnik/start_query/'+db_str+'/'+ query + '/' + lang_str + '/' + limit + '/' + casex;
         } else {
-            queryUrl = approot + '/drevesnik/start_query/'+db_str+'/'+ query + '/' + limit + '/' + casex;
+            queryUrl = '/drevesnik/start_query/'+db_str+'/'+ query + '/' + limit + '/' + casex;
         }
         console.log(queryUrl);
 
@@ -366,22 +365,22 @@ $( document ).ready(function() {
         //launch
         
         
-        $.post(approot + '/drevesnik/check_query_syntax/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex }, function(data, status){
+        $.post('/drevesnik/check_query_syntax/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex }, function(data, status){
             console.log('!!!', data);
 
             if (data[0]){
                    $('#error').hide();
-		    $.post(approot + '/drevesnik/start_query/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex }, function(data, status){
+		    $.post('/drevesnik/start_query/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex }, function(data, status){
 			    var a = document.createElement('a');
 			    var nn = query + '  ' + lang_str + '  ' + db_str;
 			    if (nn.length > 50){ nn = nn.substr(1,50)}
 			    var linkText = document.createTextNode(nn);
 			    a.appendChild(linkText);
-			    a.href = approot + '/drevesnik/show/' + data + '/' + langs[0] + '/0/10';
+			    a.href = '/drevesnik/show/' + data + '/' + langs[0] + '/0/10';
 			    document.body.appendChild(a);
 			    var a = document.createElement('br');
 			    document.body.appendChild(a);
-			    window.open(approot + '/drevesnik/show/' + data + '/' + langs[0] + '/0/10', '_blank');
+			    window.open('/drevesnik/show/' + data + '/' + langs[0] + '/0/10', '_blank');
 
 		});
             

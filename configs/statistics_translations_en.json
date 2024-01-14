@@ -1,0 +1,22 @@
+{
+    "dependent_words": "Dependent words",
+    "dependent_lemmas": "Dependent lemmas",
+    "right_words": "Right words",
+    "right_lemmas": "right lemmas",
+    "parent_words": "Parent words",
+    "parent_lemmas": "Parent lemmas",
+    "deptypes_as_dependent": "Deptypes as dependent",
+    "deptypes_as_parent": "Deptypes as parent",
+    "hit_words": "Hit words",
+    "hit_lemmas": "Hit lemmas",
+    "left_words": "Left words",
+    "left_lemmas": "Left lemmas",
+	"count": "count",
+	"most_common": "most common",
+	"hits": "Hits",
+	"trees": "Trees",
+	"all_tokens": "All tokens",
+	"docs": "Documents",
+	"uniq_lemmas": "Unique lemmas",
+	"uniq_wordforms": "Unique wordforms"
+}

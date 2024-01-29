@@ -3,14 +3,24 @@ var site_lang = "{{ site_lang }}";
 async function addTranslatedContent(lang) {
 	console.log("langData");
 	const langData = await fetchLanguageData(lang);
-	console.log(langData);
+	const langDataSl = await fetchLanguageData("sl");
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
 		if (element.tagName.toLowerCase() === 'input') {
-			element.value = langData[key]
+			if (langData.hasOwnProperty(key)) {
+				element.value = langData[key];
+			}
+			else {
+				element.value = langDataSl[key];
+			}
 		}
 		else {
-			element.innerHTML = langData[key];
+			if (langData.hasOwnProperty(key)) {
+				element.innerHTML = langData[key];
+			}
+			else {
+				element.innerHTML = langDataSl[key];
+			}
 		}
     });
 }

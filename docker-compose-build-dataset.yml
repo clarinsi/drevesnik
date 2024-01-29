@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  dep_search:
+    container_name: dep_search
+    build: 
+        context: .
+        dockerfile: Dockerfile_build_dataset
+    environment:
+      - CORPORA_FOLDER=/corpora_folder/
+      - INDEXES_FOLDER=/indexes_folder/
+    volumes:
+      - ../corpora:/corpora_folder/
+      - ../output:/indexes_folder/
+

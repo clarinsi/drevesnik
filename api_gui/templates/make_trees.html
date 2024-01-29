@@ -14,24 +14,24 @@
      </script>
  
      <!-- Bootstrap core CSS -->
-     <link href="{{ approot }}/drevesnik/static/css/bootstrap.min.css" rel="stylesheet">
-     <link href="{{ approot }}/drevesnik/static/css/jquery-ui.css" rel="stylesheet">
-     <link href="{{ approot }}/drevesnik/static/css/turkunlp.css" rel="stylesheet">
+     <link href="/drevesnik/static/css/bootstrap.min.css" rel="stylesheet">
+     <link href="/drevesnik/static/css/jquery-ui.css" rel="stylesheet">
+     <link href="/drevesnik/static/css/turkunlp.css" rel="stylesheet">
 
      <!-- Custom styles for this template -->
-     <script src="{{ approot }}/drevesnik/static/js/jquery.min.js"> </script>
-     <script src="{{ approot }}/drevesnik/static/js/bootstrap.min.js"> </script>
-     <script src="{{ approot }}/drevesnik/static/js/he.js"></script>
-     <script src="{{ approot }}/drevesnik/static/js/jquery-ui.js"></script>
+     <script src="/drevesnik/static/js/jquery.min.js"> </script>
+     <script src="/drevesnik/static/js/bootstrap.min.js"> </script>
+     <script src="/drevesnik/static/js/he.js"></script>
+     <script src="/drevesnik/static/js/jquery-ui.js"></script>
 
 
      
 	<!-- annotation visualization stuff --> 
-	<!-- <link rel="stylesheet" href={{ approot }}/static//css/jquery-ui-redmond.css"/> -->
-	<link rel="stylesheet" href="{{ approot }}/drevesnik/static/css/annodoc-main.css"/>
-	<link rel="stylesheet" href="{{ approot }}/drevesnik/static/css/style-vis.css"/>
+	<!-- <link rel="stylesheet" href=/static//css/jquery-ui-redmond.css"/> -->
+	<link rel="stylesheet" href="/drevesnik/static/css/annodoc-main.css"/>
+	<link rel="stylesheet" href="/drevesnik/static/css/style-vis.css"/>
 	<!-- <link rel="stylesheet" href="http://bionlp-www.utu.fi//css/depsearch.css"> -->
-	<script type="text/javascript" src="{{ approot }}/drevesnik/static/js/head.min.js"></script>
+	<script type="text/javascript" src="/drevesnik/static/js/head.min.js"></script>
 	<!-- end annotation visualization stuff -->
 
 
@@ -98,7 +98,7 @@ button:hover {
 
 <!-- annotation visualization stuff --> 
 <script type="text/javascript">
-    var root = "{{ approot }}/drevesnik/static/";
+    var root = "/drevesnik/static/";
     head.js(
         // External libraries
         root + 'js/jquery.min.js',
@@ -176,7 +176,7 @@ function updatetrees(idx, start, end, lang){
     //$.get("/get_trees/2016642315595390675/b'pl'/1/25", function(data, status){
 
 
-    $.get("{{ approot }}/drevesnik/get_page_tree_count/" + idx + "/" + lang + "/" + start + "/" + end, function(data, status){
+    $.get("/drevesnik/get_page_tree_count/" + idx + "/" + lang + "/" + start + "/" + end, function(data, status){
 
         console.log('XXX');
         console.log(data, page_tree_count);
@@ -192,13 +192,13 @@ function updatetrees(idx, start, end, lang){
     $('#pgnum').val(pagenum);
     
     //page count
-    $.get("{{ approot }}/drevesnik/get_result_count/" + idx, function(data, status){
+    $.get("/drevesnik/get_result_count/" + idx, function(data, status){
        $('#pages').html(Math.round(data[lang]/pagelen + 1));
     });
 
     });
 
-    $.get("{{ approot }}/drevesnik/query_info/" + idx, function(xdata, status){
+    $.get("/drevesnik/query_info/" + idx, function(xdata, status){
         console.log('***', xdata.length);
         if (xdata.length > 200) {xdata = xdata.substr(0,200) + '...'}
         var text = "";//document.createTextNode(xdata);
@@ -223,7 +223,7 @@ function loadtrees(idx, start, end, lang){
 
     //$.get("/get_trees/2016642315595390675/b'pl'/1/25", function(data, status){
 
-    $.get("{{ approot }}/drevesnik/get_trees/" + idx + "/" + lang + "/" + start + "/" + end, function(data, status){
+    $.get("/drevesnik/get_trees/" + idx + "/" + lang + "/" + start + "/" + end, function(data, status){
        $('#query_result').html(data);
        console.log("load_trees!");
        console.log(data);
@@ -250,7 +250,7 @@ function update_stuff(){
 
      updatetrees(idx, start, end, lang);
 
-    $.get("{{ approot }}/drevesnik/query_info/" + idx, function(xdata, status){
+    $.get("/drevesnik/query_info/" + idx, function(xdata, status){
         console.log('***', xdata.length);
         //if (xdata.length > 200) {xdata = xdata.substr(0,200) + '...'}
         var text = document.createTextNode(xdata);
@@ -266,7 +266,7 @@ function update_stuff(){
 
     //langs in q
     if (!done){
-    $.get("{{ approot }}/drevesnik/get_result_count/" + idx, function(data, status){
+    $.get("/drevesnik/get_result_count/" + idx, function(data, status){
         //
        var arrayLength = data.length;
        for(var key in data) {
@@ -302,7 +302,7 @@ function update_stuff(){
     });
 
 
-    $.get("{{ approot }}/drevesnik/get_result_count/" + idx, function(data, status){
+    $.get("/drevesnik/get_result_count/" + idx, function(data, status){
        
        $('#res_count').html("");
        for(var key in data) {
@@ -314,7 +314,7 @@ function update_stuff(){
 
 
 
-    $.get("{{ approot }}/drevesnik/is_query_finished/" + idx, function(xdata, status){
+    $.get("/drevesnik/is_query_finished/" + idx, function(xdata, status){
         if (xdata){
         done = true;
         infoxx = "Query has finished!";
@@ -335,7 +335,7 @@ function update_stuff(){
 function xmove(xx){
 
     console.log(xx["lang"]);
-    window.location.href = "{{ approot }}/drevesnik/show/" + idx + "/" + xx["lang"] + "/0/" + xpagelen;
+    window.location.href = "/drevesnik/show/" + idx + "/" + xx["lang"] + "/0/" + xpagelen;
 
 
 }
@@ -357,25 +357,25 @@ $( document ).ready(function() {
     $('#pgnum').val(pagenum);
     
     //page count
-    $.get("{{ approot }}/drevesnik/get_result_count/" + idx, function(data, status){
+    $.get("/drevesnik/get_result_count/" + idx, function(data, status){
        $('#pages').html(Math.round(data[lang]/pagelen + 1));
     });
 
     //page buttons
     $('#fwbtn').click(function() {
-        window.location.href = "{{ approot }}/drevesnik/show/" + idx + "/" + lang + "/" + (start + pagelen) + "/" + (end + pagelen);
+        window.location.href = "/drevesnik/show/" + idx + "/" + lang + "/" + (start + pagelen) + "/" + (end + pagelen);
     });
 
     $('#bbtn').click(function() {
-        window.location.href = "{{ approot }}/drevesnik/show/" + idx + "/" + lang + "/" + (start - pagelen) + "/" + (end - pagelen);
+        window.location.href = "/drevesnik/show/" + idx + "/" + lang + "/" + (start - pagelen) + "/" + (end - pagelen);
     });
 
     $('#gobtn').click(function() {
-        window.location.href = "{{ approot }}/drevesnik/show/" + idx + "/" + lang + "/" + (parseInt($('#pgnum').val()) * pagelen) + "/" + ((parseInt($('#pgnum').val()) * pagelen) + pagelen);
+        window.location.href = "/drevesnik/show/" + idx + "/" + lang + "/" + (parseInt($('#pgnum').val()) * pagelen) + "/" + ((parseInt($('#pgnum').val()) * pagelen) + pagelen);
     });
 
     //langs in q
-    $.get("{{ approot }}/drevesnik/get_result_langs/" + idx, function(data, status){
+    $.get("/drevesnik/get_result_langs/" + idx, function(data, status){
         //
         var arrayLength = data.length;
         for (var i = 0; i < arrayLength; i++) {
@@ -424,7 +424,7 @@ $( document ).ready(function() {
 
     //$('#pages').html(Math.round(data/pagelen + 1));
 
-    $.get("{{ approot }}/drevesnik/query_info/" + idx, function(xdata, status){
+    $.get("/drevesnik/query_info/" + idx, function(xdata, status){
         console.log('***', xdata.length);
         //if (xdata.length > 200) {xdata = xdata.substr(0,200) + '...'}
         var text = document.createTextNode(xdata);
@@ -433,7 +433,7 @@ $( document ).ready(function() {
         $('#queryjs2').html(text);
     }); 
 
-    $.get("{{ approot }}/drevesnik/is_query_finished/" + idx, function(xdata, status){
+    $.get("/drevesnik/is_query_finished/" + idx, function(xdata, status){
         console.log(xdata);
         var infoxx = "Query is still running ...";
         if (xdata){
@@ -443,7 +443,7 @@ $( document ).ready(function() {
         //alert(xdata);
         $('#qff').append(text);
     }); 
-    $.get("{{ approot }}/drevesnik/get_err/" + idx, function(xdata, status){
+    $.get("/drevesnik/get_err/" + idx, function(xdata, status){
         console.log(xdata);
         var text = document.createTextNode(xdata);
         //alert(xdata);

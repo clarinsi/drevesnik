@@ -267,8 +267,8 @@ if __name__=="__main__":
 
 
     args.dir = base_dir
-    print ()
-    print ()
+    #print ()
+    #print ()
     try:
         for counter,(sent,comments) in enumerate(src_data):
 
@@ -329,13 +329,6 @@ if __name__=="__main__":
 
             if (counter)%100 == 0:
 
-                print (counter+1,',',datetime.now()-start_time, ',', getCurrentMemoryUsage()/1000.0, 'MB')
-                try:
-                    print (mean(f_db_times))
-                    print (mean(b_db_times))
-                    print (mean(s_db_times))
-                except:
-                    pass
 
                 s_db_times = []
                 f_db_times = []

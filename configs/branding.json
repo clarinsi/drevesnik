@@ -1,0 +1,5 @@
+[
+	{"url": "http://www.clarin.si/", "image":"/drevesnik/static/clarinsi.png", "alt":"clarinsi"},
+	{"url": "https://www.cjvt.si", "image":"/drevesnik/static/cjvt.jpg", "alt":"cjvt"},
+	{"url": "http://www.arrs.si/", "image":"/drevesnik/static/arrs.png", "alt":"arrs"}
+]

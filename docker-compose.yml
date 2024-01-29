@@ -11,9 +11,14 @@ services:
       - "5000:5000"
     networks:
       - net
+    environment:
+      - CONFIG_FOLDER=/configs/
+      - LOG_FOLDER=/api_gui/logs/
+      - INDEX_FOLDER=/indexes/
     volumes:
-      - ../../logs/:/api_gui/logs/
-      - ../../volume:/corpus
+      - ../logs/:/api_gui/logs/
+      - ../output:/indexes/
+      - ./configs:/configs/
 
   nginx:
       build: 

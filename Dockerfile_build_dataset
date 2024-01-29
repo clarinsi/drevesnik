@@ -1,0 +1,5 @@
+FROM drevesnik_base
+COPY build_index.py build_index.py \
+	 build_dataset.py ./
+	
+ENTRYPOINT ["python", "build_dataset.py"]

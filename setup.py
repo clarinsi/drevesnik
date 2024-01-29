@@ -12,12 +12,5 @@ setup(
     ],
     setup_requires=["cython"],
     ext_modules=cythonize(["dep_search/*.pyx", "dep_search/setlib/*.pyx"]),
-    packages=["dep_search"],
-    install_requires=[
-        "plyvel",
-        "ply",
-        "pysolr",
-        "flask",
-        "lmdb",
-    ]
+    packages=["dep_search"]
 )

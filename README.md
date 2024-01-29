@@ -4,31 +4,36 @@ Fork of [dep_search](https://github.com/TurkuNLP/dep_search) with additional fea
 
 ## Set up
 
-Requires docker and python3.
+Requires docker
 
-#### Set up database
+### Set up the base image required for later steps
 
-Run the` build_index.py` script in the root of the project for every conllu file:
+Run `docker build -t drevesnik_base -f Dockerfile_service_base .` in the root of this project.
 
-```sh
-cat <location_of_conllu_file> | python3 build_index.py --lang sl --d <name_of_db>
-```
-Copy generated folder to the corpus folder.
 
-Add description for the db in the `api_gui/db_desc.json` if needed:
+### Set up indexes
 
-```
-"<name_of_db>": "<b><shown_name_of_db></b><br> description of the db"
-```
+To run this project you first need to build indexes from conllu databases. Location of the indexes when the application is run is determined in `docker-compose.yml` with the `INDEXES_FOLDER` volume.
 
-To use xpos search you will need to generate xpos tags list for each corpus.
-To do that you will have to first set up dictionary conllu_files in `generate_xpos_tags.py`.
-Each entry in dictionary should be `"<name_of_db>": "<location_of_conllu_file>"`. After the dictionary
-is filled with entries for each db run it to generate the `xpos_tags.json` file.
+Create a folder with conllu database files. For each conllu file add a json metadata file with
+the same name as conllu file.
+
+Metadata json file should contain:
+- **name** - Name of the database.
+- **<lang>_desc** - Html describtion of the db used on the first page for each <lang> language. Slovenian language sl should be supported by default.
+- **priority** - (optional) Defines how hight the database will be shown on the first page. Lower number gives higher priority. If no number is given it will assume the lowest priority.
+
+Set up the corpra mounted folder in `Dockerfile_build_dataset.yml` to point to the conllu folder and the output folder to the folder where database indexes will be generated.
+
+Run `docker-compose -f docker-compose-build-dataset.yml up --build` in the root of this project.
+
+### Set up config folder
+
+Config folder location is determined in `docker-compose.yml` with the `CONFIG_FOLDER` volume.
 
 #### Set up cached calls
 
-In each line of `api_gui/cache_calls.txt`, there is a call that is executed when this service is started and its results are
+In each line of `<config_folder>/cache_calls.txt`, there is a call that is executed when this service is started and its results are
 cached forever to ensure that some queries are executed almost instantly. Each line contains parameters of query separated with
 tabulator.
 
@@ -48,17 +53,32 @@ Each of these queries can then be accessed at http://localhost/drevesnik/show/Ti
 
 #### Set up help page
 
-For Slovene and English, there is a help page located on http://localhost/ and http://localhost/en/.
-Help page is generated from a markdown file saved in `dep-search_query-lang_original.md` and `dep-search_query-lang_original_en.md`
+For Slovene and English, there is a help page located on http://localhost/ for slovenian and http://localhost/<lang>/ for other languages.
+Help page is generated from a markdown file saved in `<config_folder>/dep-search_query-lang_original_<lang>.md` files.
 
+#### Set up statistics translations
+
+Create `<config_folder>/statistics_translations_<lang>` files for each language. There are some examples for slovenian and english.
+
+#### Set up statistics translations
+
+Create `<config_folder>/html_translations/<lang>` files for each language. There are some examples for slovenian and english.
+
+#### Set up Branding
+
+Put all brands in `<config_folder>/branding.json` the same way as in the example file. 
+
+All brandings should have:
+
+- url - Web page link.
+- image - Image url. Can also be image from `api_gui\static` folder like the examples in `<config_folder>/branding.json`.
+- alt - Text that is shown if image url is not accessible.
 
 #### Run the project with docker
 
 Run 
 
-```
-docker-compose up --build
-```
+```docker-compose up --build```
 
 to build and run this project. The home page of this service can be accessed at http://localhost/drevesnik.
 

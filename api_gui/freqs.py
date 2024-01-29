@@ -3,21 +3,12 @@ import glob
 
 from collections import defaultdict
 from collections import Counter
+from json import load
+import os
 
-translate_to_slo = {
-    "dependent_words": "Podrejene besede",
-    "dependent_lemmas": "Podrejene leme",
-    "right_words": "Besede na desni",
-    "right_lemmas": "Leme na desni",
-    "parent_words": "Nadrejene besede",
-    "parent_lemmas": "Nadrejene leme",
-    "deptypes_as_dependent": "Relacije v vlogi podrejenega elementa",
-    "deptypes_as_parent": "Relacije v vlogi nadrejenega elementa",
-    "hit_words": "Oblike besed",
-    "hit_lemmas": "Oblike lem",
-    "left_words": "Besede na levi",
-    "left_lemmas": "Leme na levi"
-}
+config_folder = os.getenv('CONFIG_FOLDER', '/configs/')
+if not config_folder.endswith('/'):
+    config_folder += '/'
 
 def yield_kwics(f, n):
 
@@ -212,7 +203,12 @@ def calc_freqs(f, freqs):
 
     return freqs
 
-def get_freqs(f, eng=True):
+def get_freqs(f, lang):
+    global config_folder
+    with open(f'{config_folder}statistics_translations_{lang}.json') as translation_file:
+        translations = load(translation_file)
+    
+    print(translations)
 
     files = glob.glob(f)
     files.sort()
@@ -221,23 +217,16 @@ def get_freqs(f, eng=True):
 
     for f in files:
         freqs = calc_freqs(f, freqs)
+        
+    print(freqs)
 
     xx = {}
     for kk in ["dependent_words","dependent_lemmas","right_words","right_lemmas","parent_words","parent_lemmas","deptypes_as_dependent","deptypes_as_parent","hit_words","hit_lemmas", "left_words","left_lemmas"]:
-        if eng:
-            #Counter
-            xx[kk + '_most_common'] = Counter(freqs[kk]).most_common(10)
-            #All
-            xx[kk + '_count'] = len(freqs[kk])
-        else:
-            #Counter
-            xx[translate_to_slo[kk] + '_pogosto'] = Counter(freqs[kk]).most_common(10)
-            #All
-            xx[translate_to_slo[kk] + '_skupno'] = len(freqs[kk])
-    if eng:
-        return [{'hits': freqs['hits'], 'trees': freqs['trees'], 'all_tokens': freqs['tokens'], 'docs': len(freqs['docs']), 'uniq_lemmas': len(freqs['lemmas']), 'uniq_wordforms': len(freqs['wfs'])}, xx]
-    else:
-        return [{'Zadetki': freqs['hits'], 'Drevesa': freqs['trees'], 'Vse pojavnice': freqs['tokens'], 'Dokumenti': len(freqs['docs']), 'Različnice lem': len(freqs['lemmas']), 'Različnice besed': len(freqs['wfs'])}, xx]
+        #Counter
+        xx[translations[kk] + ' - ' + translations['most_common']] = Counter(freqs[kk]).most_common(10)
+        #All
+        xx[translations[kk] + ' - ' + translations['count']] = len(freqs[kk])
+    return [{translations['hits']: freqs['hits'], translations['trees']: freqs['trees'], translations['all_tokens']: freqs['tokens'], translations['docs']: len(freqs['docs']), translations['uniq_lemmas']: len(freqs['lemmas']), translations['uniq_wordforms']: len(freqs['wfs'])}, xx]
 
         
 

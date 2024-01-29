@@ -3,9 +3,7 @@ import json
 import sys
 import os
 
-root = sys.argv[1]
-if not root.endswith('/'): root += '/'
-
+root = "/corpora/indexes/"
 dd = dict()
 for path in Path(root).rglob('db_config.json'):
     dx = dd
@@ -15,6 +13,6 @@ for path in Path(root).rglob('db_config.json'):
         dx = dx[p]
     dx[str(path).lstrip(root).split('/')[-2]] = os.path.abspath(str(path).rstrip('db_config.json'))
     
-ff = open('./dbs.json','wt')
+ff = open('/corpora/dbs.json','wt')
 json.dump(dd, ff)
 ff.close()

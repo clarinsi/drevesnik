@@ -1,10 +1,14 @@
-from json import dump
+from json import dump, load
+from sys import argv
 
-conllu_files = {
-    "SSJ": "../../sl_ssj-ud.conllu",
-    "SST": "../../sl_sst-ud.conllu",
-    "ccKres": "../../cckres.conllu"
-}
+
+conllu_files = dict()
+
+with open("/corpora/db_metadata.json", "r") as metadata_file:
+    metadata = load(metadata_file)
+    for db in metadata:
+        conllu_files[db] = "/corpora/" + metadata[db]["db_path"]
+
 
 xpos_tags_all = dict()
 
@@ -20,5 +24,5 @@ for conllu_file in conllu_files:
 
     xpos_tags_all[conllu_file] = sorted(list(xpos_tags))
 
-with open("xpos_tags.json", "w") as out:
+with open("/corpora/xpos_tags.json", "w") as out:
     dump(xpos_tags_all, out)

@@ -20,7 +20,7 @@ the same name as conllu file.
 
 Metadata json file should contain:
 - **name** - Name of the database.
-- **<lang>_desc** - Html describtion of the db used on the first page for each <lang> language. Slovenian language sl should be supported by default.
+- **<lang>_desc** - Html name and describtion of the db used on the first page for each <lang> language. Slovenian language sl should be supported by default. Proposed form: `<b>name</b><br> describtion`
 - **priority** - (optional) Defines how hight the database will be shown on the first page. Lower number gives higher priority. If no number is given it will assume the lowest priority.
 
 Set up the corpra mounted folder in `Dockerfile_build_dataset.yml` to point to the conllu folder and the output folder to the folder where database indexes will be generated.

@@ -1,4 +1,4 @@
-# dep_search_slo
+# Drevesnik Service for Querying Dependency Treebanks 
 
 Fork of [dep_search](https://github.com/TurkuNLP/dep_search) with additional features like random search, xpos search or search for short sentences.
 

@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     /* back to top functionality */
     $("#backToTop").addClass("hidden");
@@ -37,11 +36,3 @@ document.addEventListener("DOMContentLoaded", function () {
     //init hide menu content
     mediaQueryChanges(mediaQuery);
 });
-
-function modifyURL(url){
-    if (typeof www_address !== 'undefined' && www_address !== null && www_address !== '/drevesnik/'){
-        const mod_url = url.replaceAll("/drevesnik/", www_address);
-        return mod_url;
-    }
-    return url;
-}

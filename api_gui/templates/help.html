@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <script>
+        var site_lang = "{{site_lang}}";
+        const usr_lang = site_lang;
+        const www_address = "{{www_address}}";
+    </script>
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon"
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Noun_883674_cc_Symbolon_tree_icon.svg/480px-Noun_883674_cc_Symbolon_tree_icon.svg.png?20170413114733">
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600;700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600;700" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{www_address}}static/css/cjvt-theme.css" />
+</head>
+
+<body id="{{body_id}}">
+    <script src="{{www_address}}static/js/main.js"></script>
+    <script src="{{www_address}}static/js/translate.js"></script>
+    <script src="{{www_address}}static/js/branding.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <header>
+        <div class="container menu-bar">
+            <div class="logo" data-i18n="drevesnik_logo" style="min-height: 64px;"></div>
+            <div id="menu-toggler"><img src="{{www_address}}static/icons/menu.svg" alt="Menu toggler"></div>
+            <!--<div class="menu-links" data-i18n="index_menu"></div>-->
+            <div class="menu-links" data-i18n="{{menu_type}}"></div>
+        </div>
+    </header>
+    <div class="white-bar"></div>
+
+    <main class="">
+        <div class="container panel">
+            
+            <div class="card-content">
+                <div class="card">
+                    <div id='help-content' >
+                        {{help_content | safe}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <div id="footer" branding="branding">
+                <div class="info">
+                    <div class="info-title" data-i18n="footer_info"></div>
+                    <div class="d-flex info-content">
+                        <div>
+                            <div class="white" data-i18n="footer_fullname"></div>
+                            <div class="gray" data-i18n="footer_address"></div>
+                        </div>
+                        <div>
+                            <div class="">
+                                <div class="gray" data-i18n="footer_phone"></div>
+                                <div class="white" data-i18n="footer_phone_num"></div>
+                            </div>
+                            <div class="">
+                                <div class="gray" data-i18n="footer_email"></div>
+                                <div class="white" data-i18n="footer_email_address"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div id="backToTop">
+        <img src="{{www_address}}static/icons/backToTop.svg" alt="Back to top">
+    </div>
+</body>
+
+</html>

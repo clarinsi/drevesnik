@@ -1,39 +1,45 @@
 version: "3.8"
 services:
 
-  dep_search:
-    restart: on-failure
-    container_name: dep_search
+  dep_search_v2:
+    restart: always
+    container_name: drevesnik_v2
     build: 
         context: .
         dockerfile: Dockerfile_api_gui
     ports:
       - "5000:5000"
+      #- "5001:5000"
     networks:
-      - net
+      - drevesnik_v2_net
     environment:
       - CONFIG_FOLDER=/configs/
       - LOG_FOLDER=/api_gui/logs/
       - INDEX_FOLDER=/indexes/
+      # when changing wWW_ADDRESS, it must also be changed in nginx.conf
+      #- WWW_ADDRESS_POSTFIX=/drevesnik/ 
+      - WWW_ADDRESS_POSTFIX=/drevesnik-test/
     volumes:
       - ../logs/:/api_gui/logs/
       - ../output:/indexes/
       - ./configs:/configs/
+      - ./api_gui/static/:/api_gui/static/
+      - ./api_gui/templates/:/api_gui/templates/
+      - ./api_gui/api.py:/api_gui/api.py
 
-  nginx:
+  drevesnik_nginx_v2:
       build: 
         context: .
         dockerfile: DockerfileNginx
       restart: always
       ports:
         - "80:80"
+        #- "8081:80"
       depends_on:
-        - dep_search
+        - dep_search_v2
       networks:
-        - net
-
-      
+        - drevesnik_v2_net
 
 networks:
-  net:
+  drevesnik_v2_net:
 

@@ -1,21 +1,23 @@
 {% for tree,comment in trees %}
-<pre>
-<code class="conllu">
-{{tree}}
-</code>
-</pre>
-<div>
-<a data-i18n="context" data-target="#tree_{{loop.index}}" data-toggle="collapse"></a>
-<a data-target="#conllu_{{loop.index}}" data-toggle="collapse"> [conllu]</a>
+<div class="card-content">
+  <div class="card">  
+    <pre>
+      <code class="conllu">{{tree}}</code>
+    </pre>
+    <h2 class="toggler context-btn" data-i18n="context" data-target="#tree_{{loop.index}}" data-toggle="collapse"></h2><br>
+    <div class="collapse" id="tree_{{loop.index}}">
+<div class="tree-text">
+{% for c_line in comment %}
+{{c_line}}<br/>
+{% endfor %}
 </div>
-<div class="collapse" id="tree_{{loop.index}}">
-  {% for c_line in comment %}
-  {{c_line}}<br/>
-  {% endfor %}
-</div>
-<div class="collapse" id="conllu_{{loop.index}}">
-<pre>
-{{tree}}
-</pre>
+    </div>
+    <h2 class="toggler conllu-btn" data-target="#conllu_{{loop.index}}" data-toggle="collapse">Conllu</h2><br>
+    <div class="collapse" id="conllu_{{loop.index}}">
+      <div class="conllu-text">
+        <pre>{{tree}}</pre>
+      </div>
+    </div>
+  </div>
 </div>
 {% endfor %}

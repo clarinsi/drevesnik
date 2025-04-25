@@ -1,5 +1,10 @@
 FROM drevesnik_base
 COPY api_gui api_gui
+
+# if you encounter an error related to res folder, the folder res does not exist.
+# Uncomment the line below or create the folder manually
+#RUN mkdir api_gui/res
+
 RUN chmod 777 api_gui/res
 WORKDIR api_gui
 CMD ["uwsgi", "--ini", "uwsgi.ini"]

@@ -1,495 +1,824 @@
 <html>
+
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-     <meta charset="utf-8">
-     <meta name="description" content="">
-     <meta name="author" content="">
- 
-     <title>Drevesnik</title>
-	<link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Noun_883674_cc_Symbolon_tree_icon.svg/480px-Noun_883674_cc_Symbolon_tree_icon.svg.png?20170413114733">
-     <script type="text/javascript">
-       $APP_ROOT= "/dep_search";
-     </script>
- 
-     <!-- Bootstrap core CSS -->
-     <link href="/drevesnik/static/css/bootstrap.min.css" rel="stylesheet">
-     <link href="/drevesnik/static/css/jquery-ui.css" rel="stylesheet">
-     <link href="/drevesnik/static/css/turkunlp.css" rel="stylesheet">
+    <title>Drevesnik</title>
+    <link rel="icon" type="image/x-icon"
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Noun_883674_cc_Symbolon_tree_icon.svg/480px-Noun_883674_cc_Symbolon_tree_icon.svg.png?20170413114733">
+    <script type="text/javascript">
+        $APP_ROOT = "/dep_search";
+    </script>
 
-     <!-- Custom styles for this template -->
-     <script src="/drevesnik/static/js/jquery.min.js"> </script>
-     <script src="/drevesnik/static/js/bootstrap.min.js"> </script>
-     <script src="/drevesnik/static/js/he.js"></script>
-     <script src="/drevesnik/static/js/jquery-ui.js"></script>
+    <script>
+        var site_lang = "{{ site_lang }}";
+        const usr_lang = site_lang;
+        const www_address = "{{ www_address }}";
+    </script>
 
+    <!-- Bootstrap core CSS -->
+    <link href="{{ www_address }}static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ www_address }}static/css/jquery-ui.css" rel="stylesheet">
+    <link href="{{ www_address }}static/css/turkunlp.css" rel="stylesheet">
 
-
-     
-	<!-- annotation visualization stuff --> 
-	<!-- <link rel="stylesheet" href=/static//css/jquery-ui-redmond.css"/> -->
-	<link rel="stylesheet" href="/drevesnik/static/css/annodoc-main.css"/>
-	<link rel="stylesheet" href="/drevesnik/static/css/style-vis.css"/>
-	<!-- <link rel="stylesheet" href="http://bionlp-www.utu.fi//css/depsearch.css"> -->
-	<script type="text/javascript" src="/drevesnik/static/js/head.min.js"></script>
-	<!-- end annotation visualization stuff -->
+    <!-- Custom styles for this template -->
+    <script src="{{ www_address }}static/js/jquery.min.js"> </script>
+    <script src="{{ www_address }}static/js/bootstrap.min.js"> </script>
+    <script src="{{ www_address }}static/js/he.js"></script>
+    <script src="{{ www_address }}static/js/jquery-ui.js"></script>
 
 
-<style>
-button {
-  background-color: royalblue; /* Green */
-  border: 1px solid black;
-  border-radius: 2px;
-  color: white;
-  padding: 5px 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-button:hover {
-  background-color: skyblue; /* Green */
-  color: white;
-}
-body {
-    font-family: 'Open Sans';
-}
-div {
-	padding-left: 20px;
-}
-img {
-	height: 60px;
-}
-    </style>
+    <!-- updated styles -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600;700" rel="stylesheet">
 
-<script>
-$(document).keydown(function(e) {
-    console.log(e.keyCode);
-    if(e.keyCode==37){$("#bbtn").click()}
-    if(e.keyCode==39){$("#fwbtn").click()}
-});
-</script>
+    <link rel="stylesheet" href="{{ www_address }}static/css/cjvt-theme.css" />
 
 
+    <!-- annotation visualization stuff -->
+    <!-- <link rel="stylesheet" href=/static//css/jquery-ui-redmond.css"/> -->
+    <link rel="stylesheet" href="{{ www_address }}static/css/annodoc-main.css" />
+    <link rel="stylesheet" href="{{ www_address }}static/css/style-vis.css" />
+    <!-- <link rel="stylesheet" href="http://bionlp-www.utu.fi//css/depsearch.css"> -->
+    <script type="text/javascript" src="{{ www_address }}static/js/head.min.js"></script>
+    <!-- end annotation visualization stuff -->
 </head>
 
-<style>
-button {
-  background-color: royalblue; /* Green */
-  border: 1px solid black;
-  border-radius: 2px;
-  color: white;
-  padding: 5px 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-button:hover {
-  background-color: #4CAF50; /* Green */
-  color: white;
-}
-
-</style>
-
 <style type="text/css">
- span.bold-red {
-    color: red;
-    font-weight: bold;
-}
+    span.bold-red {
+        color: red;
+        font-weight: bold;
+    }
 </style>
 
+<body id="query_page">
+
+    <!-- annotation visualization stuff -->
+    <script type="text/javascript">
+        var root = "{{ www_address }}static/";
+        head.js(
+            // External libraries
+            root + 'js/jquery.min.js',
+            root + 'js/jquery.svg.min.js',
+            root + 'js/jquery.svgdom.min.js',
+            root + 'js/jquery-ui.min.js',
+            root + 'js/waypoints.min.js',
+            // brat helper modules
+            root + 'js/brat/configuration.js',
+            root + 'js/brat/util.js',
+            root + 'js/brat/annotation_log.js',
+            root + 'js/webfont.js',
+            // brat main modules
+            root + 'js/brat/dispatcher.js',
+            root + 'js/brat/url_monitor.js',
+            root + 'js/brat/visualizer.js',
+            // external parsing libraries
+            root + 'js/conllu.js/conllu.js',
+            // annotation documentation support
+            root + 'js/local/annodoc.js',
+            // project-specific collection data
+            root + 'js/local/collections.js',
+            // project-specific configuration
+            root + 'js/local/config.js'
+        );
+
+        var webFontURLs = [
+            root + 'fonts/PT_Sans-Caption-Web-Regular.ttf',
+            root + 'fonts/Liberation_Sans-Regular.ttf'
+        ];
+
+        head.ready(function () {
+            // mark current collection (filled in by Jekyll)
+            Collections.listing['_current'] = ';'
+
+            // performs all embedding and support functions
+            console.log("Activating Annodoc");
+            Annodoc.activate(Config.bratCollData, Collections.listing);
+            console.log("Done activating Annodoc");
+        });
+    </script>
+    <!-- end annotation visualization stuff -->
+
+    <header>
+        <div class="container menu-bar">
+            <div class="logo" data-i18n="drevesnik_logo" style="min-height: 64px;"></div>
+            <div id="menu-toggler"><img src="{{ www_address }}static/icons/menu.svg" alt="Menu toggler"></div>
+            <div class="menu-links" data-i18n="index_menu"></div>
+        </div>
+    </header>
+    <div class="white-bar">
+        <div class="container">
+
+            <div id="queryinfo">
+                <div id="queryjs">
+                </div>
+
+                <div id="queryjs2">
+                </div>
+
+                <div id="err">
+                </div>
+
+                <div id="res_counter">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="center-element">
+        <div class="container">
+            <div class="card-content first">
+                <div class="card no-padding">
+
+                    <div class="page-data">
+                        <div class="page-info">
+                            <div class="info-container">
+                                <span data-i18n="showing"></span>
+                                <span data-query="shown-num"></span>
+                                <span data-i18n="of"></span>
+                                <b data-query="total-num"></b>
+                                <span data-i18n="matches"></span>.
+                            </div>
+                        </div>
+                        <div class="page-navigation">
+                            <div class="prev_page">
+                                <img class="enabled"  src="{{ www_address }}static/icons/arrow-left.svg">
+                                <img class="disabled" src="{{ www_address }}static/icons/arrow-left-gray.svg">
+                            </div>
+                            <div class="first_page">1</div>
+                            <div class="go_to">
+                                <div class="current_page"></div>
+                                <div class="go_to_page">
+                                    <input class="page_num" type="text" name="FirstName" value="1">
+                                    <button class="go_btn"><img src="{{ www_address }}static/icons/check.svg"></button>
+                                </div>
+                            </div>
+                            <div class="last_page"></div>
+                            <div class="next_page">
+                                <img class="enabled"  src="{{ www_address }}static/icons/arrow-right.svg">
+                                <img class="disabled" src="{{ www_address }}static/icons/arrow-right-gray.svg">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div id='query_result'> &nbsp;</div>
+        </div>
+    </main>
+
+    <div class="center-element">
+        <div class="container">
+            <div class="card-content">
+                <div class="card no-padding">
+
+                    <div class="page-data">
+                        <div class="page-info">
+                            <div class="info-container">
+                                <span data-i18n="showing"></span>
+                                <span data-query="shown-num"></span>
+                                <span data-i18n="of"></span>
+                                <b data-query="total-num"></b>
+                                <span data-i18n="matches"></span>.
+                            </div>
+                        </div>
+                        <div class="page-navigation">
+                            <div class="prev_page">
+                                <img class="enabled"  src="{{ www_address }}static/icons/arrow-left.svg">
+                                <img class="disabled" src="{{ www_address }}static/icons/arrow-left-gray.svg">
+                            </div>
+                            <div class="first_page">1</div>
+                            <div class="go_to">
+                                <div class="current_page"></div>
+                                <div class="go_to_page">
+                                    <input class="page_num" type="text" name="FirstName" value="1">
+                                    <button class="go_btn"><img src="{{ www_address }}static/icons/check.svg"></button>
+                                </div>
+                            </div>
+                            <div class="last_page"></div>
+                            <div class="next_page">
+                                <img class="enabled"  src="{{ www_address }}static/icons/arrow-right.svg">
+                                <img class="disabled" src="{{ www_address }}static/icons/arrow-right-gray.svg">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="download_and_freq">
+        <div class="container">
+            <div class="download-and-freq">
+                <div class="download-links">
+                    <span class="icons"><img src="{{ www_address}}static/icons/download.svg"></span><a   data-i18n="download_results"       href="{{ www_address }}download/{{ idx }}"></a><br>
+                    <span class="icons"><img src="{{ www_address}}static/icons/download.svg"></span><a   data-i18n="download_results_kwic"  href="{{ www_address }}kwic_download/{{ idx }}"></a><br>
+                    <span class="icons"><img src="{{ www_address}}static/icons/statistics.svg"></span><a data-i18n="download_freqs"         href="{{ www_address }}freqs/{% if site_lang != 'sl' %}{{ site_lang }}/{% endif %}{{ idx }}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div id="footer" branding="branding">
+
+                <div class="info">
+                    <div class="info-title" data-i18n="footer_info"></div>
+                    <div class="d-flex info-content">
+                        <div>
+                            <div class="white" data-i18n="footer_fullname"></div>
+                            <div class="gray" data-i18n="footer_address"></div>
+                        </div>
+                        <div>
+                            <div class="">
+                                <div class="gray" data-i18n="footer_phone"></div>
+                                <div class="white" data-i18n="footer_phone_num"></div>
+                            </div>
+                            <div class="">
+                                <div class="gray" data-i18n="footer_email"></div>
+                                <div class="white" data-i18n="footer_email_address"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div id="backToTop">
+        <img src="{{ www_address }}static/icons/backToTop.svg" alt="Back to top">
+    </div>
+    <script src="{{ www_address }}static/js/main.js"></script>
+    <script src="{{ www_address }}static/js/translate.js"></script>
+    <script src="{{ www_address }}static/js/branding.js"></script>
+    <script>
+
+        var xpagelen = "";
+        var start = {{ start }};
+        var end = {{ end }};
+        var lang = "{{ lang }}";
+        //var site_lang = "{{ site_lang }}";
+        var idx = "{{ idx }}";
+        var langs = []
+        var query_done = false;
+        var page_tree_count = -1;
+
+        /* start prev/next/selected button redirects */
+        const glob_pagelen = end - start;
+        const goTo = goToFunctions(glob_pagelen); //needed to add/remove event listener for links to the next/prev page
+        /* end prev/next/selected button redirects */
+
+
+        function updatetrees(idx, start, end, lang) {
+            var target = document.getElementById("query_result");
+            
+            $.get("{{ www_address }}get_page_tree_count/" + idx + "/" + lang + "/" + start + "/" + end, function (data, status) {
+
+                if (data > page_tree_count) {
+                    page_tree_count = data;
+                    loadtrees(idx, start, end, lang);
+                }
+
+                if (page_tree_count > 0) {
+                    query_done = true;
+                }
+
+                var pagelen = end - start
+                var pagenum = start / pagelen
+                xpagelen = pagelen;
+
+                $('#pgnum').val(pagenum);
+
+                $.get("{{ www_address }}get_result_count/" + idx, function (data, status) {
+                    $('#pages').html(Math.ceil(data[lang] / pagelen));
+                    updatePageInfo(data[lang]);
+                });
+
+            });
+
+            $.get("{{ www_address }}query_info/" + idx, function (xdata, status) {
+                if (xdata.length > 200) { xdata = xdata.substr(0, 200) + '...' }
+                var text = "";
+            });
 
-    </style>
-
-
-<body>
-
-<!-- annotation visualization stuff --> 
-<script type="text/javascript">
-    var root = "/drevesnik/static/";
-    head.js(
-        // External libraries
-        root + 'js/jquery.min.js',
-        root + 'js/jquery.svg.min.js',
-        root + 'js/jquery.svgdom.min.js',
-        root + 'js/jquery-ui.min.js',
-        root + 'js/waypoints.min.js',
-        // brat helper modules
-        root + 'js/brat/configuration.js',
-        root + 'js/brat/util.js',
-        root + 'js/brat/annotation_log.js',
-        root + 'js/webfont.js',
-        // brat main modules
-        root + 'js/brat/dispatcher.js',
-        root + 'js/brat/url_monitor.js',
-        root + 'js/brat/visualizer.js',
-        // external parsing libraries
-        root + 'js/conllu.js/conllu.js',
-        // annotation documentation support
-        root + 'js/local/annodoc.js',
-        // project-specific collection data
-        root + 'js/local/collections.js',
-        // project-specific configuration
-        root + 'js/local/config.js'
-    );
 
-    var webFontURLs = [
-        root + 'fonts/PT_Sans-Caption-Web-Regular.ttf',
-        root + 'fonts/Liberation_Sans-Regular.ttf'
-    ];
 
-    head.ready(function() {
-        // mark current collection (filled in by Jekyll)
-        Collections.listing['_current'] = ';'
-
-	// performs all embedding and support functions
-    console.log("Activating Annodoc");
-    Annodoc.activate(Config.bratCollData, Collections.listing);
-    console.log("Done activating Annodoc");
-    });
-</script>
-<!-- end annotation visualization stuff -->
-
-
-
-
-<tbody>
-<div style="background-color:lightblue"  id="queryinfo">
-<div id="queryjs">
-</div>
-
-<div id="queryjs2">
-</div>
-
-<div id="err">
-</div>
-
-<div id="res_counter">
-</div>
-</div>
-
-
-
-<div id='query_result'> &nbsp;</div>
-
-<div style="background-color:lightblue">
-<div>
-
-
-    <label data-i18n="page"></label> <input id="pgnum" type="text" name="FirstName" style="display: inline-block; white-space: nowrap; width: 50px">  <label data-i18n="of"></label> <div id="pages" style="display: inline-block; white-space: nowrap;">0</div>
-
-    <button id="gobtn" type="button"><label data-i18n="ok"></label></button>   <button id="bbtn" type="button"><</button>   <button id="fwbtn" type="button">></button>
-
-
-</div>
-</div>
-
-<p>&nbsp;</p>
-
-<div style="background-color:lightblue">
-<div>
-<tbody>
-    <tr>
-    <td style="padding:25px;">
-	<a data-i18n="download_results" href="/drevesnik/download/{{ idx }}"></a><br>
-	<a data-i18n="download_results_kwic" href="/drevesnik/kwic_download/{{ idx }}"></a><br>
-	<a data-i18n="download_freqs" href="/drevesnik/freqs/{{ site_lang }}/{{ idx }}"></a>
-	</td>
-	</tr>
-</div>
-</div>
-<br>
-<div><div branding="branding"></div></div>
-<script src="/drevesnik/static/js/translate.js"></script>
-<script src="/drevesnik/static/js/branding.js"></script>
-<script>
-
-
-var xpagelen = "";
-var start = {{ start }};
-var end = {{ end }};
-var lang = "{{ lang }}";
-var site_lang = "{{ site_lang }}";
-var idx = "{{ idx }}";
-var langs = []
-var query_done = false;
-var page_tree_count = -1;
-
-
-
-function updatetrees(idx, start, end, lang){
-
-    var target = document.getElementById( "query_result" );
-
-    //$.get("/get_trees/2016642315595390675/b'pl'/1/25", function(data, status){
-
-
-    $.get("/drevesnik/get_page_tree_count/" + idx + "/" + lang + "/" + start + "/" + end, function(data, status){
-
-        console.log('XXX');
-        console.log(data, page_tree_count);
-        if (data > page_tree_count){
- 
-            console.log("ebin");
-            page_tree_count = data;
-            loadtrees(idx, start, end, lang);
-        }
-	if (page_tree_count > 0) {
-		query_done = true;
-	}
-    var pagelen = end - start
-    var pagenum = start/pagelen
-    xpagelen = pagelen;
-    $('#pgnum').val(pagenum);
-    
-    //page count
-    $.get("/drevesnik/get_result_count/" + idx, function(data, status){
-       $('#pages').html(Math.round(data[lang]/pagelen + 1));
-    });
-
-    });
-
-    $.get("/drevesnik/query_info/" + idx, function(xdata, status){
-        console.log('***', xdata.length);
-        if (xdata.length > 200) {xdata = xdata.substr(0,200) + '...'}
-        var text = "";//document.createTextNode(xdata);
-        //alert(xdata);
-        //$('#queryjs').html("");
-        //$('#queryjs').append(text);
-    }); 
-
-
-
-
-}
-
-
-
-
-
-
-function loadtrees(idx, start, end, lang){
-
-    var target = document.getElementById( "query_result" );
-
-    //$.get("/get_trees/2016642315595390675/b'pl'/1/25", function(data, status){
-
-    $.get("/drevesnik/get_trees/" + site_lang + "/" + idx + "/" + lang + "/" + start + "/" + end, function(data, status){
-       $('#query_result').html(data);
-       console.log("load_trees!");
-       console.log(data);
-       $('.conllu').each(function() {
-           Annodoc.embedAnnotation($(this), Annodoc.parseConllU, Config.bratCollData);});
-       //});
-	   addTranslatedContent(site_lang);
-    });
-
-
-
-
-}
-
-
-
-
-async function update_stuff(){
-
-
-   //if (query_done == false){
-   if (!query_done) {
-
-     updatetrees(idx, start, end, lang);
-	 
-    $.get("/drevesnik/query_info/" + idx, function(xdata, status){
-        console.log('***', xdata.length);
-		console.log(xdata);
-        //if (xdata.length > 200) {xdata = xdata.substr(0,200) + '...'}
-        //var text = document.createTextNode(xdata);
-        //alert(JSON.parse(xdata)['query']);
-        //var text = document.createTextNode("<b>Iskalni pogoj</b>:" + JSON.parse(xdata)['query']);
-		let queryString = JSON.parse(xdata)['query'];
-		if (queryString.endsWith(" & S=small")) {
-		   queryString = queryString.slice(0, -10);
-		}
-		if (query_done) {
-			$.get("/drevesnik/translations/" + site_lang + ".json", function(langData, status2) {
-				$('#queryjs2').html("");
-				$('#queryjs2').append(langData["search_condition_query"]);
-				$('#queryjs2').append(document.createTextNode(queryString));
-				
-				$.get("/drevesnik/get_result_count/" + idx, function(data, status){
-				   var arrayLength = data.length;
-				   var hits = 0;
-				   for(var key in data) {
-						var xx = key;
-						hits += parseInt(data[key]);
-						console.log(data);
-					}
-					$('#res_counter').html("");
-					$('#res_counter').append(langData["number_of_hits"]);
-					$('#res_counter').append(document.createTextNode(hits.toString()));
-				});
-			});
-		}
-    }); 
-
-
-
-
-
-
-    
-
-    /*
-    $.get("/drevesnik/get_result_count/" + idx, function(data, status){
-       
-       for(var key in data) {
-           var value = data[key];
-           console.log(key + '(' + value + ')');
-           $('#lang_btn_' + key).html(key + '(' + value + ')');
-       }
-    }); */
-
-
-    }
-
-}
-
-
-
-function xmove(xx){
-
-    console.log(xx["lang"]);
-    window.location.href = "/drevesnik/show/" + site_lang + '/' + idx + "/" + xx["lang"] + "/0/" + xpagelen;
-
-
-}
-
-var TTT = '';
-
-
-$( document ).ready(function() {
-
-    //load results
-    updatetrees(idx, start, end, lang);
-
-
-
-
-    //page number
-    var pagelen = end - start
-    var pagenum = start/pagelen
-    xpagelen = pagelen;
-    $('#pgnum').val(pagenum);
-    
-    //page count
-    $.get("/drevesnik/get_result_count/" + idx, function(data, status){
-       $('#pages').html(Math.round(data[lang]/pagelen + 1));
-    });
-
-    //page buttons
-    $('#fwbtn').click(function() {
-		query_done = false;
-        window.location.href = "/drevesnik/show/" + site_lang + '/' + idx + "/" + lang + "/" + (start + pagelen) + "/" + (end + pagelen);
-    });
-
-    $('#bbtn').click(function() {
-		query_done = false;
-        window.location.href = "/drevesnik/show/" + site_lang + '/' + idx + "/" + lang + "/" + (start - pagelen) + "/" + (end - pagelen);
-    });
-
-    $('#gobtn').click(function() {
-		query_done = false;
-        window.location.href = "/drevesnik/show/" + site_lang + '/' + idx + "/" + lang + "/" + (parseInt($('#pgnum').val()) * pagelen) + "/" + ((parseInt($('#pgnum').val()) * pagelen) + pagelen);
-    });
-
-    /*langs in q
-    $.get("/drevesnik/get_result_langs/" + idx, function(data, status){
-        //
-        var arrayLength = data.length;
-        for (var i = 0; i < arrayLength; i++) {
-            var xx = data[i];
-            langs.push(xx);
-            //alert(data[i]);
-            //Add button
-            var button = document.createElement("button");
-            button.setAttribute("id", "lang_btn_" + xx);
-            button.setAttribute("lang", xx);
-            button.setAttribute("onclick", "xmove(this);");
-            button.innerHTML = data[i];
-
-            var body = document.getElementById("queryinfo");
-            body.appendChild(button);
-            if (window.location.href.search("undefined") > 0){button.click();}
-            //alert(body);
-
-            //Add link
-         
         }
 
-    var arrayLength = langs.length;
-    console.log(arrayLength);
-    console.log(langs);
-    for (var i = 0; i < arrayLength; i++) {
+        function loadtrees(idx, start, end, lang) {
 
-        //get button
-        var xx = "" + langs[i];
-        console.log(xx);
-        var button = document.getElementById("lang_btn_" + xx);
-
-        //add el
+            var target = document.getElementById("query_result");
+            $.get("{{ www_address }}get_trees/" + (site_lang === 'sl' ? '' : site_lang + "/") + idx + "/" + lang + "/" + start + "/" + end, function (data, status) {
 
 
-    }
+                $('#query_result').html(data);
+                $('.conllu').each(function () {
+                    Annodoc.embedAnnotation($(this), Annodoc.parseConllU, Config.bratCollData);
+                });
+                addTranslatedContent(site_lang);
+
+                document.querySelectorAll('.toggler').forEach(element => {
+
+                    const indicator = document.createElement("span");
+                    const plus = document.createTextNode("+\xa0");
+                    indicator.append(plus);
+                    element.prepend(indicator);
+                    element.normalize();
+                    element.tabIndex = '0';
+                    indicator.style = `width: ${indicator.offsetWidth}px; display: inline-block;`;
+
+                    element.addEventListener('click', () => toggleContent(element));
+                    element.addEventListener('keydown', (e) => {
+                        if (e.key === "Enter"){
+                            element.click();
+                        }
+                    });
+
+                    function toggleContent(element) {
+                        if (element.getAttribute('aria-expanded') === "false" || element.getAttribute('aria-expanded') === null) {
+                            element.querySelector('span').textContent = "-\xa0";
+                        } else {
+                            element.querySelector('span').textContent = "+\xa0";
+                        }
+                    }
+                })
+
+            });
+        }
+
+        async function update_stuff() {
+            if (!query_done) {
+                updatetrees(idx, start, end, lang);
+                $.get("{{ www_address }}query_info/" + idx, function (xdata, status) {
+
+                    let queryString = JSON.parse(xdata)['query'];
+
+                    if (typeof queryString === 'undefined') {
+                        console.error('queryString is undefined. Can not continue the operation.\nSetting query_done to true.')
+                        query_done = true;
+                        showErrorMessage('fatal');
+                        return;
+                    }
+
+                    if (queryString.endsWith(" & S=small")) {
+                        queryString = queryString.slice(0, -10);
+                    }
+                    if (query_done) {
+                        $.get("{{ www_address }}translations/" + site_lang + ".json", function (langData, status2) {
+                            $('#queryjs2').html("");
+                            $('#queryjs2').append(document.createTextNode(queryString));
+                        });
+                    }
+                });
+            }
+
+        }
 
 
-    
+        function xmove(xx) {
+            window.location.href = "{{ www_address }}show/" + (site_lang === 'sl' ? '' : site_lang + '/') + idx + "/" + xx["lang"] + "/0/" + xpagelen;
+        }
 
-    });*/
+        var TTT = '';
 
-    //Lang button links
-    //var body = document.getElementsById("lang_btn");
-    //alert("ebin");
+        $(document).ready(function () {
 
-    //$('#pages').html(Math.round(data/pagelen + 1));
+            //load results
+            updatetrees(idx, start, end, lang);
 
-    $.get("/drevesnik/query_info/" + idx, function(xdata, status){
-        console.log('***', xdata.length);
-        //if (xdata.length > 200) {xdata = xdata.substr(0,200) + '...'}
-        //var text = document.createTextNode(xdata);
-        //alert(JSON.parse(xdata)['query']);
-        //var text = document.createTextNode(JSON.parse(xdata)['query']);
-		let queryString = JSON.parse(xdata)['query'];
-		if (queryString.endsWith(" & S=small")) {
-		   queryString = queryString.slice(0, -10)
-		}
-		$.get("/drevesnik/translations/" + site_lang + ".json", function(langData, status2) {
-			$('#queryjs2').html("");
-			$('#queryjs2').append(langData["search_condition_query"]);
-			$('#queryjs2').append(document.createTextNode(queryString));
+            //page number
+            var pagelen = end - start
+            var pagenum = start / pagelen
+            xpagelen = pagelen;
+            $('#pgnum').val(pagenum);
 
-		});
-    }); 
+            $.get("{{ www_address }}get_result_count/" + idx, function (data, status) {
+                $('#pages').html(Math.ceil(data[lang] / pagelen));
+            });
 
-    $.get("/drevesnik/get_err/" + idx, function(xdata, status){
-        console.log(xdata);
-        var text = document.createTextNode(xdata);
-        //alert(xdata);
-        $('#err').append(text);
-    });  
-	query_done = false;
-    setInterval(update_stuff, 1000);
+            $.get("{{ www_address }}query_info/" + idx, function (xdata, status) {
+
+                let queryString = JSON.parse(xdata)['query'];
+                if (queryString.endsWith(" & S=small")) {
+                    queryString = queryString.slice(0, -10)
+                }
+                $.get("{{ www_address }}translations/" + site_lang + ".json", function (langData, status2) {
+                    $('#queryjs2').html("");
+                    $('#queryjs2').append(document.createTextNode(queryString));
+
+                });
+            });
+
+            $.get("{{ www_address }}get_err/" + idx, function (xdata, status) {
+                var text = document.createTextNode(xdata);
+                $('#err').append(text);
+            });
+            query_done = false;
+            setInterval(update_stuff, 1000);
+            
+
+            /********************************************************/
+            document.querySelectorAll('.go_to').forEach(el => {
+                el.querySelector('.current_page').addEventListener('click', () => {
+                    const page_num = el.querySelector('.page_num');
+                    el.classList.toggle('active');
+                    page_num.focus();
+                    const value = page_num.value.length;
+                    el.querySelector('.page_num').setSelectionRange(value, value)
+                })
+            })
+
+            document.addEventListener('keydown', (e) => {
+                switch (e.key) {
+                    case "ArrowRight":
+                        document.querySelector('.page-data .page-navigation .next_page').click()
+                        break;
+                    case "ArrowLeft":
+                        document.querySelector('.page-data .page-navigation .prev_page').click()
+                        break;
+                }
+            })
+            document.querySelectorAll('.page-data .page-navigation .page_num').forEach(el => {
+                el.addEventListener('keydown', (e) => {
+                    switch(e.key){
+                        case "Enter":
+                            el.closest('.go_to_page').querySelector('.go_btn').click();
+                            break;
+                        case "Escape":
+                            el.blur();
+                            el.closest('.go_to').classList.remove('active');
+                            break;
+                    }
+                })
+            })
 
 
-    //lang "tabs"
+        });
+        /*end doc ready*/
 
 
+        function updatePageInfo(total_num) {
+
+            /*--- start .page-info ---*/
+            const shown = document.querySelectorAll('.page-data .page-info [data-query="shown-num"]');
+            const total = document.querySelectorAll('.page-data .page-info [data-query="total-num"]');
+
+            let local_end = end;
+            if (total_num < local_end) {
+                local_end = total_num;
+            }
+
+            shown.forEach(el => el.textContent = ` ${start + 1}-${local_end} `);
+            total.forEach(el => el.textContent = total_num);
+            /*--- end .page-info ---*/
+
+            /*--- start .page-navigation ---*/
+            const first = document.querySelectorAll('.page-data .page-navigation .first_page');
+            const current = document.querySelectorAll('.page-data .page-navigation .current_page');
+            const go_to = document.querySelectorAll('.page-data .page-navigation .go_to .page_num');
+            const last = document.querySelectorAll('.page-data .page-navigation .last_page');
+
+            const pagelen = end - start;
+            const pagenum = start / pagelen + 1;
+
+            if (start === 0) {
+                //first page
+                first.forEach(el => el.classList.add('d-none'));
+                const prev = document.querySelectorAll('.page-data .page-navigation .prev_page').forEach(el => el.classList.add('disabled'));
+            }
+            if (pagenum === Math.ceil(total_num / pagelen)) {
+                //last page
+                last.forEach(el => el.classList.add('d-none'));
+                const next = document.querySelectorAll('.page-data .page-navigation .next_page').forEach(el => el.classList.add('disabled'));
+            }
+
+            current.forEach(el => el.textContent = pagenum);
+            go_to.forEach(el => el.value = pagenum);
+            last.forEach(el => el.textContent = Math.ceil(total_num / pagelen));
+            /*--- end .page-navigation ---*/
+
+            /*--- start eventListeners */
+            document.querySelectorAll('.page-data .page-navigation .prev_page').forEach(el => {
+                el.removeEventListener('click', goTo.prevPage);
+                el.addEventListener('click', goTo.prevPage);
+            })
+            document.querySelectorAll('.page-data .page-navigation .next_page').forEach(el => {
+                el.removeEventListener('click', goTo.nextPage);
+                el.addEventListener('click', goTo.nextPage);
+            })
+            document.querySelectorAll('.page-data .page-navigation .go_to_page .go_btn').forEach(el => {
+                el.removeEventListener('click', goTo.selectedPage);
+                el.addEventListener('click', goTo.selectedPage);
+            })
+            document.querySelectorAll('.page-data .page-navigation .first_page').forEach(el => {
+                el.removeEventListener('click', goTo.firstPage);
+                el.addEventListener('click', goTo.firstPage);
+            })
+            document.querySelectorAll('.page-data .page-navigation .last_page').forEach(el => {
+                el.removeEventListener('click', goTo.lastPage);
+                el.addEventListener('click', goTo.lastPage);
+            })
+            /*--- end eventListeners */
+        }
 
 
-     //
-     //$(query_result).html("<td>Hello <b>World</b>!</td>");
+        /* start global decleration */
+        /* the function and 'object' const goTo need to be declared on the global 'scale' so they can be removed (removeEventListener is referencing a specific function instance) */
+        function goToFunctions(glob_pagelen) {
+            const pagelen = glob_pagelen;
+            const el_total = document.querySelector('.page-data .page-info [data-query="total-num"]');
+            function nextPage(e) {
+                const total = parseInt(el_total.textContent);
+                if (isNaN(total)) {
+                    console.error('Total number of matches is not a number.');
+                    return;
+                }
 
-});
-</script>
+                const next = end + pagelen;
+
+                if (next < (total + pagelen)) {
+                    query_done = false;
+                    window.location.href = www_address + "show/" + (site_lang === 'sl' ? '' : site_lang + "/") + idx + "/" + lang + "/" + (start + pagelen) + "/" + (end + pagelen);
+                } else {
+                    showErrorMessage('next', e);
+                    console.error("We've on the last page. No more matches exist.");
+                    return;
+                }
+            }
+            function prevPage(e) {
+                if (start === 0) {
+                    showErrorMessage('back', e);
+                    console.error("We've on the first page. There are no matches before this one.");
+                    return;
+                }
+                query_done = false;
+                window.location.href = www_address + "show/" + (site_lang === 'sl' ? '' : site_lang + "/") +  idx + "/" + lang + "/" + (start - pagelen) + "/" + (end - pagelen);
+            }
+            function selectedPage(e) {
+                const self = e.target;
+                const pg_num_val = self.closest('.go_to_page').querySelector('.page_num').value;
+                let pg_num = parseInt(pg_num_val);
+                if (isNaN(pg_num)) {
+                    console.error('Input value is not a number.');
+                    return;
+                }
+
+                const total = parseInt(el_total.textContent);
+                if (isNaN(total)) {
+                    console.error('Total number of matches is not a number.');
+                    return;
+                }
+                const last = Math.ceil(total / pagelen);
+                if ((pg_num - 1) > last) {
+
+                    showErrorMessage('overflow', e);
+                    return;
+
+                    console.error('Requested page exceeds the length of all pages. Showing last page.');
+                    pg_num = last;
+                }
+                if (pg_num < 1) {
+                    showErrorMessage('negative', e);
+                    return;
+
+                    console.error('There are no pages before first (1st) page. Showing first page.');
+                    pg_num = 1;
+                }
+
+                query_done = false;
+                window.location.href = www_address + "show/" + (site_lang === 'sl' ? '' : site_lang + "/") +  idx + "/" + lang + "/" + ((pg_num - 1) * pagelen) + "/" + (((pg_num - 1) * pagelen) + pagelen);
+            }
+            function firstPage() {
+                query_done = false;
+                window.location.href = www_address + "show/" + (site_lang === 'sl' ? '' : site_lang + "/") +  idx + "/" + lang + "/" + "0" + "/" + pagelen;
+            }
+            function lastPage() {
+
+                const last_page_start = getClosestBaseNumber();
+                const last_page_end = last_page_start + pagelen;
+
+                query_done = false;
+                window.location.href = www_address + "show/" + (site_lang === 'sl' ? '' : site_lang + "/") +  idx + "/" + lang + "/" + last_page_start + "/" + last_page_end;
+            }
+
+            /* helper functions */
+            function getClosestBaseNumber() {
+                const total = parseInt(el_total.textContent);
+                if (isNaN(total)) {
+                    console.error('Total number of matches is not a number.');
+                    return;
+                }
+                const remainder = total % pagelen;
+
+                if (remainder === 0) {
+                    return total - pagelen;
+                } else {
+                    return total - remainder;
+                }
+            }
+            return {
+                prevPage,
+                nextPage,
+                selectedPage,
+                firstPage,
+                lastPage
+            }
+        }
+        /* end global decleration */
+        function showErrorMessage(type, e) {
+            const error_wrapper = document.createElement('div');
+            error_wrapper.className = 'error-wrapper';
+            const errorContent = createErrorContent(usr_lang);
+            let _error;
+            switch (type) {
+                case 'fatal':
+                    _error = errorContent.fatal();
+                    error_wrapper.append(_error);
+                    error_wrapper.classList.add('fatal');
+                    document.querySelector('#query_result').append(error_wrapper);
+                    break;
+                case 'negative':
+                    _error = errorContent.negative();
+                    error_wrapper.append(_error);
+                    insertErrorToDOM(error_wrapper, e);
+                    break;
+                case 'overflow':
+                    _error = errorContent.overflow();
+                    error_wrapper.append(_error);
+                    insertErrorToDOM(error_wrapper, e);
+                    break;
+                case 'back':
+                    _error = errorContent.back();
+                    error_wrapper.append(_error);
+                    insertErrorToDOM(error_wrapper, e);
+                    break;
+                case 'next':
+                    _error = errorContent.next();
+                    error_wrapper.append(_error);
+                    insertErrorToDOM(error_wrapper, e);
+                    break;
+            }
+
+            function createErrorContent(lang) {
+                const elementMaker = errorElementMaker();
+                const error_element = elementMaker.errorWrapper();
+                function fatal() {
+                    const txt_wrap = document.createElement('div');
+                    txt_wrap.className = "pb-1";
+                    const txt = document.createTextNode(lang === 'en' ? 'An error occured. Return to the home page and try again.' : 'Prišlo je do napake. Vrnite se na domačo stran in poizkusite ponovno.');
+                    txt_wrap.append(txt);
+
+                    const a = document.createElement('a');
+                    a.href = lang === 'en' ? "/drevesnik/en" : "/drevesnik";
+                    const a_txt = document.createTextNode(lang === 'en' ? "Home" : "Domov");
+                    a.append(a_txt);
+
+                    error_element.append(txt_wrap);
+                    error_element.append(a);
+
+                    return error_element;
+                }
+                function negative() {
+                    const txt = document.createTextNode(lang === 'en' ? 'It is not possible to request a page before the first page.' : 'Ni možno zahtevati strani pred prvo stranjo.');
+                    const txt_wrap = elementMaker.textWrapper();
+                    txt_wrap.append(txt);
+                    error_element.append(txt_wrap);
+
+                    const timer = elementMaker.timer();
+                    error_element.append(timer);
+                    return error_element;
+                }
+                function overflow() {
+                    const txt = document.createTextNode(lang === 'en' ? 'Requested page exceeds the length of all pages.' : 'Zahtevana stran presega število vseh strani.');
+                    const txt_wrap = elementMaker.textWrapper();
+                    txt_wrap.append(txt);
+                    error_element.append(txt_wrap);
+
+                    const timer = elementMaker.timer();
+                    error_element.append(timer);
+                    return error_element;
+                }
+                function back() {
+                    const txt = document.createTextNode(lang === 'en' ? 'You are alredy on the first page.' : 'Že sedaj se nahajate na prvi strani.');
+                    const txt_wrap = elementMaker.textWrapper();
+                    txt_wrap.append(txt);
+                    error_element.append(txt_wrap);
+
+                    const timer = elementMaker.timer();
+                    error_element.append(timer);
+                    return error_element;
+                }
+                function next() {
+                    const txt = document.createTextNode(lang === 'en' ? 'You are alredy on the last page.' : 'Že sedaj se nahajate na zadnji strani.');
+                    const txt_wrap = elementMaker.textWrapper();
+                    txt_wrap.append(txt);
+                    error_element.append(txt_wrap);
+
+                    const timer = elementMaker.timer();
+                    error_element.append(timer);
+                    return error_element;
+                }
+
+                /* helper function*/
+                function errorElementMaker() {
+                    function errorWrapper() {
+                        const error_element = document.createElement('div');
+                        error_element.className = 'error-content';
+                        return error_element;
+                    }
+                    function timer() {
+                        const timer = document.createElement('div');
+                        timer.className = 'error-timer';
+                        timer.style = "width: 100%";
+
+                        let width = 100;
+                        const intervalId = setInterval(() => {
+                            width -= 1;
+                            timer.style.width = width + "%";
+                            if (width <= 0) {
+                                clearInterval(intervalId);
+                                timer.style.height = "0";
+                                timer.closest('.error-wrapper').style.height = "0";
+                                timer.closest('.error-wrapper').style.marginBottom = "0";
+                                timer.closest('.error-content').style.padding = "0";
+                                timer.closest('.error-content').style.borderColor = "transparent";
+                                timer.closest
+                                setTimeout(() => {
+                                    timer.closest('.error-wrapper').remove();
+                                }, 600);
+                            }
+                        }, 20)
+                        return timer;
+                    }
+                    function textWrapper() {
+                        const text_wrapper = document.createElement('div');
+                        text_wrapper.className = "error-text";
+                        return text_wrapper;
+                    }
+                    return {
+                        errorWrapper,
+                        timer,
+                        textWrapper
+                    }
+                }
+
+                return {
+                    fatal,
+                    negative,
+                    overflow,
+                    back,
+                    next
+                }
+            }
+            function insertErrorToDOM(element, e) {
+                const self = e.target;
+                const el = showErrorLocation();
+
+                const nav = el.querySelector('.card-content');
+                if (nav.classList.contains('first')) {
+                    element.classList.add('below');
+                    nav.after(element);
+                } else {
+                    element.classList.add('above');
+                    const parent = nav.parentElement;
+                    parent.insertBefore(element, nav);
+                }
+                setTimeout(() => {
+                    const height = element.offsetHeight;
+                    element.style.height = height + 'px';
+                }, 10);
+
+                function showErrorLocation() {
+                    const navs = document.querySelectorAll('.center-element');
+                    let inView = false;
+                    for (const nav of navs) {
+                        const rect = nav.getBoundingClientRect();
+                        inView =
+                            rect.top >= 0 &&
+                            rect.left >= 0 &&
+                            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                            rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+                        if (inView) {
+                            return nav;
+                        }
+                    }
+                    if (inView === false) {
+                        //return last element
+                        return navs[navs.length - 1];
+                    }
+                }
+            }
+        }
+    </script>
 </body>
+
 </html>

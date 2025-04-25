@@ -1,7 +1,7 @@
 version: "3.8"
 services:
-  dep_search:
-    container_name: dep_search
+  dep_search_v2:
+    container_name: dep_search_v2
     build: 
         context: .
         dockerfile: Dockerfile_build_dataset

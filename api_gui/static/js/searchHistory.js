@@ -5,14 +5,6 @@ function searchHistory() {
         try {
             const query = document.querySelector("#query input#qrt").value;
 
-            console.log('saveHistory')
-            if (document.querySelector("#korpusi")){
-                console.log('korpusi obstajajo')
-                document.querySelectorAll("#korpusi input").forEach(el => {
-                    
-                })
-            }
-
             const search = {
                 query: query,
                 url: url,

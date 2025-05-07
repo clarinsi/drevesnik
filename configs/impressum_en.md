@@ -1,12 +1,12 @@
 ## Impressum
 ### Drevesnik
 
-Interface orodja.cjvt.si<br>
+Online interface at orodja.cjvt.si<br>
 CJVT tool collection  
 
 Ljubljana, 2025  
 
-Drevesnik is openly available under Apache Licenco 2.0.
+Drevesnik is openly available under the Apache 2.0 license.
 
 **Interface Design**<br>
 Miha Štravs<br>
@@ -14,7 +14,7 @@ Kaja Dobrovoljc<br>
 Luka Bezgovšek<br>
 
 **Published by**<br>
-Centre for Language Resources and Technologies, University of Ljubljana 
+Centre for Language Resources and Technologies, University of Ljubljana
 
 
 **Citation**<br>

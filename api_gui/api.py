@@ -530,11 +530,11 @@ def mnf(site_lang):
 
 @app.route(www_address_postfix + 'get_dbs_json/')
 def gdsb():
-    #global index_folder
-    #inf = open(index_folder + 'dbs.json','rt')
+    global index_folder
+    inf = open(index_folder + 'dbs.json','rt')
 
-    global config_folder
-    inf = open(config_folder + 'dbs.json','rt')
+    #global config_folder
+    #inf = open(config_folder + 'dbs.json','rt')
 
     dbs = json.load(inf)
     inf.close()

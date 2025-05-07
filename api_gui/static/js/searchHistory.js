@@ -5,15 +5,30 @@ function searchHistory() {
         try {
             const query = document.querySelector("#query input#qrt").value;
 
+            console.log('saveHistory')
+            if (document.querySelector("#korpusi")){
+                console.log('korpusi obstajajo')
+                document.querySelectorAll("#korpusi input").forEach(el => {
+                    
+                })
+            }
+
             const search = {
                 query: query,
                 url: url,
                 korpusi: {
-                    ssj: document.querySelector("#SSJ").checked,
-                    sst: document.querySelector("#SST").checked,
-                    cckress: document.querySelector("#ccKres").checked
+                    //ssj: document.querySelector("#SSJ").checked,
+                    //sst: document.querySelector("#SST").checked,
+                    //cckress: document.querySelector("#ccKres").checked
                 }
             }
+            
+            if (document.querySelector("#korpusi")){
+                document.querySelectorAll("#korpusi input").forEach(el => {
+                    search.korpusi[el.id] = el.checked;
+                })
+            }
+
             const isDuplicate = checkForDuplicates(search);
             if (!isDuplicate) {
                 clearOldest();

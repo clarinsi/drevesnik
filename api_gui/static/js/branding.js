@@ -3,16 +3,6 @@
 async function addBranding() {
 	const branding = await fetchBranding();
 	document.querySelectorAll('[branding]').forEach(element => {
-		/*
-		brandingContent = ""
-		for (var i = 0; i < branding.length; i++) {
-			brandingContent += '<div class="brand"><div>'+branding[i][site_lang + "_desc"]+'</div><a href="' + branding[i]["url"] + '"><img src="' + branding[i]["image"] + '" alt="' + branding[i]["alt"] + '"></a></div>'
-		}
-		element.innerHTML = brandingContent;
-		*/
-
-		//console.log(branding)
-
 		try {
 
 			let site_lang = usr_lang;

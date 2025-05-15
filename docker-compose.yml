@@ -9,7 +9,6 @@ services:
         dockerfile: Dockerfile_api_gui
     ports:
       - "5000:5000"
-      #- "5001:5000"
     networks:
       - drevesnik_v2_net
     environment:
@@ -17,7 +16,6 @@ services:
       - LOG_FOLDER=/api_gui/logs/
       - INDEX_FOLDER=/indexes/
       # when changing wWW_ADDRESS, it must also be changed in nginx.conf
-      #- WWW_ADDRESS_POSTFIX=/drevesnik/ 
       - WWW_ADDRESS_POSTFIX=/drevesnik-test/
     volumes:
       - ../logs/:/api_gui/logs/
@@ -34,7 +32,6 @@ services:
       restart: always
       ports:
         - "80:80"
-        #- "8081:80"
       depends_on:
         - dep_search_v2
       networks:

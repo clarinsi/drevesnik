@@ -4,6 +4,6 @@ server {
 
     location ${WWW_ADDRESS_POSTFIX} {
         include uwsgi_params;
-        uwsgi_pass dep_search_cckres:5000;
+        uwsgi_pass dep_search_v2:5000;
     }
 }

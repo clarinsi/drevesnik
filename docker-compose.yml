@@ -3,7 +3,7 @@ services:
 
   dep_search_v2:
     restart: always
-    container_name: drevesnik_v2
+    container_name: dep_search_v2
     build: 
         context: .
         dockerfile: Dockerfile_api_gui

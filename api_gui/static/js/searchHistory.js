@@ -14,8 +14,8 @@ function searchHistory() {
                     //cckress: document.querySelector("#ccKres").checked
                 }
             }
-            
-            if (document.querySelector("#korpusi")){
+
+            if (document.querySelector("#korpusi")) {
                 document.querySelectorAll("#korpusi input").forEach(el => {
                     search.korpusi[el.id] = el.checked;
                 })
@@ -33,28 +33,33 @@ function searchHistory() {
         }
 
         function checkForDuplicates(current) {
-            const search = current;
-            const historyItems = getHistory();
-            let isDuplicate = false;
-            for (const item of historyItems) {
-                let itemName = Object.keys(item);
-                if (item[itemName].query === search.query) {
+            try {
+                const search = current;
+                const historyItems = getHistory();
+                let isDuplicate = false;
+                for (const item of historyItems) {
+                    let itemName = Object.keys(item);
+                    if (item[itemName].query === search.query) {
 
-                    let istiKorpusi = true;
-                    for (const korpus in item[itemName].korpusi){
-                        const korpusi = item[itemName].korpusi;
-                        if (korpusi[korpus] !== search.korpusi[korpus]){
-                            istiKorpusi = false;
+                        let istiKorpusi = true;
+                        for (const korpus in item[itemName].korpusi) {
+                            const korpusi = item[itemName].korpusi;
+                            if (korpusi[korpus] !== search.korpusi[korpus]) {
+                                istiKorpusi = false;
+                                break;
+                            }
+                        }
+                        if (istiKorpusi) {
+                            isDuplicate = true;
                             break;
                         }
                     }
-                    if (istiKorpusi){
-                        isDuplicate = true;
-                        break;
-                    }
                 }
+                return isDuplicate;
+
+            } catch (error) {
+                console.error('Error while checking for duplicates.\n', error);
             }
-            return isDuplicate;
         }
         function clearOldest() {
             const historyItems = getHistory();
@@ -85,90 +90,112 @@ function searchHistory() {
             console.error('Error while retrieving search history items.\n', error)
         }
     }
-    function displayHistory(){
-        const items = getHistory();
+    function displayHistory() {
+        try {
+            const items = getHistory();
 
-        const results = document.querySelector("#search_history_results");
+            const results = document.querySelector("#search_history_results");
 
-        const sorted = sortHistoryItems(items);
+            const sorted = sortHistoryItems(items);
 
-        for (const item of sorted){
-            const hItem = displayHistoryItem(item);
-            results.append(hItem);
+            for (const item of sorted) {
+                const hItem = displayHistoryItem(item);
+                results.append(hItem);
+            }
+
+        } catch (error) {
+            console.error('Error while displaying history.\n', error)
         }
     }
-    function displayHistoryItem(item, location){
+    function displayHistoryItem(item, location) {
 
-        if (typeof item === 'object'){
+        if (typeof item === 'object') {
             var transformed = Object.values(item)[0];
 
-        } else if (typeof item === 'number'){
-            var transformed = localStorage.getItem('drevesnik-'+item);
+        } else if (typeof item === 'number') {
+            var transformed = localStorage.getItem('drevesnik-' + item);
             transformed = JSON.parse(transformed);
+        } else {
+            console.log(typeof item);
         }
-        
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('fiftyfifty');
-        wrapper.style = 'display: flex;'
+        try {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('fiftyfifty');
+            wrapper.style = 'display: flex;'
 
-        const queryWrapper = document.createElement('div');
-        const query = document.createTextNode(transformed.query);
-        const link = document.createElement('a');
-        link.href = transformed.url;
-        link.target = "_blank";
-        link.appendChild(query);
-        queryWrapper.appendChild(link);
-        
-        const korpusi = document.createElement('div');
-        let i = 0;
-        for (const korpus in transformed.korpusi){
-            if (transformed.korpusi[korpus]){
-                if (i !== 0){
-                    const comma = document.createTextNode(', ');
-                    korpusi.append(comma);
+            const queryWrapper = document.createElement('div');
+            const query = document.createTextNode(transformed.query);
+            const link = document.createElement('a');
+            link.href = transformed.url;
+            link.target = "_blank";
+            link.appendChild(query);
+            queryWrapper.appendChild(link);
+
+            const korpusi = document.createElement('div');
+            let i = 0;
+            for (const korpus in transformed.korpusi) {
+                if (transformed.korpusi[korpus]) {
+                    if (i !== 0) {
+                        const comma = document.createTextNode(', ');
+                        korpusi.append(comma);
+                    }
+                    const k = document.createTextNode(korpus);
+                    korpusi.append(k);
+                    i++;
                 }
-                const k = document.createTextNode(korpus);
-                korpusi.append(k);
-                i++;
             }
-        }
 
-        wrapper.append(queryWrapper);
-        wrapper.append(korpusi);
+            wrapper.append(queryWrapper);
+            wrapper.append(korpusi);
 
-        if (location){
-            location.append(wrapper);
-            return
-        }
-        return wrapper;
-    }
-
-    function lastHistoryItem(){
-        const items = getHistory();
-        const sortedItems = sortHistoryItems(items);
-
-        return sortedItems[sortedItems.length - 1];
-    }
-
-    function sortHistoryItems(items){
-        const historyAffixes = [];
-        for (const item of items) {
-            let itemName = Object.keys(item);
-            let itemNum = itemName[0].replace('drevesnik-', '');
-            let num = parseInt(itemNum);
-            if (Number.isInteger(num)) {
-                historyAffixes.push(num);
+            if (location) {
+                location.append(wrapper);
+                return
             }
-        }
-        historyAffixes.sort(compareNumbers);
-        return historyAffixes;
+            return wrapper;
 
-        function compareNumbers(a, b) {
-            return a - b;
+        } catch (error) {
+            console.error('Error while display history items.\n', error);
+        }
+
+    }
+
+    function lastHistoryItem() {
+        try {
+            const items = getHistory();
+            const sortedItems = sortHistoryItems(items);
+
+            return sortedItems[sortedItems.length - 1];
+
+        } catch (error) {
+            console.error('Error while checking the last history item.\n', error)
         }
     }
 
-    function clearOlderThenOneHour(){
+    function sortHistoryItems(items) {
+        try {
+            const historyAffixes = [];
+            for (const item of items) {
+                let itemName = Object.keys(item);
+                let itemNum = itemName[0].replace('drevesnik-', '');
+                let num = parseInt(itemNum);
+                if (Number.isInteger(num)) {
+                    historyAffixes.push(num);
+                }
+            }
+            historyAffixes.sort(compareNumbers);
+            return historyAffixes;
+
+            function compareNumbers(a, b) {
+                return a - b;
+            }
+
+        } catch (error) {
+            console.error('Error while sorting history items.\n', error)
+        }
+    }
+
+    function clearOlderThenOneHour() {
         const historyItems = getHistory();
         try {
 
@@ -182,15 +209,19 @@ function searchHistory() {
                     const itemSec = Math.floor(num / 1000);
                     if (nowSec - itemSec > 3600) { //if item is older then one hour
                         localStorage.removeItem(`drevesnik-${num}`);
-                    } 
+                    }
                 }
             }
 
-        } catch (e){
+        } catch (e) {
             console.error('Error while removing history items older then one hour.');
             console.error(e);
         }
     }
-    clearOlderThenOneHour();
+    try {
+        clearOlderThenOneHour();
+    } catch (error) {
+        console.error('Error while clearing history items older then one hour.\n', error);
+    }
     return { saveHistory, getHistory, displayHistory, displayHistoryItem, lastHistoryItem };
 }

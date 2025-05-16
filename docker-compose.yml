@@ -15,21 +15,35 @@ services:
       - CONFIG_FOLDER=/configs/
       - LOG_FOLDER=/api_gui/logs/
       - INDEX_FOLDER=/indexes/
-      # when changing wWW_ADDRESS, it must also be changed in nginx.conf
-      - WWW_ADDRESS_POSTFIX=/drevesnik-test/
+      #############################################
+      #                                           #
+      #  When changing WWW_ADDRESS_POSTFIX:       #
+      #  - changed it in drevesnik_nginx as well  #
+      #  - docker compose up must be run again    #
+      #                                           #
+      #############################################
+      - WWW_ADDRESS_POSTFIX=/drevesnik/
     volumes:
-      - ../logs/:/api_gui/logs/
-      - ../output:/indexes/
       - ./configs:/configs/
-      - ./api_gui/static/:/api_gui/static/
-      - ./api_gui/templates/:/api_gui/templates/
-      - ./api_gui/api.py:/api_gui/api.py
+      # Original
+      #- ../logs/:/api_gui/logs/
+      #- ../output:/indexes/
+      ###########################################
+      #                                         #
+      #  If the location of the INDEXES_FOLDER  #
+      #  is changed, run docker compose up -d   #
+      #                                         #
+      ###########################################
+      - ${LOGS_FOLDER:-../logs/}:/api_gui/logs/
+      - ${INDEXES_FOLDER:-../output/}:/indexes/
 
   drevesnik_nginx_v2:
       build: 
         context: .
         dockerfile: DockerfileNginx
       restart: always
+      environment:
+      - WWW_ADDRESS_POSTFIX=/drevesnik/
       ports:
         - "80:80"
       depends_on:

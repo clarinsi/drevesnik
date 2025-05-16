@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    server_name 0.0.0.0;
+
+    location ${WWW_ADDRESS_POSTFIX} {
+        include uwsgi_params;
+        uwsgi_pass dep_search_cckres:5000;
+    }
+}

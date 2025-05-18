@@ -15,25 +15,12 @@ services:
       - CONFIG_FOLDER=/configs/
       - LOG_FOLDER=/api_gui/logs/
       - INDEX_FOLDER=/indexes/
-      #############################################
-      #                                           #
-      #  When changing WWW_ADDRESS_POSTFIX:       #
-      #  - changed it in drevesnik_nginx as well  #
-      #  - docker compose up must be run again    #
-      #                                           #
-      #############################################
-      - WWW_ADDRESS_POSTFIX=/drevesnik/
+      # Changed? Run: down, up -d
+      - WWW_ADDRESS_POSTFIX=${WWW_ADDRESS_POSTFIX:-/drevesnik/}
     volumes:
       - ./configs:/configs/
-      # Original
-      #- ../logs/:/api_gui/logs/
-      #- ../output:/indexes/
-      ###########################################
-      #                                         #
-      #  If the location of the INDEXES_FOLDER  #
-      #  is changed, run docker compose up -d   #
-      #                                         #
-      ###########################################
+      # Changed? Run: down, up -d
+      # New corpus? Also run build
       - ${LOGS_FOLDER:-../logs/}:/api_gui/logs/
       - ${INDEXES_FOLDER:-../output/}:/indexes/
 
@@ -43,7 +30,7 @@ services:
         dockerfile: DockerfileNginx
       restart: always
       environment:
-      - WWW_ADDRESS_POSTFIX=/drevesnik/
+      - WWW_ADDRESS_POSTFIX=${WWW_ADDRESS_POSTFIX:-/drevesnik/}
       ports:
         - "80:80"
       depends_on:

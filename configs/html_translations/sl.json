@@ -54,15 +54,15 @@
 	"-----------------THIS_IS_ABOUT_SECTION----------------" : "just so you know",
 
 	"kolofon": "Drevesnik",
-	"kolofon_short_desc": "Spletni vmesnik za iskanje po drevesnicah",
+	"kolofon_short_desc": "Spletni vmesnik za iskanje po skladenjsko razčlenjenih korpusih (drevesnicah)",
 	"kolofon_w_img": "Kolofon&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
 
 	"o_orodju": "O orodju",
 	"o_orodju_short_desc": "Drevesnik je spletni vmesnik za brskanje po slovenskih skladenjsko razčlenjenih korpusih, s pomočjo katerega lahko jezikoslovci in drugi raziskovalci analizirajo različne slovnične pojave v slovenščini.",
-	"o_orodju_w_img": "O Drevensniku&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
+	"o_orodju_w_img": "O Drevesniku&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
 
 	"razlicica": "Trenutna različica",
-	"razlicica_short_desc": "Trenutna različica orodja je 1.1.<br/>Datum zadnje posodobitve: 1. 3. 2024",
+	"razlicica_short_desc": "Trenutna različica orodja je 1.2.<br/>Datum zadnje posodobitve: 1. 3. 2024",
 	"razlicica_w_img": "Različice&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
 
 	"dostopnost": "Dostopnost",

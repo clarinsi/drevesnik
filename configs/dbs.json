@@ -1,0 +1,20 @@
+{
+    "SSJ": {
+        "name": "SSJ",
+        "sl_desc": "<b>SSJ</b>: ro\u010dno raz\u010dlenjen korpus pisne sloven\u0161\u010dine (v2.14, 13.435 povedi, 267.097 pojavnic)",
+        "en_desc": "<b>SSJ</b>: manually annotated corpus of written Slovene (v2.14, 13,435 sentences, 267,097 tokens)",
+        "priority": 1
+    },
+    "SST": {
+        "name": "SST",
+        "sl_desc": "<b>SST</b>: ro\u010dno raz\u010dlenjen korpus govorjene sloven\u0161\u010dine (v2.15, 6.108 izjav, 98.396 pojavnic)",
+        "en_desc": "<b>SST</b>: manually annotated corpus of spoken Slovene (v2.15, 6,108 utterances, 98,396 tokens)",
+        "priority": 2
+    },
+    "ccKres": {
+        "name": "ccKres",
+        "sl_desc": "<b>Y ccKres</b>: Strojno raz\u010dlenjen korpus pisne sloven\u0161\u010dine (v1.0, 769.994 povedi, 12.187.066 pojavnic, raz\u010dlenjevalnik CLASSLA-Stanza 2.1)",
+        "en_desc": "<b>Y ccKres</b>: automatically parsed corpus of written Slovene (v1.0, 769,994 sentences, 12,187,066 tokens, CLASSLA-Stanza 2.1 tool)",
+        "priority": 3
+    }
+}

@@ -42,6 +42,10 @@ if not log_folder.endswith('/'):
 index_folder = os.getenv('INDEX_FOLDER', '/indexes/')
 if not index_folder.endswith('/'):
     index_folder += '/'
+www_address_postfix = os.getenv('WWW_ADDRESS_POSTFIX', '/drevesnik/')
+if not www_address_postfix.endswith('/'):
+    www_address_postfix += '/'
+
 
 
 def update_main_page_called_file(main_page_calls):
@@ -70,6 +74,9 @@ with open(index_folder + "xpos_tags.json", "r") as xpos_tags_file:
 
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+
+#issues with templates not being updated. remove on production
+#app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 RES_DIR = os.path.join(THIS_DIR, "res")
@@ -293,18 +300,78 @@ def get_passhash(passw):
     salt = 'erthya!!!4235'
     return hashlib.sha256(salt.encode() + passw.encode()).hexdigest()
 
+@app.before_request
+def log_request_info():
+    app.logger.debug(f"Request received: {request.method} {request.path}")
         
-@app.route('/drevesnik/help/', defaults={'site_lang': 'sl'})
-@app.route('/drevesnik/help/<site_lang>/')
+def read_markdown(filename):
+    global config_folder
+    filepath = os.path.join(config_folder, filename)
+    print("filepath: ", filepath)
+    if (os.path.exists(filepath)):
+        with open(filepath, "r", encoding="utf-8") as file:
+            return markdown.markdown(file.read())
+    return "<p>File not found</p>"
+
+#@app.route(www_address_postfix + "help/")
+#@app.route(www_address_postfix + "help/sl/")
+#def help_default():
+#    return help('sl')
+
+
+@app.route(www_address_postfix + 'help/', defaults={'site_lang': 'sl'}, strict_slashes=False)
+@app.route(www_address_postfix + 'help/<site_lang>/', strict_slashes=False)
 def help(site_lang):
     global config_folder
-    inf = open(config_folder + f'dep-search_query-lang_original_{site_lang}.md', 'r')
-    md_text = inf.read()
-    inf.close()
-    return "<html><head><style>body\n{\n  padding-left: 40px; font-family: 'Open Sans'; font-size: 14px;}\n}\n></style><body>" + markdown.markdown(md_text)  + "</head></body></html>"
+    #inf = open(config_folder + f'dep-search_query-lang_original_{site_lang}.md', 'r')
+    #md_text = inf.read()
+    #inf.close()
+
+    site_title = ""
+    if site_lang == "en":
+        site_title = "Help"
+    else:
+        site_title = "Pomoč"
+
+    help = read_markdown(f'dep-search_query-lang_original_{site_lang}.md')
+    
+    return render_template("help.html", 
+                            site_lang=site_lang, 
+                            www_address=www_address_postfix or "/drevesnik/", 
+                            title=site_title, 
+                            body_id="help_page", 
+                            menu_type="help_menu",
+                            help_content=help
+                           )
+
+@app.route(www_address_postfix + 'about/', defaults={'site_lang': 'sl'})
+@app.route(www_address_postfix + 'about/<site_lang>/')
+def about(site_lang):
+    global config_folder
+
+    impressum = read_markdown(f"impressum_{site_lang}.md")
+    about = read_markdown(f"about_{site_lang}.md")
+    version = read_markdown(f"version_{site_lang}.md")
+
+    site_title = ""
+    if site_lang == "en":
+        site_title = "About"
+    else:
+        site_title = "O orodju"
+    
+    return render_template("about.html", 
+                            site_lang=site_lang, 
+                            www_address=www_address_postfix or "/drevesnik/", 
+                            title=site_title, 
+                            body_id="about_page", 
+                            menu_type="about_menu",
+                            impressum_content=impressum,
+                            about_content=about,
+                            version_content=version
+                           )
 
 
-@app.route('/drevesnik/remove_db/<db_name>')
+@app.route(www_address_postfix + 'remove_db/<db_name>')
 def rmdb(db_name):
     global config_folder
 
@@ -322,7 +389,7 @@ def rmdb(db_name):
     else:
         return render_template("login.html")
 
-@app.route('/drevesnik/index_db', methods=['POST'])
+@app.route(www_address_postfix + 'index_db', methods=['POST'])
 def chansge_pw():
     global config_folder
 
@@ -350,7 +417,7 @@ def chansge_pw():
     return redirect("/check_index/" + filename + '.log')
 
 
-@app.route('/drevesnik/check_index/<filename>')
+@app.route(www_address_postfix + 'check_index/<filename>')
 def rrt(filename):
     global config_folder
     if check_creds(request):
@@ -363,7 +430,7 @@ def rrt(filename):
         inf.close()
     return render_template('check_log.html', log=ff)
 
-@app.route('/drevesnik/db_config')
+@app.route(www_address_postfix + 'db_config')
 def db_config():
     global config_folder
 
@@ -402,7 +469,7 @@ def check_creds(req):
         return False
 
     
-@app.route('/drevesnik/do_query/<dbs>/<query>/<m>/<langs>/')
+@app.route(www_address_postfix + 'do_query/<dbs>/<query>/<m>/<langs>/')
 def xxquery_process(dbs, query, m, langs):
 
     xdbs = get_db_locations()
@@ -426,25 +493,27 @@ def unique_id():
     return str(hash(time.time()))
 
 
-@app.route('/drevesnik/static/<path:path>')
+@app.route(www_address_postfix + 'static/<path:path>')
 def send_js(path):
     print (path)
     return send_from_directory('static', path)
 
 
-@app.route('/drevesnik/translations/<path:path>')
+@app.route(www_address_postfix + 'translations/<path:path>')
 def send_translations(path):
     print (f'{config_folder}html_translations',path)
     return send_from_directory(f'{config_folder}html_translations', path)
 
 
-@app.route('/drevesnik/get_branding')
+@app.route(www_address_postfix + 'get_branding')
 def send_branding():
     return send_from_directory(f'{config_folder}', 'branding.json')
 
 
-@app.route('/drevesnik/', defaults={'site_lang':'sl'})
-@app.route('/drevesnik/<site_lang>')
+#@app.route('/drevesnik/' , defaults={'site_lang':'sl'})
+#@app.route('/drevesnik/<site_lang>')
+@app.route(www_address_postfix , defaults={'site_lang':'sl'})
+@app.route(www_address_postfix + '<site_lang>')
 def mnf(site_lang):
     global main_page_called
     global main_page_timer
@@ -457,12 +526,16 @@ def mnf(site_lang):
         main_page_called = 0
     main_page_call_lock.release()
     
-    return render_template("qx_hack.html", site_lang=site_lang)
+    return render_template("qx_hack.html", site_lang=site_lang, www_address=www_address_postfix)
 
-@app.route('/drevesnik/get_dbs_json/')
+@app.route(www_address_postfix + 'get_dbs_json/')
 def gdsb():
     global index_folder
     inf = open(index_folder + 'dbs.json','rt')
+
+    #global config_folder
+    #inf = open(config_folder + 'dbs.json','rt')
+
     dbs = json.load(inf)
     inf.close()
     return jsonify([dbs[key] for key in dbs])
@@ -522,7 +595,7 @@ def get_node_with_kids(dd, db_desc, xid):
 
 
 
-@app.route("/drevesnik/get_dbs/")
+@app.route(www_address_postfix + "get_dbs/")
 def gdb():
     dbs = get_db_locations()
     xx = []
@@ -530,7 +603,7 @@ def gdb():
         xx.append(k)
     return json.dumps(xx)
 
-@app.route("/drevesnik/get_langs/<db>")
+@app.route(www_address_postfix + "get_langs/<db>")
 def dbl(db):
 
     dbs = get_db_locations()
@@ -546,7 +619,7 @@ def dbl(db):
 
     return jsonify(xx)
 
-@app.route("/drevesnik/get_langs_post/", methods=['POST'])
+@app.route(www_address_postfix + "get_langs_post/", methods=['POST'])
 def dbdl():
 
     dbs = request.form.getlist('data[]')
@@ -629,7 +702,7 @@ def start_query_for_cache(cached_calls):
 start_query_for_cache(config_folder + "cache_calls.txt")
 
 
-@app.route("/drevesnik/download/<ticket>")
+@app.route(www_address_postfix + "download/<ticket>")
 def dl(ticket):
 
     content_gen = file_generator(ticket)
@@ -641,7 +714,7 @@ def dl(ticket):
     return response
 
 
-@app.route("/drevesnik/download/<ticket>/<lang>")
+@app.route(www_address_postfix + "download/<ticket>/<lang>")
 def dll(ticket, lang):
 
     content_gen = file_generator_lang(ticket, lang)
@@ -652,7 +725,7 @@ def dll(ticket, lang):
 
     return response
 
-@app.route("/drevesnik/kwic_download/<ticket>")
+@app.route(www_address_postfix + "kwic_download/<ticket>")
 def kdl(ticket):
 
     content_gen = kwic_gen(res_file('*' + ticket + '*.conllu'))
@@ -664,7 +737,7 @@ def kdl(ticket):
     return response
 
 
-@app.route("/drevesnik/kwic_download/<ticket>/<lang>")
+@app.route(www_address_postfix + "kwic_download/<ticket>/<lang>")
 def kdll(ticket, lang):
 
     content_gen = kwic_gen(res_file(lang + '_' + ticket + '*.conllu'))
@@ -678,20 +751,20 @@ def kdll(ticket, lang):
 relx = ["dependent_words","dependent_lemmas", "left_words","left_lemmas", "right_words","right_lemmas","parent_words","parent_lemmas","deptypes_as_dependent","deptypes_as_parent","hit_words","hit_lemmas"]
 
 
-@app.route('/drevesnik/freqs/<ticket>', defaults={'site_lang':'sl'})
-@app.route("/drevesnik/freqs/<site_lang>/<ticket>")
+@app.route(www_address_postfix + 'freqs/<ticket>', defaults={'site_lang':'sl'})
+@app.route(www_address_postfix + "freqs/<site_lang>/<ticket>")
 def ffr(ticket, site_lang):
     global relx
     global config_folder
     with open(f'{config_folder}statistics_translations_{site_lang}.json') as translation_file:
         translations = json.load(translation_file)
     ret = get_freqs(res_file('*_' + ticket + '*.conllu'), site_lang)
-    return render_template(f'freqs.html', ret=ret, relx=[translations[i] for i in relx], most_common = translations["most_common"],
-        count = translations["count"], xurl=f"/drevesnik/json_freqs/{site_lang}/" + ticket, site_lang=site_lang)
+    return render_template(f'freqs.html', www_address=www_address_postfix, ret=ret, relx=[translations[i] for i in relx], most_common = translations["most_common"],
+        count = translations["count"], xurl=f"{www_address_postfix}json_freqs/{site_lang}/" + ticket, site_lang=site_lang)
 
 
-@app.route('/drevesnik/json_freqs/<ticket>', defaults={'site_lang':'sl'})
-@app.route("/drevesnik/json_freqs/<site_lang>/<ticket>")
+@app.route(www_address_postfix + 'json_freqs/<ticket>', defaults={'site_lang':'sl'})
+@app.route(www_address_postfix + "json_freqs/<site_lang>/<ticket>")
 def fffr(ticket, site_lang):
 
     ret = json.dumps(get_freqs(res_file('*_' + ticket + '*.conllu'), site_lang), indent=4, sort_keys=True)
@@ -704,7 +777,7 @@ def fffr(ticket, site_lang):
     return response
 
 
-@app.route("/drevesnik/json_freqs/<ticket>/<lang>")
+@app.route(www_address_postfix + "json_freqs/<ticket>/<lang>")
 def fr(ticket, lang):
 
     ret = json.dumps(get_freqs(res_file(lang + '_' + ticket + '*.conllu')), indent=4, sort_keys=True)
@@ -715,7 +788,7 @@ def fr(ticket, lang):
 
 
 
-@app.route("/drevesnik/start_query/<dbs>/<query>/<limit>/<case>/<rand>")
+@app.route(www_address_postfix + "start_query/<dbs>/<query>/<limit>/<case>/<rand>")
 def hello_qc(dbs, query, limit, case):
 
     langs = ''
@@ -727,7 +800,7 @@ def hello_qc(dbs, query, limit, case):
     p.start()
     return ticket
 
-@app.route("/drevesnik/start_query/<dbs>/<query>/<langs>/<limit>/<case>/<rand>")
+@app.route(www_address_postfix + "start_query/<dbs>/<query>/<langs>/<limit>/<case>/<rand>")
 def hello_qcc(dbs, query, langs, limit, case):
 
     case = case=='true'
@@ -738,7 +811,7 @@ def hello_qcc(dbs, query, langs, limit, case):
     p.start()
     return ticket
 
-@app.route("/drevesnik/start_query/", methods=['POST'])
+@app.route(www_address_postfix + "start_query/", methods=['POST'])
 def start_post():
 
 
@@ -802,12 +875,22 @@ def tagset():
     return jsonify([dep_types, pos, tags])
 """
 
-@app.route("/drevesnik/check_query_syntax/", methods=['POST'])
+@app.route(www_address_postfix + "check_query_syntax/", methods=['POST'])
 def chek_syn():
+
+    print(f"")
+    print(f"------------------------------------------------")
+    print(f"/check_query_syntax/ was called, with this data:")
+    print(request.form)  # Logs the form data
+    print(f"------------------------------------------------")
+    print(f"")
+    
+    
     query = request.form['query']
     return jsonify(redone_expr.check_and_give_error(query))
 
-@app.route("/drevesnik/query_info/<ticket>")
+
+@app.route(www_address_postfix + "query_info/<ticket>")
 def qinf(ticket):
     try:
         inf = open(res_file(ticket + '.json'),'rt')
@@ -819,11 +902,11 @@ def qinf(ticket):
     print(rr, "1")
     return rr
 
-@app.route("/drevesnik/kill_query/<ticket>")
+@app.route(www_address_postfix + "kill_query/<ticket>")
 def kill_q(ticket):
     return ticket
 
-@app.route("/drevesnik/get_result_count/<ticket>")
+@app.route(www_address_postfix + "get_result_count/<ticket>")
 def get_res_count(ticket):
 
     try:
@@ -866,7 +949,7 @@ def get_res_count(ticket):
     return jsonify(better_res)
 
 
-@app.route("/drevesnik/is_query_finished/<ticket>")
+@app.route(www_address_postfix + "is_query_finished/<ticket>")
 def gxet_res_count(ticket):
     if os.path.exists(res_file(ticket+'.done')):
         print(True)
@@ -875,7 +958,7 @@ def gxet_res_count(ticket):
         print(False)
         return jsonify(False)
 
-@app.route("/drevesnik/get_result_langs/<ticket>")
+@app.route(www_address_postfix + "get_result_langs/<ticket>")
 def get_langs(ticket):
 
     langs = set()
@@ -890,7 +973,7 @@ def get_langs(ticket):
     print (langs)
     return jsonify(list(langs))
 
-@app.route("/drevesnik/get_tree_count/<ticket>/<lang>/")
+@app.route(www_address_postfix + "get_tree_count/<ticket>/<lang>/")
 def get_tree_count(ticket, lang):
 
     trees = 0
@@ -907,9 +990,12 @@ def get_tree_count(ticket, lang):
 
     return json.dumps(trees)
 
+#@app.route(www_address_postfix + "show/<ticket>/<lang>/<start>/<end>", defaults={"site_lang": "sl"})
+#@app.route(www_address_postfix + "show/<site_lang>/<ticket>/<lang>/<start>/<end>")
+
 import time
-@app.route("/drevesnik/show/<ticket>/<lang>/<start>/<end>", defaults={"site_lang": "sl"})
-@app.route("/drevesnik/show/<site_lang>/<ticket>/<lang>/<start>/<end>")
+@app.route(www_address_postfix + "show/<ticket>/<lang>/<start>/<end>", defaults={"site_lang": "sl"})
+@app.route(www_address_postfix + "show/<site_lang>/<ticket>/<lang>/<start>/<end>")
 def get_xtrees(ticket, lang, start, end, site_lang):
     global config_folder
     global index_folder
@@ -944,7 +1030,7 @@ def get_xtrees(ticket, lang, start, end, site_lang):
             db = db["dbs"]
             inf.close()
         except:
-            return render_template(f'query.html', start=start, end=end, lang=lang, idx=ticket, site_lang=site_lang)
+            return render_template(f'query.html', www_address=www_address_postfix, start=start, end=end, lang=lang, idx=ticket, site_lang=site_lang)
 
         dbs = get_db_locations()
 
@@ -955,15 +1041,15 @@ def get_xtrees(ticket, lang, start, end, site_lang):
                 xx.append(ln.strip())
 
             inf.close()
-        return render_template(f'query.html', start=start, end=end, lang=xx[0], idx=ticket, site_lang=site_lang)
+        return render_template(f'query.html', www_address=www_address_postfix, start=start, end=end, lang=xx[0], idx=ticket, site_lang=site_lang)
         #except:
         #    return render_template('query.html', start=0, end=(end-start), lang='unknown', idx=ticket)
   
-    return render_template(f'query.html', start=start, end=end, lang=lang, idx=ticket, site_lang=site_lang)           
+    return render_template(f'query.html', www_address=www_address_postfix, start=start, end=end, lang=lang, idx=ticket, site_lang=site_lang)           
 
 
-@app.route("/drevesnik/get_trees/<ticket>/<lang>/<start>/<end>", defaults={"site_lang": "sl"})
-@app.route("/drevesnik/get_trees/<site_lang>/<ticket>/<lang>/<int:start>/<int:end>")
+@app.route(www_address_postfix + "get_trees/<ticket>/<lang>/<start>/<end>", defaults={"site_lang": "sl"})
+@app.route(www_address_postfix + "get_trees/<site_lang>/<ticket>/<lang>/<int:start>/<int:end>")
 def get_trees(site_lang, ticket, lang, start, end):
 
     trees = []
@@ -1004,7 +1090,7 @@ def get_trees(site_lang, ticket, lang, start, end):
     return render_template(f"result_tbl.html",trees=yield_trees(src))
 
 
-@app.route("/drevesnik/get_page_tree_count/<ticket>/<lang>/<int:start>/<int:end>")
+@app.route(www_address_postfix + "get_page_tree_count/<ticket>/<lang>/<int:start>/<int:end>")
 def get_page_tree_count(ticket, lang, start, end):
 
     trees = []
@@ -1048,7 +1134,7 @@ def get_page_tree_count(ticket, lang, start, end):
     return jsonify(count)
 
 
-@app.route("/drevesnik/get_err/<ticket>")
+@app.route(www_address_postfix + "get_err/<ticket>")
 def get_err(ticket):
 
     trees = []
@@ -1066,7 +1152,7 @@ def get_err(ticket):
         to_return = err.split('redone_expr.ExpressionError:')[1].split('During')[0]
     return err
 
-@app.route("/drevesnik/tget_trees/<ticket>/<lang>/<int:start>/<int:end>")
+@app.route(www_address_postfix + "tget_trees/<ticket>/<lang>/<int:start>/<int:end>")
 def tget_trees(ticket, lang, start, end):
 
     trees = []

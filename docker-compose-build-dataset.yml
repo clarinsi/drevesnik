@@ -1,14 +1,24 @@
 version: "3.8"
 services:
-  dep_search:
-    container_name: dep_search
+  dep_search_v2:
+    container_name: dep_search_v2
     build: 
         context: .
         dockerfile: Dockerfile_build_dataset
-    environment:
-      - CORPORA_FOLDER=/corpora_folder/
-      - INDEXES_FOLDER=/indexes_folder/
+        
+    # First we define where the data is located
     volumes:
-      - ../corpora:/corpora_folder/
-      - ../output:/indexes_folder/
+      # Original
+      #- ../corpora:/corpora_folder/
+      #- ../output:/indexes_folder/
+      - ${CORPORA_FOLDER:-../corpora/}:/corpora_folder/
+      - ${INDEXES_FOLDER:-../output/}:/indexes_folder/
+
+    # Then we pass the volume folder names to the env
+    environment:
+      # Original
+      #- CORPORA_FOLDER=/corpora_folder/
+      #- INDEXES_FOLDER=/indexes_folder/
+      - CORPORA_FOLDER=/corpora_folder/ # Use the same folder names as defined in the volume
+      - INDEXES_FOLDER=/indexes_folder/ # Use the same folder names as defined in the volume
 

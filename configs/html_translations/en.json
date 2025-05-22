@@ -4,7 +4,7 @@
 	"switch_lang": "<a href=\"/drevesnik/\" >Slovenščina</a>",
 	"query": "Query",
 	"search_condition": "Query ",
-	"help_link": "(help)",
+	"help_link": "help",
 	"match_letter_case": "Case sensitive search",
 	"short_sentence_only": "Short sentences only (up to 15 words)",
 	"random_results": "Randomize results",
@@ -12,10 +12,11 @@
 	"search": "Submit",
 	"corpora": "Corpora",
 	"about": "About",
-	"about_content": "Drevesnik is an online application designed for querying dependency-parsed corpora in Slovenian. Its primary goal is to assist researchers in exploring various kinds of grammatical phenomena, from lexical analysis to morphology and syntax. The process begins with the user entering a <a href=\"/drevesnik/help/en\" target=\"_blank\">query</a> and selecting the desired corpora. Results are then displayed as dependency trees (graphs) and are available for download for more in-depth analysis. <br><br>All corpora are annotated following the cross-lingually harmonized <a href=\"https://universaldependencies.org/\" target=\"_blank\">Universal Dependencies</a> (UD) annotation scheme. Detailed information about the categories and guidelines for their application to Slovenian texts is available in href=\"https://wiki.cjvt.si/books/07-universal-dependencies\" target=\"_blank\">Slovenian UD guidelines</a>. <br><br>The interface is based on the open-source <a href=\"https://github.com/TurkuNLP/dep_search\" target=\"_blank\">dep_search</a> tool, developed by the University of Turku, which was localized and further developed with the support of the CLARIN.SI research infrastructure (2019 CLARIN.SI Projects) and the Slovenian Research and Innovation Agency (<a href=\"https://spot.ff.uni-lj.si/" target=\"_blank\">SPOT</a> Z6-4617, PJVT P6-0411. <br><br>The code is freely available on the <a href=\"https://github.com/clarinsi/drevesnik" target=\"_blank\">CLARIN.SI repository</a>.",
+	"about_link": "<a href=\"/drevesnik/about/\" >About</a>",
+	"about_content": "Drevesnik is an online application designed for querying dependency-parsed corpora in Slovenian. Its primary goal is to assist researchers in exploring various kinds of grammatical phenomena, from lexical analysis to morphology and syntax. The process begins with the user entering a <a href=\"/drevesnik/help/en\" target=\"_blank\">query</a> and selecting the desired corpora. Results are then displayed as dependency trees (graphs) and are available for download for more in-depth analysis. <br><br>All corpora are annotated following the cross-lingually harmonized <a href=\"https://universaldependencies.org/\" target=\"_blank\">Universal Dependencies</a> (UD) annotation scheme. Detailed information about the categories and guidelines for their application to Slovenian texts is available in href=\"https://wiki.cjvt.si/books/07-universal-dependencies\" target=\"_blank\">Slovenian UD guidelines</a>. <br><br>The interface is based on the open-source <a href=\"https://github.com/TurkuNLP/dep_search\" target=\"_blank\">dep_search</a> tool, developed by the University of Turku, which was localized and further developed with the support of the CLARIN.SI research infrastructure (2019 CLARIN.SI Projects) and the Slovenian Research and Innovation Agency (<a href=\"https://spot.ff.uni-lj.si/\" target=\"_blank\">SPOT</a> Z6-4617, PJVT P6-0411. <br><br>The code is freely available on the <a href=\"https://github.com/clarinsi/drevesnik\" target=\"_blank\">CLARIN.SI repository</a>.",
 	"search_history": "Search history",
 	"__result_tbl_translations": "",
-	"context": " [context]",
+	"context": "Context",
 	"__query_translations": "",
 	"page": "Page ",
 	"of": "of",
@@ -28,5 +29,44 @@
 	"__freqs_translations": "",
 	"download_freqs_json": "Download json",
 	"stats": "Stats",
-	"top_ten": "Top 10"
+	"top_ten": "Top 10",
+	"tagz": "Tags",
+
+	"drevesnik_logo": "<a href=\"/drevesnik/en\" tabindex=\"0\"><img src=\"/drevesnik/static/logos/CJVT-Drevesnik.svg\" alt=\"drevesnik\"></a>",
+
+	"index_link": "<a href=\"/drevesnik/en\">DREVESNIK</a>",
+	"index_menu": "<a class=\"link-about\" href=\"/drevesnik/about/en/\" >About</a><a class=\"link-language\" href=\"/drevesnik/\" >Slovenščina</a>",
+	"about_menu": "<a class=\"link-about\" href=\"/drevesnik/about/en/\" >About</a><a class=\"link-language\" href=\"/drevesnik/about/\" >Slovenščina</a>",
+	"help_menu": "<a class=\"link-about\" href=\"/drevesnik/about/en/\" >About</a><a class=\"link-language\" href=\"/drevesnik/help/\" >Slovenščina</a>",
+
+	"footer_info": "Information",
+	"footer_fullname": "Center za jezikovne vire in tehnologije",
+	"footer_address": "Večna pot 113\nSI-1000 Ljubljana",
+	"footer_phone": "Phone",
+	"footer_phone_num": "+386 1 479 82 99",
+	"footer_email": "Email",
+	"footer_email_address": "info@cjvt.si",
+
+	"showing": "Showing ",
+	"matches": "matches",
+
+
+	"-----------------THIS_IS_ABOUT_SECTION----------------" : "just so you know",
+
+	"kolofon": "CJVT Drevesnik",
+	"kolofon_short_desc": "Online service for querying Slovenian dependency treebanks.",
+	"kolofon_w_img": "Impressum&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
+
+	"o_orodju": "About the tool",
+	"o_orodju_short_desc": "Drevesnik is an online application designed for querying dependency-parsed corpora in Slovenian. Linguists and other researchers can use it to analyze various grammatical phenomena in Slovenian.",
+	"o_orodju_w_img": "About the tool&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
+
+	"razlicica": "Current versions",
+	"razlicica_short_desc": "The current version is 1.2.<br/>Date of last update: 22. 05. 2025",
+	"razlicica_w_img": "Versions&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
+
+	"dostopnost": "Accessibility",
+	"dostopnost_short_desc": "The source code for the Drevesnik tool can be accessed via the <a href='https://github.com/clarinsi/drevesnik'>Clarin.si</a> repository under the <a href='https://www.apache.org/licenses/LICENSE-2.0'>Apache 2.0</a> license.",
+	"dostopnost_w_img": "<a class='p-content' href='#' target='_blank'>Source code&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>"
+
 }

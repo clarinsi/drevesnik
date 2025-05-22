@@ -1,511 +1,473 @@
 <html>
+
 <head>
-<title>Drevesnik</title>
-<link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Noun_883674_cc_Symbolon_tree_icon.svg/480px-Noun_883674_cc_Symbolon_tree_icon.svg.png?20170413114733">
-<script type="text/javascript" src="/drevesnik/static/js/tree.min.js"></script>
+    <title>Drevesnik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon"
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Noun_883674_cc_Symbolon_tree_icon.svg/480px-Noun_883674_cc_Symbolon_tree_icon.svg.png?20170413114733">
+
+    <!--<script type="text/javascript" src="/drevesnik/static/js/tree.min.js"></script>-->
+    <script type="text/javascript" src="{{ www_address }}static/js/tree.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600;700" rel="stylesheet">
+
+    <!--<link rel="stylesheet" href="/drevesnik/static/css/cjvt-theme.css" />-->
+    <link rel="stylesheet" href="{{ www_address }}static/css/cjvt-theme.css" />
+    <script>
+        var site_lang = "{{ site_lang }}";
+        const usr_lang = site_lang;
+        const www_address = "{{ www_address }}";
+    </script>
 </head>
 
 <style>
-.truncate {
-  width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-  #container {
-    padding-top: 20px;
-    padding-left: 10px;
-    padding-bottom: 20px;
-  }
-  #head {
-    padding-top: 5px;
-    padding-left: 10px;
-    padding-bottom: 25px;
-  }
-  
-  #container2 {
-    padding-top: 20px;
-    padding-left: 10px;
-    padding-bottom: 20px;
-  }
-  #search_history {
-    padding-top: 20px;
-    padding-left: 10px;
-    padding-bottom: 20px;
-  }
-
-  #langs {
-    background-color: powderblue;
-    border: 2px solid black;
-    border-radius: 5px;
-    max-width: 50%;
-    padding-right: 20px;
-  }
-
-  #query {
-    background-color: powderblue;
-    border: 2px solid black;
-    border-radius: 5px;
-    max-width: 50%;
-    padding-left: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-  
-  input[type=button]{
-  background-color: royalblue; /* Green */
-  border: 1px solid black;
-  border-radius: 2px;
-  color: white;
-  padding: 5px 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-input[type=button]:hover {
-  background-color: skyblue; /* Green */
-  color: white;
-}
-
-body {
-    font-family: 'Open Sans';
-	font-size: 14px;
-	padding-left: 40px;
-}
-.treejs-checkbox:before {
-  background-color: white;
-  border: black;
-  border-width: 0 3px 3px 0;
-
-}
-h2 {
-	margin: 1; 
-}
-
-input {
-	margin: 2; 
-}
-img {
-	height: 60px;
-}
-
+    .truncate {
+        width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
 
 
 
-<body>
-    <script
-  src="https://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
+<body id="idx_page">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <!--
+    <script src="/drevesnik/static/js/backToTop.js"></script>
     <script src="/drevesnik/static/js/translate.js"></script>
-	<script src="/drevesnik/static/js/branding.js"></script>
+    <script src="/drevesnik/static/js/branding.js"></script>
+-->
+    <script src="{{ www_address }}static/js/main.js"></script>
+    <script src="{{ www_address }}static/js/translate.js"></script>
+    <script src="{{ www_address }}static/js/branding.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<!--<script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
-<div style="background-color:white; float: none; max-width: 50%; padding-right: 10px;"  id="head">
-<td>
-  <h3 data-i18n="title" style="float:left;"></h3>
-  <h3 data-i18n="switch_lang" style="float:right;"></h3>
-</td>
-<br>
-</div>
+    <!--<script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
 
-<br>
+    <header>
+        <div class="container menu-bar">
+            <div class="logo" data-i18n="drevesnik_logo" style="min-height: 64px;"></div>
+            <!--<div id="menu-toggler"><img src="/drevesnik/static/icons/menu.svg" alt="Menu toggler"></div>-->
+            <div id="menu-toggler"><img src="{{ www_address }}static/icons/menu.svg" alt="Menu toggler"></div>
+            <div class="menu-links" data-i18n="index_menu"></div>
+        </div>
+    </header>
+    <div class="white-bar">
+        <div class="container"></div>
+    </div>
 
-<h2 data-i18n="query"></h2>
-<div style="display:inline">
-<div id='query'>
-<div><label data-i18n="search_condition"></label><a data-i18n="help_link" href="/drevesnik/help/{{ site_lang }}" target="_blank"></a>:</div>
-<input id="qrt" type="textarea" name="vehicle1" value="_ <nsubj _"><br>
-<input type="checkbox" id="xcasex" name="xcasex"><label data-i18n="match_letter_case"></label><br>
-<input type="checkbox" id="xsmallx" name="xsmallx"><label data-i18n="short_sentence_only"></label><br>
-<input type="checkbox" id="xrandx" name="xrandx"><label data-i18n="random_results"></label><br><br>
-<label data-i18n="max_results"></label><input id="limitfield" type="textarea" name="vehicle2" value="100"><br>
-  <input data-i18n="search" id="sbtn" type="button">
-</div>
-<div id="error" style="border: 2px solid red;border-radius: 5px;max-width: 50%;left-padding: 20px;"></div>
-</div>
+    <main>
+        <div class="container">
+            <div id="error"></div>
 
-<br>
-<h2 data-i18n="corpora"></h2>
-<div>
-<div style="background-color:lightblue; float: none; border: 2px solid black;border-radius: 5px;max-width: 50%;left-padding: 20px;"  id="container">
-</div>
-<br>
-</div>
-<br>
-<h2 data-i18n="about"></h2>
-<div data-i18n="about_content" style="background-color:white; float: none; border: 2px solid black;border-radius: 5px;max-width: 50%;left-padding: 20px;" id="container2">
-</div>
+            <h2 data-i18n="query"></h2>
+            <div class="card-content">
+                <div class="card">
+                    <div style="display:inline">
+                        <div id='query'>
+                            <div>
+                                <label data-i18n="search_condition">
 
-<br>
-<h2 data-i18n="search_history"></h2>
-<div>
-<div style="background-color:white; float: none; border: 2px solid black;border-radius: 5px;max-width: 50%;left-padding: 20px;"  id="search_history">
-</div>
-</div>
+                                </label>(<a data-i18n="help_link" class="help-link" href="{{ www_address }}help{% if site_lang != 'sl' %}/{{ site_lang }}{% endif %}/"
+                                    target="_blank"></a>)
+                            </div>
+                            <input id="qrt" type="textarea" name="vehicle1" value="_ <nsubj _">
+                            <br>
+                            <br>
 
-<div branding="branding"></div>
+                            <label data-i18n="match_letter_case"><input type="checkbox" id="xcasex"
+                                    name="xcasex">&nbsp;</label><br>
+                            <label data-i18n="short_sentence_only"><input type="checkbox" id="xsmallx"
+                                    name="xsmallx">&nbsp;</label><br>
+                            <label data-i18n="random_results"><input type="checkbox" id="xrandx"
+                                    name="xrandx">&nbsp;</label><br><br>
+                            <label data-i18n="max_results"></label><br>
+                            <input id="limitfield" type="textarea" name="vehicle2" value="100"><br>
+                        </div>
+                        <!--<div id="error" style="border: 2px solid red;border-radius: 5px; display: none;"></div> -->
+                    </div>
+                </div>
+            </div>
+
+            <h2 data-i18n="corpora"></h2>
+            <div id="korpusi" class="card-content">
+                <div class="card">
+                    <div id="container"></div>
+                </div>
+            </div>
+
+            <input data-i18n="search" id="sbtn" type="button">
+            <br>
+            <br>
+
+            <div id="different_rule">
+                <h2 data-i18n="search_history" class="toggler" data-toggle="history-toggle"></h2><br>
+                <div class="card-content" id="history-toggle" style="display: none;">
+                    <div class="card">
+                        <div id="search_history">
+
+                            <div class="fiftyfifty" style="margin-bottom: .5rem;">
+                                <div data-i18n="search_condition"></div>
+                                <div data-i18n="corpora"></div>
+                            </div>
+                            <div id="search_history_results">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
-<!--<br>
-<br><h2>Available languages</h2>
-Selecting languages limit search to these, no selection means all languages are queried.
-<br>
-<div style="background-color:lightblue; float:none;" id="langs">
-  <input type="checkbox" name="lang_all" value="all">all<br>
-</div>-->
-<br>
-<div id="tagss" style="border: 2px solid black;border-radius: 5px;width: 50%;left-padding: 20px;float: left;"></div><br>
-<script>
-var global_dbs = "";
-var tree = "";
-var site_lang = "{{ site_lang }}";
+        </div>
+    </main>
 
-function prependChild(parentEle, newFirstChildEle) {
-    parentEle.insertBefore(newFirstChildEle, parentEle.firstChild)
-}
+    <footer>
+        <div class="container">
+            <div id="footer" branding="branding">
 
+                <div class="info">
+                    <div class="info-title" data-i18n="footer_info"></div>
+                    <div class="d-flex info-content">
+                        <div>
+                            <div class="white" data-i18n="footer_fullname"></div>
+                            <div class="gray" data-i18n="footer_address"></div>
+                        </div>
+                        <div>
+                            <div class="">
+                                <div class="gray" data-i18n="footer_phone"></div>
+                                <div class="white" data-i18n="footer_phone_num"></div>
+                            </div>
+                            <div class="">
+                                <div class="gray" data-i18n="footer_email"></div>
+                                <div class="white" data-i18n="footer_email_address"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div id="backToTop">
+        <img src="{{ www_address }}static/icons/backToTop.svg" alt="Back to top">
+    </div>
+    <script src="{{ www_address }}static/js/searchHistory.js"></script>
+    <script src="{{ www_address }}static/js/errorMsg.js"></script>
+    <script>
+        var global_dbs = "";
+        var tree = "";
+        //var site_lang = "{{ site_lang }}";
 
+        const sHistory = searchHistory();
 
-function is_in_lang_list(lang){
-    var retval = false;
-    $('#langs').children().each(function(idx, itm){if (itm.value==lang){retval=true;};});
-    return retval;
-}
-
-function set_xx(vv){
-$("#qrt").val(vv);
-}
-
-$( document ).ready(function() { 
-	$('#search_history').html("");
-	$('#error').hide();
-
-    $('#error').hide();
-    $.getJSON('/drevesnik/get_dbs_json', function(data) {
-		new_html = "";
-		first = true;
-		data.sort(function (a,b) {
-			return a["priority"] < b["priority"] ? -1 : 1;
-		});
-		
-		for (const item of data) {
-			new_html += '<input type="checkbox" id="' + item["name"] + '" name="' + item["name"] +'"';
-			if (first) {
-			   new_html += ' checked';
-			   first = false;
-			}
-			new_html += '>' + item[site_lang + "_desc"] + "<br>\n";
-		}
-        /*
-		$("#qrt")
-        tree = new Tree('#container', {
-        data: data,
-        loaded: function () {
-            console.log(this.selectedNodes);
-            console.log(this.values);
-            $('.treejs-switcher').click();
-
-        },
-        onChange: function () {
-            global_dbs = this.values;
-        }*/
-		$("#container").html(new_html);
-    });
-
-    
-    $('#langs').click(function() {
-        //alert(':M');
-        //Okay, lets update the langs
-        //Let's check which dbs are checked
-        var xx = global_dbs;
-        console.log(xx);
-        //wipe langs
-        //get relevant langs and update langs
-        
-        var xx = global_dbs;
-        console.log(xx);
-        var dbs = [];
-        for (var it in xx){
-            console.log(xx[it]);
-            dbs.push(xx[it]);
-        }
-
-        var xx = $( ".bln" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
-        console.log(xx);
-        var langs = [];
-        for (var it in xx){
-            console.log(it);
-            langs.push(xx[it]);
-        }
-        console.log(langs);
-
-        lang_str = "";
-        for (lang in langs){
-            if (lang > 0){
-                lang_str = lang_str + ',';
-            }
-            lang_str = lang_str + langs[lang];
+        function prependChild(parentEle, newFirstChildEle) {
+            parentEle.insertBefore(newFirstChildEle, parentEle.firstChild)
         }
 
 
-        
-        $.post('/drevesnik/get_tags/', {'dbs': dbs.join(','), 'langs': lang_str}, function(data, status){
-        
-            var ihtml = "";
-            ihtml = '<h2>Dependency types</h2>'
-            var cc = 0;
-            for (hh in data[0]){
-                ihtml += '<div onclick="set_xx(\'_ <' + data[0][hh] + ' _\');" style="display: inline;" id="' + data[0][hh] + '_link">' + data[0][hh] + '</div> '
-                cc += 1
-            }
-            ihtml += '<h2>POS tags</h2>'
-            var cc = 0;
-            for (hh in data[1]){
-                ihtml += '<div onclick="set_xx(\'' + data[1][hh] + '\');" style="display: inline;" id="' + data[1][hh] + '_link">' + data[1][hh] + '</div> '
-                cc += 1
-            }
 
-            ihtml += '<h2>Morphological tags</h2>'
-            var cc = 0;
-            for (hh in data[2]){
-                ihtml += '<div onclick="set_xx(\'' + data[2][hh] + '\');" style="display: inline;" id="' + data[2][hh] + '_link">' + data[2][hh] + '</div> '
-                cc += 1
-            }
-                
-        
-            $('#tagss').html(ihtml);//data[0].join('<br>') + '<p>' + data[1].join('<br>') + '<p>' + data[2].join('<br>') + '<p>' );
-            $('#tagss').show();
-        });
-         
+        function is_in_lang_list(lang) {
+            var retval = false;
+            $('#langs').children().each(function (idx, itm) { if (itm.value == lang) { retval = true; }; });
+            return retval;
+        }
 
-    });
+        function set_xx(vv) {
+            $("#qrt").val(vv);
+        }
 
+        $(document).ready(function () {
+            $('#error').hide();
 
-    // Okay, when touched, update langs
-    $('#container').click(function() {
-        //alert(':M');
-        //Okay, lets update the langs
-        //Let's check which dbs are checked
-        var xx = global_dbs;
-        console.log(xx);
-        //wipe langs
-        $('#langs').html(' ')
-        //get relevant langs and update langs
-        
-        
-        $.post("/drevesnik/get_langs_post/", {"data": xx}, function(data) {
-            lang_list = [];
-            for (var xitem in data){
-                if (($.inArray(data[xitem], lang_list) == -1) && !(is_in_lang_list(data[xitem]))) {
-                    $('#langs').append('<input type="checkbox" class="bln" name="ln_' + data[xitem] + '" value="' + data[xitem] +'">' + data[xitem] + '<br>');
+            $('#error').hide();
+
+            async function generate_dbs_elements(){
+
+                const data = await fetch_dbs_json();
+                if (!data){
+                    console.error('No data');
+                    return;
                 }
-                lang_list.push(data[xitem]);
-            }
-	});
-        
-
-
-        var xx = global_dbs;
-        console.log(xx);
-        var dbs = [];
-        for (var it in xx){
-            console.log(xx[it]);
-            dbs.push(xx[it]);
-        }
-
-
-
-        var xx = $( ".bln" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
-        console.log(xx);
-        var langs = [];
-        for (var it in xx){
-            console.log(it);
-            langs.push(xx[it]);
-        }
-        console.log(langs);
-
-        lang_str = "";
-        for (lang in langs){
-            if (lang > 0){
-                lang_str = lang_str + ',';
-            }
-            lang_str = lang_str + langs[lang];
-        }
-
-
-        
-        $.post('/drevesnik/get_tags/', {'dbs': dbs.join(','), 'langs': lang_str}, function(data, status){
-        
-            var ihtml = "";
-            ihtml = '<h2>Dependency types</h2>'
-            var cc = 0;
-            for (hh in data[0]){
-                ihtml += '<div onclick="set_xx(\'_ <' + data[0][hh] + ' _\');" style="display: inline;" id="' + data[0][hh] + '_link">' + data[0][hh] + '</div> '
-                cc += 1
-            }
-            ihtml += '<h2>POS tags</h2>'
-            var cc = 0;
-            for (hh in data[1]){
-                ihtml += '<div onclick="set_xx(\'' + data[1][hh] + '\');" style="display: inline;" id="' + data[1][hh] + '_link">' + data[1][hh] + '</div> '
-                cc += 1
-            }
-
-            ihtml += '<h2>Morphological tags</h2>'
-            var cc = 0;
-            for (hh in data[2]){
-                ihtml += '<div onclick="set_xx(\'' + data[2][hh] + '\');" style="display: inline;" id="' + data[2][hh] + '_link">' + data[2][hh] + '</div> '
-                cc += 1
-            }
                 
-        
-            $('#tagss').html(ihtml);//data[0].join('<br>') + '<p>' + data[1].join('<br>') + '<p>' + data[2].join('<br>') + '<p>' );
-            $('#tagss').show();
+                let new_html = "";
+                let first = true;
+                data.sort(function (a, b) {
+                    return a["priority"] < b["priority"] ? -1 : 1;
+                });
+
+                let site_lang = usr_lang;
+                if (site_lang !== "en" && site_lang !== "sl") {
+                    site_lang = "sl";
+                }
+
+                for (const item of data) {
+                    new_html += `<label><input type="checkbox" id="${item["name"]}" name="${item["name"]}"`;
+                    if (first) {
+                        new_html += " checked";
+                        first = false;
+                    }
+                    new_html += `> ${item[site_lang + "_desc"]}</label><br>\n`;
+                }
+
+                const container = document.getElementById("container");
+                container.innerHTML = new_html;
+                
+                async function fetch_dbs_json() {
+                    const response = await fetch('{{ www_address }}get_dbs_json/');
+                    const data = await response.json();
+                    return data;
+                }
+            }
+            generate_dbs_elements();
+
+
+            $('#langs').click(function () {
+                //Okay, lets update the langs
+                //Let's check which dbs are checked
+                var xx = global_dbs;
+                console.log(xx);
+                //wipe langs
+                //get relevant langs and update langs
+
+                var xx = global_dbs;
+                console.log(xx);
+                var dbs = [];
+                for (var it in xx) {
+                    console.log(xx[it]);
+                    dbs.push(xx[it]);
+                }
+
+                var xx = $(".bln").map(function (index, element) { if (element.checked) { return element.value; } }).get();
+                console.log(xx);
+                var langs = [];
+                for (var it in xx) {
+                    console.log(it);
+                    langs.push(xx[it]);
+                }
+                console.log(langs);
+
+                lang_str = "";
+                for (lang in langs) {
+                    if (lang > 0) {
+                        lang_str = lang_str + ',';
+                    }
+                    lang_str = lang_str + langs[lang];
+                }
+            });
+
+
+            // Okay, when touched, update langs
+            $('#container').click(function () {
+                //alert(':M');
+                //Okay, lets update the langs
+                //Let's check which dbs are checked
+                var xx = global_dbs;
+                console.log(xx);
+                //wipe langs
+                $('#langs').html(' ')
+                //get relevant langs and update langs
+
+                $.post("{{ www_address }}get_langs_post/", { "data": xx }, function (data) {
+                    lang_list = [];
+                    for (var xitem in data) {
+                        if (($.inArray(data[xitem], lang_list) == -1) && !(is_in_lang_list(data[xitem]))) {
+                            $('#langs').append('<input type="checkbox" class="bln" name="ln_' + data[xitem] + '" value="' + data[xitem] + '">' + data[xitem] + '<br>');
+                        }
+                        lang_list.push(data[xitem]);
+                    }
+                });
+
+
+
+                var xx = global_dbs;
+                console.log(xx);
+                var dbs = [];
+                for (var it in xx) {
+                    console.log(xx[it]);
+                    dbs.push(xx[it]);
+                }
+
+
+
+                var xx = $(".bln").map(function (index, element) { if (element.checked) { return element.value; } }).get();
+                console.log(xx);
+                var langs = [];
+                for (var it in xx) {
+                    console.log(it);
+                    langs.push(xx[it]);
+                }
+                console.log(langs);
+
+                lang_str = "";
+                for (lang in langs) {
+                    if (lang > 0) {
+                        lang_str = lang_str + ',';
+                    }
+                    lang_str = lang_str + langs[lang];
+                }
+            });
+
+
+            $('#sbtn').click(function () {
+
+                //create the url
+                //"/start_query/<dbs>/<query>/<langs>"
+
+                //query
+                var query = $('#qrt').val();
+                //langs
+                var xx = $(".bln").map(function (index, element) { if (element.checked) { return element.value; } }).get();
+                console.log(xx);
+                var langs = [];
+                for (var it in xx) {
+                    console.log(it);
+                    langs.push(xx[it]);
+                }
+                console.log(langs);
+
+                //dbs
+                var xx = global_dbs;
+                console.log(xx);
+                var dbs = [];
+                for (var it in xx) {
+                    console.log(it);
+                    dbs.push(xx[it]);
+                }
+                console.log(dbs);
+
+                lang_str = "";
+                for (lang in langs) {
+                    if (lang > 0) {
+                        lang_str = lang_str + ',';
+                    }
+                    lang_str = lang_str + langs[lang];
+                }
+                var checkboxes = document.getElementById("container").getElementsByTagName("input");
+                db_str = "";
+                first_lang = "";
+                for (checkbox in checkboxes) {
+                    console.log("found_checkbox: " + checkboxes[checkbox].name);
+                    if (checkboxes[checkbox].checked) {
+                        db_str += checkboxes[checkbox].name + ',';
+                        if (first_lang === "") {
+                            first_lang = checkboxes[checkbox].name
+                        }
+                    }
+                }
+                db_str = db_str.slice(0, -1);
+                var limit = $('#limitfield').val();
+
+                var checkBox = document.getElementById("xcasex");
+
+                var smallCheckBox = document.getElementById("xsmallx");
+
+                var randCheckBox = document.getElementById("xrandx");
+
+
+                var casex = false;
+                if (checkBox.checked) {
+                    casex = true;
+                }
+
+                var randx = false;
+                if (randCheckBox.checked) {
+                    randx = true;
+                }
+
+                var xsmallx = false;
+                if (smallCheckBox.checked) {
+                    xsmallx = true;
+                }
+                console.log('case', casex);
+                console.log('rand', randx);
+                //launch
+
+
+                $.post('{{ www_address }}check_query_syntax/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex }, function (data, status) {
+
+
+                    if (data[0]) {
+                        $('#error').hide();
+                        $.post('{{ www_address }}start_query/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex, 'rand': randx, 'small_sent': xsmallx }, function (data, status) {
+
+                            if (site_lang === 'en'){
+                                window.open('{{ www_address }}show/' + site_lang + '/' + data + '/sl/0/10', '_blank');
+                                sHistory.saveHistory('{{ www_address }}show/' + site_lang + '/' + data + '/sl/0/10');
+
+                            } else {
+                                window.open('{{ www_address }}show/' + data + '/sl/0/10', '_blank');
+                                sHistory.saveHistory('{{ www_address }}show/' + data + '/sl/0/10');
+
+                            }
+
+                            const last = sHistory.lastHistoryItem();
+                            sHistory.displayHistoryItem(last, document.querySelector("#search_history_results"));
+                        });
+
+                    } else {
+                        showError(data[1]);
+                    }
+
+                });
+
+            });
+
         });
 
 
 
-       
-    });
 
 
-    $('#sbtn').click(function(){
+    </script>
+    <script>
+        document.querySelectorAll('.toggler').forEach(element => {
+            const indicator = document.createElement("span");
+            const plus = document.createTextNode("+\xa0");
+            indicator.append(plus);
+            element.prepend(indicator);
+            element.normalize();
+            indicator.style = `width: ${indicator.offsetWidth}px; display: inline-block;`;
 
-        //create the url
-        //"/start_query/<dbs>/<query>/<langs>"
+            element.addEventListener('click', () => toggleContent(element));
 
-        //query
-        var query = $('#qrt').val();
-        //langs
-        var xx = $( ".bln" ).map( function( index, element ) {if (element.checked) {return element.value;}}).get();
-        console.log(xx);
-        var langs = [];
-        for (var it in xx){
-            console.log(it);
-            langs.push(xx[it]);
-        }
-        console.log(langs);
+            function toggleContent(element) {
+                const id = element.getAttribute("data-toggle");
+                const toggleItem = document.querySelector(`#${id}`);
+                const closed = toggleItem.style.display === "none";
 
-        //dbs
-        var xx = global_dbs;
-        console.log(xx);
-        var dbs = [];
-        for (var it in xx){
-            console.log(it);
-            dbs.push(xx[it]);
-        }
-        console.log(dbs);
-
-        lang_str = "";
-        for (lang in langs){
-            if (lang > 0){
-                lang_str = lang_str + ',';
+                $(toggleItem).toggle("fast");
+                if (closed !== true) {
+                    element.querySelector('span').textContent = "+\xa0";
+                } else {
+                    element.querySelector('span').textContent = "-\xa0";
+                }
             }
-            lang_str = lang_str + langs[lang];
+        })
+        //-----------------------------------//
+        const display = sHistory.displayHistory();
+
+        function hoverIndicator(link){
+            const div = link.closest('.fiftyfifty')
+            div.style.backgroundColor = "#f5f5f5";
         }
-        var checkboxes = document.getElementById("container").getElementsByTagName("input");
-        db_str = "";
-		first_lang = "";
-        for (checkbox in checkboxes){
-		    console.log("found_checked: " + checkboxes[checkbox].name);
-            if (checkboxes[checkbox].checked){
-                db_str += checkboxes[checkbox].name + ',';
-				if (first_lang === "") {
-					first_lang = checkboxes[checkbox].name
-				}
+
+        document.querySelector('#search_history_results').addEventListener('mouseover', (e) => {
+            const self = e.target;
+            const parent = self.closest("#search_history_results");
+            const results = parent.querySelectorAll('.fiftyfifty');
+            results.forEach(result => {
+                result.style.backgroundColor = "";;
+            })
+            if (self.nodeName === 'A'){
+                hoverIndicator(self);
             }
-        }        		
-        db_str = db_str.slice(0,-1);
-        var limit = $('#limitfield').val();
-
-        var checkBox = document.getElementById("xcasex");
-		
-        var smallCheckBox = document.getElementById("xsmallx");
-		
-		var randCheckBox = document.getElementById("xrandx");
+        })
 
 
-        var casex = false;
-        if (checkBox.checked){
-            casex = true;
-        }
-		
-		var randx = false;
-        if (randCheckBox.checked){
-            randx = true;
-        }
-		
-		var xsmallx = false;
-        if (smallCheckBox.checked){
-            xsmallx = true;
-        }
-
-        console.log(checkBox.checked);
-		/*
-        var queryUrl;
-        if (lang_str) {
-            queryUrl = '/drevesnik/start_query/'+db_str+'/'+ query + '/' + lang_str + '/' + limit + '/' + casex + '/' + randx;
-        } else {
-            queryUrl = '/drevesnik/start_query/'+db_str+'/'+ query + '/' + limit + '/' + casex + '/' + randx;
-        }
-        console.log(queryUrl);
-		*/
-
-
-
-        console.log('case', casex);
-        console.log('rand', randx);
-        //launch
-        
-        
-        $.post('/drevesnik/check_query_syntax/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex }, function(data, status){
-            console.log('!!!', data);
-
-            if (data[0]){
-                   $('#error').hide();
-		    $.post('/drevesnik/start_query/', { 'dbs': db_str, 'query': query, 'langs': lang_str, 'limit': limit, 'case': casex, 'rand': randx, 'small_sent': xsmallx}, function(data, status){
-			    var a = document.createElement('a');
-			    var nn = query + '  ' + lang_str + '  ' + db_str;
-			    if (nn.length > 50){ nn = nn.substr(1,50)}
-			    var linkText = document.createTextNode(nn);
-			    a.appendChild(linkText);
-			    a.href = '/drevesnik/show/' +  site_lang + '/' + data + '/sl/0/10';
-			    document.body.appendChild(a);
-			    $('#search_history').append(a);
-				var a = document.createElement('br');
-			    $('#search_history').append(a);
-			    window.open('/drevesnik/show/' + site_lang + '/' + data + '/sl/0/10', '_blank');
-
-		});
-            
-            }else{
-            //show the error
-                $('#error').show();
-                $('#error').html('<pre>' + data[1] + '</pre>')            
-            }
-
-
-
-        });        
-        
-        
-        
-
-
-    });
-
-
-
-});
-
-
-
-
-
-</script>
+    </script>
 </body>
 
 </html>

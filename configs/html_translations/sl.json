@@ -4,7 +4,7 @@
 	"switch_lang": "<a href=\"/drevesnik/en\" >English</a>",
 	"query": "Poizvedba",
 	"search_condition": "Iskalni pogoj ",
-	"help_link": "(pomoč)",
+	"help_link": "pomoč",
 	"match_letter_case": "Upoštevaj velikost črk",
 	"short_sentence_only": "Išči samo po kratkih povedih (do 15 besed)",
 	"random_results": "Vrni naključne zadetke",
@@ -12,10 +12,11 @@
 	"search": "Poišči",
 	"corpora": "Korpusi",
 	"about": "O vmesniku",
-	"about_content": "Drevesnik je spletni vmesnik za brskanje po slovenskih skladenjsko razčlenjenih korpusih, s pomočjo katerega lahko jezikoslovci in drugi raziskovalci analizirajo različne slovnične pojave v slovenščini. Uporabniki v polje za iskanje vpišejo svoj <a href=\"/drevesnik/help\" target=\"_blank\">iskalni pogoj</a>, izberejo enega ali več korpusov, po katerih naj se iskanje izvede, prikazane rezultate pa si lahko ogledajo ali prenesejo na svoj računalnik. <br><br>Drevesnik trenutno podpira brskanje po drevesnicah, označenih po medjezikovno primerljivi shemi <a href=\"https://universaldependencies.org/\" target=\"_blank\">Universal Dependencies</a>, pri čemer so nabor oznak in načela njihovega pripisovanja besedilom podrobneje opisani v priročniku <a href=\"https://wiki.cjvt.si/books/07-universal-dependencies/page/oznacevalne-smernice" target=\"_blank\">Universal Dependencies: Smernice za označevanje besedil v slovenščini</a>. <br><br>Vmesnik temelji na odprtokodnem orodju <a href=\"https://github.com/TurkuNLP/dep_search\" target=\"_blank\">dep_search</a>, ki smo ga lokalizirali in nadgradili s podporo raziskovalne infrastrukture CLARIN.SI (Projekti CLARIN.SI 2019) in Javne agencije za znanstvenoraziskovalno in inovacijsko dejavnost RS (projekt <a href=\"https://spot.ff.uni-lj.si/" target=\"_blank\">SPOT</a> Z6-4617, program PJVT P6-0411). <br><br>Programska koda vmesnika je prosto dostopna na <a href=\"https://github.com/clarinsi/drevesnik" target=\"_blank\">repozitoriju CLARIN.SI</a>.",
+	"about_link": "<a href=\"/drevesnik/en/about/\" >O orodju</a>",
+	"about_content": "Drevesnik je spletni vmesnik za brskanje po slovenskih skladenjsko razčlenjenih korpusih, s pomočjo katerega lahko jezikoslovci in drugi raziskovalci analizirajo različne slovnične pojave v slovenščini. Uporabniki v polje za iskanje vpišejo svoj <a href=\"/drevesnik/help\" target=\"_blank\">iskalni pogoj</a>, izberejo enega ali več korpusov, po katerih naj se iskanje izvede, prikazane rezultate pa si lahko ogledajo ali prenesejo na svoj računalnik. <br><br>Drevesnik trenutno podpira brskanje po drevesnicah, označenih po medjezikovno primerljivi shemi <a href=\"https://universaldependencies.org/\" target=\"_blank\">Universal Dependencies</a>, pri čemer so nabor oznak in načela njihovega pripisovanja besedilom podrobneje opisani v priročniku <a href=\"https://wiki.cjvt.si/books/07-universal-dependencies/page/oznacevalne-smernice\" target=\"_blank\">Universal Dependencies: Smernice za označevanje besedil v slovenščini</a>. <br><br>Vmesnik temelji na odprtokodnem orodju <a href=\"https://github.com/TurkuNLP/dep_search\" target=\"_blank\">dep_search</a>, ki smo ga lokalizirali in nadgradili s podporo raziskovalne infrastrukture CLARIN.SI (Projekti CLARIN.SI 2019) in Javne agencije za znanstvenoraziskovalno in inovacijsko dejavnost RS (projekt <a href=\"https://spot.ff.uni-lj.si/\" target=\"_blank\">SPOT</a> Z6-4617, program PJVT P6-0411). <br><br>Programska koda vmesnika je prosto dostopna na <a href=\"https://github.com/clarinsi/drevesnik\" target=\"_blank\">repozitoriju CLARIN.SI</a>.",
 	"search_history": "Zgodovina iskanj",
 	"__result_tbl_translations": "",
-	"context": " [sobesedilo]",
+	"context": "Sobesedilo",
 	"__query_translations": "",
 	"page": "Stran ",
 	"of": "od",
@@ -23,10 +24,50 @@
 	"download_results": "Prenesi vse povedi z zadetki",
 	"download_results_kwic": "Prenesi vse zadetke v kontekstu",
 	"download_freqs": "Statistika",
-	"search_condition_query": "Iskalni pogoj: ",	
+	"search_condition_query": "Iskalni pogoj: ",
 	"number_of_hits": "Število zadetkov: ",
 	"__freqs_translations": "",
 	"download_freqs_json": "Prenesi datoteko json",
 	"stats": "Statistika",
-	"top_ten": "Najpogostejših 10"	
+	"top_ten": "Najpogostejših 10",
+	"tagz": "Značke",
+	
+	"drevesnik_logo": "<a href=\"/drevesnik/\" tabindex=\"0\"><img src=\"/drevesnik/static/logos/CJVT-Drevesnik.svg\" alt=\"drevesnik\"></a>",
+
+	"index_link": "<a href=\"/drevesnik/\">DREVESNIK</a>",
+	"index_menu": "<a class=\"link-about\" href=\"/drevesnik/about/\" >O orodju</a><a class=\"link-language\" href=\"/drevesnik/en\" >English</a>",
+	"about_menu": "<a class=\"link-about\" href=\"/drevesnik/about/\" >O orodju</a><a class=\"link-language\" href=\"/drevesnik/about/en/\" >English</a>",
+	"help_menu": "<a class=\"link-about\" href=\"/drevesnik/about/\" >O orodju</a><a class=\"link-language\" href=\"/drevesnik/help/en/\" >English</a>",
+	
+	"footer_info": "Informacije o orodju",
+	"footer_fullname": "Center za jezikovne vire in tehnologije",
+	"footer_address": "Večna pot 113\nSI-1000 Ljubljana",
+	"footer_phone": "Telefon",
+	"footer_phone_num": "+386 1 479 82 99",
+	"footer_email": "E-pošta",
+	"footer_email_address": "info@cjvt.si",
+
+
+	"showing": "Prikazanih je ",
+	"matches": "zadetkov",
+
+	"-----------------THIS_IS_ABOUT_SECTION----------------" : "just so you know",
+
+	"kolofon": "Drevesnik",
+	"kolofon_short_desc": "Spletni vmesnik za iskanje po skladenjsko razčlenjenih korpusih (drevesnicah)",
+	"kolofon_w_img": "Kolofon&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
+
+	"o_orodju": "O orodju",
+	"o_orodju_short_desc": "Drevesnik je spletni vmesnik za brskanje po slovenskih skladenjsko razčlenjenih korpusih, s pomočjo katerega lahko jezikoslovci in drugi raziskovalci analizirajo različne slovnične pojave v slovenščini.",
+	"o_orodju_w_img": "O Drevesniku&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
+
+	"razlicica": "Trenutna različica",
+	"razlicica_short_desc": "Trenutna različica orodja je 1.2.<br/>Datum zadnje posodobitve: 22. 5. 2025",
+	"razlicica_w_img": "Različice&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>",
+
+	"dostopnost": "Dostopnost",
+	"dostopnost_short_desc": "Programska koda orodja Drevesnik je dostopna v repozitoriju <a href='https://github.com/clarinsi/drevesnik' target='_blank'>Clarin.si</a> pod licenco <a href='https://www.apache.org/licenses/LICENSE-2.0' target='_blank'>Apache 2.0.</a>", 
+	"dostopnost_w_img": "<a class='p-content' href='https://github.com/clarinsi/drevesnik' target='_blank' style='width: min-content;'>Koda&nbsp;<div class='icon-wrapper'><img src='/static/icons/chevron-right.svg'/></div>"
+
+
 }

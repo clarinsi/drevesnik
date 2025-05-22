@@ -1,39 +1,43 @@
 version: "3.8"
 services:
 
-  dep_search:
-    restart: on-failure
-    container_name: dep_search
+  dep_search_v2:
+    restart: always
+    container_name: dep_search_v2
     build: 
         context: .
         dockerfile: Dockerfile_api_gui
     ports:
       - "5000:5000"
     networks:
-      - net
+      - drevesnik_v2_net
     environment:
       - CONFIG_FOLDER=/configs/
       - LOG_FOLDER=/api_gui/logs/
       - INDEX_FOLDER=/indexes/
+      # Changed? Run: down, up -d
+      - WWW_ADDRESS_POSTFIX=${WWW_ADDRESS_POSTFIX:-/drevesnik/}
     volumes:
-      - ../logs/:/api_gui/logs/
-      - ../output:/indexes/
       - ./configs:/configs/
+      # Changed? Run: down, up -d
+      # New corpus? Also run build
+      - ${LOGS_FOLDER:-../logs/}:/api_gui/logs/
+      - ${INDEXES_FOLDER:-../output/}:/indexes/
 
-  nginx:
+  drevesnik_nginx_v2:
       build: 
         context: .
         dockerfile: DockerfileNginx
       restart: always
+      environment:
+      - WWW_ADDRESS_POSTFIX=${WWW_ADDRESS_POSTFIX:-/drevesnik/}
       ports:
         - "80:80"
       depends_on:
-        - dep_search
+        - dep_search_v2
       networks:
-        - net
-
-      
+        - drevesnik_v2_net
 
 networks:
-  net:
+  drevesnik_v2_net:
 

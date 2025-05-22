@@ -1,0 +1,9 @@
+## About the tool
+
+Drevesnik is an online application designed for querying Slovenian dependency-parsed corpora. Its primary goal is to assist researchers in exploring various kinds of grammatical phenomena in Slovenian. The process begins with the user entering a <u>search query</u> and selecting the desired corpora. Results are then displayed as dependency trees (graphs) and are available for download for more in-depth analysis.
+
+Drevesnik currently supports querying manually annotated corpora of written (<a href="https://github.com/UniversalDependencies/UD_Slovenian-SSJ">SSJ</a>) and spoken (<a href="https://github.com/UniversalDependencies/UD_Slovenian-SST">SST</a>) Slovenian, as well as a somewhat larger automatically parsed sample of the Kres corpus (<a href="https://www.clarin.si/repository/xmlui/handle/11356/1034">ccKres</a>). All corpora are annotated following the cross-lingually harmonized <a href="https://wiki.cjvt.si/books/07-universal-dependencies">Universal Dependencies</a> annotation scheme, which features part-of-speech tags, morphosyntactic features, and dependency relation annotations. Words are additionally equipped with dictionary forms (lemmas) and morphosyntactic labels following the <a href="https://wiki.cjvt.si/books/04-oblikoskladnja-multext-east">MULTEXT-East</a> annotation scheme, which is locally well-established.
+
+The interface is based on the open-source <a href="https://github.com/TurkuNLP/dep_search">dep_search</a> tool, developed by the University of Turku, which was localized and further developed with the support of the CLARIN.SI research infrastructure (2019 CLARIN.SI Projects) and the Slovenian Research and Innovation Agency (<a href="https://spot.ff.uni-lj.si">SPOT</a> Z6-4617, PJVT P6-0411).
+
+The code is freely available on the <a href="https://github.com/clarinsi/drevesnik">CLARIN.SI repository</a>.

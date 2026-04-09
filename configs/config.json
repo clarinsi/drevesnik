@@ -1,1 +1,1 @@
-{"allow_unlimited_limit": false, "max_result_limit": 50000}
+{"allow_unlimited_limit": false, "max_result_limit": 50000, "result_ttl_seconds": 2419200}

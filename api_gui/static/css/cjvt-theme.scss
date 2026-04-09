@@ -532,6 +532,10 @@ main {
 
 
     #search_history {
+        #search_header{
+            font-weight: 600;
+        }
+
         .fiftyfifty {
             transition: all linear 100ms;
             display: flex;
@@ -541,9 +545,57 @@ main {
                 width: 50%;
             }
         }
+        .threethreethree {
+            transition: all linear 100ms;
+            display: flex;
+            margin-bottom: .5rem;
+
+            div {
+                width: 33%;
+                align-self: center;
+            }
+        }
 
         a {
             text-decoration: none;
+        }
+
+        #search_history_results{
+            .threethreethree:hover{
+                background-color: #f5f5f5;
+                //*{
+                //    font-style: italic;
+                //}
+            }
+
+            > * {
+                min-height: 40px;
+            }
+        }
+
+        #show_more{
+            margin-top: 1rem;
+            border-radius: 1.5rem;
+            display: inline-block;
+            line-height: 3rem;
+            padding: 0 1.5rem;
+            background-color: #161616;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            text-transform: none;
+            height: 54px;
+            font-size: 15px;
+            border: none;
+            box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+            
+
+            transition: all linear 100ms;
+
+            &:hover{
+                background-color: #212121;
+            }
         }
     }
 
@@ -693,6 +745,12 @@ main {
     }
 
     #query_result {
+        .audio-item{
+            .sound{
+                cursor: pointer;
+            }
+        }
+
         .embedding {
             margin: 0;
 

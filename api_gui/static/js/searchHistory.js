@@ -1,6 +1,7 @@
 
 const suggestions = [];
 function searchHistory() {
+    const nm_of_items = 10;
     function saveHistory(url) {
         try {
             const query = document.querySelector("#query input#qrt").value;
@@ -12,6 +13,9 @@ function searchHistory() {
                     //ssj: document.querySelector("#SSJ").checked,
                     //sst: document.querySelector("#SST").checked,
                     //cckress: document.querySelector("#ccKres").checked
+                },
+                parameters: {
+
                 }
             }
 
@@ -21,9 +25,15 @@ function searchHistory() {
                 })
             }
 
+            if (document.querySelector("#parameters")){
+                document.querySelectorAll("#parameters input").forEach(el => {
+                    search.parameters[el.id] = el.checked;
+                })
+            }
+
             const isDuplicate = checkForDuplicates(search);
             if (!isDuplicate) {
-                clearOldest();
+                // clearOldest();
                 const epoch = Date.now();
                 const epoch_string = epoch.toString();
                 localStorage.setItem(`drevesnik-${epoch_string}`, (JSON.stringify(search)));
@@ -49,7 +59,17 @@ function searchHistory() {
                                 break;
                             }
                         }
-                        if (istiKorpusi) {
+
+                        let istiParametri = true;
+                        for (const parameter in item[itemName].parameters){
+                            const parametri = item[itemName].parameters;
+                            if (parametri[parameter] !== search.parameters[parameter]){
+                                istiParametri = false;
+                                break;
+                            }
+                        }
+
+                        if (istiKorpusi && istiParametri) {
                             isDuplicate = true;
                             break;
                         }
@@ -98,20 +118,31 @@ function searchHistory() {
 
             const sorted = sortHistoryItems(items);
 
+            let i = 0;
             for (const item of sorted) {
+                if (i >= nm_of_items) break;
                 const hItem = displayHistoryItem(item);
                 results.append(hItem);
+                i++;
             }
+
+            const hasHistory = hasMoreHistory(); //returns 0 or a num
+            if (!hasHistory) return;
+
+            const more = document.createElement('div');
+            more.id = "show_more";
+            more.textContent = langTrans?.['show_more'] || 'Show more';
+            more.addEventListener('click', displayMoreHistory)
+            document.querySelector('#search_history').append(more);
 
         } catch (error) {
             console.error('Error while displaying history.\n', error)
         }
     }
-    function displayHistoryItem(item, location) {
 
+    function displayHistoryItem(item, location, append = 'append') {
         if (typeof item === 'object') {
             var transformed = Object.values(item)[0];
-
         } else if (typeof item === 'number') {
             var transformed = localStorage.getItem('drevesnik-' + item);
             transformed = JSON.parse(transformed);
@@ -119,17 +150,23 @@ function searchHistory() {
             console.log(typeof item);
         }
         try {
-            const wrapper = document.createElement('div');
-            wrapper.classList.add('fiftyfifty');
-            wrapper.style = 'display: flex;'
+            const wrapper = document.createElement('a');
+            //const wrapper = document.createElement('div');
+            //wrapper.classList.add('fiftyfifty');
+            wrapper.classList.add('threethreethree');
+            wrapper.style = 'display: flex;';
+            
+            wrapper.href = transformed.url;
+            wrapper.target = "_blank";
 
             const queryWrapper = document.createElement('div');
             const query = document.createTextNode(transformed.query);
-            const link = document.createElement('a');
-            link.href = transformed.url;
-            link.target = "_blank";
-            link.appendChild(query);
-            queryWrapper.appendChild(link);
+            //const link = document.createElement('a');
+            //link.href = transformed.url;
+            //link.target = "_blank";
+            //link.appendChild(query);
+            //queryWrapper.appendChild(link);
+            queryWrapper.appendChild(query);
 
             const korpusi = document.createElement('div');
             let i = 0;
@@ -144,13 +181,44 @@ function searchHistory() {
                     i++;
                 }
             }
+            if (!korpusi.textContent.length) korpusi.textContent = '/';
+
+            const parametri = document.createElement('div');
+            i = 0;
+
+            for (const param in transformed.parameters){
+                if (transformed.parameters[param]) {
+                    if (i !== 0) {
+                        const comma = document.createTextNode(', ');
+                        parametri.append(comma);
+                    }                    
+                    if (langTrans && langTrans[param]){
+                        const p = document.createTextNode(langTrans[param]);
+                        parametri.append(p);
+                    } else {
+                        const p = document.createTextNode(param);
+                        parametri.append(p);
+                    }
+                    i++
+                }
+            }
+
+            if (!parametri.textContent.length){
+                parametri.textContent = '/';
+            }
 
             wrapper.append(queryWrapper);
             wrapper.append(korpusi);
+            wrapper.append(parametri);
 
             if (location) {
+                if (append === 'prepend') {
+                    location.prepend(wrapper);
+                    return;
+
+                }
                 location.append(wrapper);
-                return
+                return;
             }
             return wrapper;
 
@@ -165,6 +233,8 @@ function searchHistory() {
             const items = getHistory();
             const sortedItems = sortHistoryItems(items);
 
+            // ordering has changed, now newest are 1st
+            return sortedItems[0];
             return sortedItems[sortedItems.length - 1];
 
         } catch (error) {
@@ -187,7 +257,12 @@ function searchHistory() {
             return historyAffixes;
 
             function compareNumbers(a, b) {
+                /*
+                // older first
                 return a - b;
+                */
+                // newer first
+                return b - a;
             }
 
         } catch (error) {
@@ -195,7 +270,7 @@ function searchHistory() {
         }
     }
 
-    function clearOlderThenOneHour() {
+    function clearOlderThen(timeToLive = 2419200) { // 2419200 -> 1 month
         const historyItems = getHistory();
         try {
 
@@ -207,7 +282,7 @@ function searchHistory() {
                 if (Number.isInteger(num)) {
 
                     const itemSec = Math.floor(num / 1000);
-                    if (nowSec - itemSec > 3600) { //if item is older then one hour
+                    if (nowSec - itemSec > timeToLive) { //if item is older then timeToLive
                         localStorage.removeItem(`drevesnik-${num}`);
                     }
                 }
@@ -219,9 +294,58 @@ function searchHistory() {
         }
     }
     try {
-        clearOlderThenOneHour();
+        clearOlderThen(ttl);
     } catch (error) {
         console.error('Error while clearing history items older then one hour.\n', error);
     }
+
+    function hasMoreHistory(){
+        try {
+            const current = document.querySelectorAll('#search_history_results > a');
+            const current_length = current.length;
+
+            const all = getHistory();
+            const all_length = all.length;
+
+
+            if (all_length - current_length > 0) return current_length;
+            return 0;
+
+        } catch (err){
+            console.error('Could not determine if any more history items exist...\n', err)
+            return 0;
+        }
+
+    }
+    function displayMoreHistory(e){
+        try {
+            const start_idx = hasMoreHistory();
+
+            if (!start_idx){
+                const self = e.target;
+                self.style.display = 'none';
+                return;
+            }
+
+            const all = getHistory();
+            const all_sorted = sortHistoryItems(all);
+            const remaining = all_sorted.slice(start_idx, start_idx + nm_of_items);
+
+            const results_area = document.querySelector("#search_history_results");
+            for (const r of remaining){
+                displayHistoryItem(r, results_area);
+            }
+
+            const hasMore = all_sorted.slice(start_idx + nm_of_items);
+
+            if (!hasMore.length){
+                const self = e.target;
+                self.style.display = 'none';
+            }
+        } catch (err) {
+            console.error('error while trying to show more history items...\n',err);
+        }
+    }
+
     return { saveHistory, getHistory, displayHistory, displayHistoryItem, lastHistoryItem };
 }

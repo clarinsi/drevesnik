@@ -1,4 +1,4 @@
-FROM python:3.8-slim-buster
+FROM python:3.8-slim-bookworm
 RUN apt-get update && apt-get install -y git make liblmdb0 liblmdb-dev unicorn build-essential libpcre3 libpcre3-dev
 RUN pip install uwsgi==2.0.23 pyyaml==6.0.1 six==1.16.0
 RUN groupadd -r uwsgi && useradd -r -g uwsgi uwsgi

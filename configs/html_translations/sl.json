@@ -51,6 +51,23 @@
 	"showing": "Prikazanih je ",
 	"matches": "zadetkov",
 
+
+	"parameters": "Parametri",
+	"show_more": "Prikaži več",
+	"xsmallx": "Upoštevaj velikost črk",
+	"xcasex": "Išči samo po kratkih povedih (do 15 besed)",
+	"xrandx": "Vrni naključne zadetke",
+	"display_more": "Prikaži več",
+	"corpus": "Korpus: ",
+	"parameters_used": "Uporabljeni paramteri: ",
+	"### AUDIO PLAYER ###": "",
+	"recording": "Audio posnetek: ",
+	"unavailable": "ni na voljo",
+	"play": "Predvajaj",
+	"playing": "Se predvaja...",
+	"loading": "Nalaganje...",
+	"error": "Prišlo je do napake",
+
 	"-----------------THIS_IS_ABOUT_SECTION----------------" : "just so you know",
 
 	"kolofon": "Drevesnik",

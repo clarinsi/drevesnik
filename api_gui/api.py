@@ -221,7 +221,7 @@ def query_process(dbs, query, langs, ticket, limit=10000, case=False, rand=False
     
     #print ('!!!!!', ['python3', 'query.py', '-d', db_string, '-m', str(limit), '--context', '4', '--chop_dir', RES_DIR, '--chop_ticket', ticket , query])
     xoutf = open(res_file(ticket + '.json'),'wt')
-    xoutf.write(json.dumps({'query':query, 'dbs':dbs, 'langs':langs, 'ticket':ticket, 'limit': limit}))
+    xoutf.write(json.dumps({'query':query, 'dbs':dbs, 'langs':langs, 'ticket':ticket, 'limit': limit, 'case': case, 'rand': rand}))
     xoutf.close()
 
     outf_files = {}
@@ -525,8 +525,13 @@ def mnf(site_lang):
         update_main_page_called_file(main_page_called)
         main_page_called = 0
     main_page_call_lock.release()
+
+    with open(config_folder + 'config.json', 'r') as f:
+        config = json.load(f)
+
+    ttl = config.get('result_ttl_seconds', 2419200) #2419200 -> month
     
-    return render_template("qx_hack.html", site_lang=site_lang, www_address=www_address_postfix)
+    return render_template("qx_hack.html", site_lang=site_lang, www_address=www_address_postfix, result_ttl=ttl)
 
 @app.route(www_address_postfix + 'get_dbs_json/')
 def gdsb():
@@ -1178,9 +1183,15 @@ def yield_trees(src):
     current_tree=[]
     current_comment=[]
     current_context=u""
+    current_sound_url=None
+    current_corpus=None
     for line in src[:-1]:
         if line.startswith(u"# visual-style"):
             current_tree.append(line)
+        elif line.startswith(u"# sound_url"):
+            current_sound_url = line.split(u"=",1)[1].strip()
+        elif line.startswith(u"# corpus:"):
+            current_corpus = line.split(u":",1)[1].strip()
         elif line.startswith(u"# URL:"):
             current_comment.append(Markup(u'<a href="{link}">{link}</a>'.format(link=line.split(u":",1)[1].strip())))
         elif line.startswith(u"# context-hit"):
@@ -1193,10 +1204,13 @@ def yield_trees(src):
             current_tree.append(line)
         if line==u"":
             current_comment.append(Markup(current_context))
-            yield u"\n".join(current_tree), current_comment
+            #yield u"\n".join(current_tree), current_comment
+            yield u"\n".join(current_tree), current_comment, current_sound_url, current_corpus
             current_comment=[]
             current_tree=[]
             current_context=u""
+            current_sound_url=None
+            current_corpus=None
 
 
 if __name__ == '__main__':

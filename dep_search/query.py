@@ -516,6 +516,7 @@ def query_from_db_chop(q_obj, args, db, fdb, set_id_db, comp_dict, res_per_lang)
                 
             outfs[lang].write('# lang: ' + lang + '\n')
             outfs[lang].write('# doc: ' + fdb.get_url(idx) + '\n')
+            outfs[lang].write('# corpus: ' + args.corpus_name + '\n')
                     
             for r in res_set:
                 try:
@@ -786,6 +787,7 @@ def main_db_query(args, res_per_lang, mod=None):
     if args.chop_ticket == '':
         total_hits+=query_from_db(query_obj, args, db, fdb, set_id_db, comp_dict, res_per_lang)
     else:
+        args.corpus_name = os.path.basename(args.database)
         total_hits+=query_from_db_chop(query_obj, args, db, fdb, set_id_db, comp_dict, res_per_lang)        
     fdb.kill_threads()
 

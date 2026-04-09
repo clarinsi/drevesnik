@@ -82,6 +82,12 @@ Run
 
 to build and run this project. The home page of this service can be accessed at http://localhost/drevesnik.
 
+## Simple set up
+1.) ```docker build -t drevesnik_base -f Dockerfile_service_base .```  
+2.) create res folder in api_gui  
+3.) in .env set the url address *WWW_ADDRESS_POSTFIX* and location  of *INDEXES_FOLDER*, *CORPORA_FOLDER* and *LOGS_FOLDER* or leave them commented out. If unchanged default 'settings' will be used  
+4.) ```docker-compose -f docker-compose-build-dataset.yml up --build```  
+5.) ```docker compose up --build -d```  
 
 ## Project structure
 

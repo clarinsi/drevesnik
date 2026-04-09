@@ -13,8 +13,20 @@
     },
     "ccKres": {
         "name": "ccKres",
-        "sl_desc": "<b>Y ccKres</b>: Strojno raz\u010dlenjen korpus pisne sloven\u0161\u010dine (v1.0, 769.994 povedi, 12.187.066 pojavnic, raz\u010dlenjevalnik CLASSLA-Stanza 2.1)",
-        "en_desc": "<b>Y ccKres</b>: automatically parsed corpus of written Slovene (v1.0, 769,994 sentences, 12,187,066 tokens, CLASSLA-Stanza 2.1 tool)",
+        "sl_desc": "<b>ccKres</b>: Strojno raz\u010dlenjen korpus pisne sloven\u0161\u010dine (v1.0, 769.994 povedi, 12.187.066 pojavnic, raz\u010dlenjevalnik CLASSLA-Stanza 2.1)",
+        "en_desc": "<b>ccKres</b>: automatically parsed corpus of written Slovene (v1.0, 769,994 sentences, 12,187,066 tokens, CLASSLA-Stanza 2.1 tool)",
         "priority": 3
+    },
+    "GUM": {
+        "name": "GUM",
+        "sl_desc": "<b>GUM</b>: Opis GUM",
+        "en_desc": "<b>GUM</b>: Description GUM",
+        "priority": 5
+    },
+    "solar": {
+        "name": "solar",
+	    "sl_desc": "<b>šolar</b>: Opis šolar",
+	    "en_desc": "<b>šolar</b>: Description šolar",
+        "priority": 6
     }
 }

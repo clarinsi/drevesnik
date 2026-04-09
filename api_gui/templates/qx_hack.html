@@ -18,6 +18,7 @@
         var site_lang = "{{ site_lang }}";
         const usr_lang = site_lang;
         const www_address = "{{ www_address }}";
+        const ttl = {{result_ttl}};
     </script>
 </head>
 
@@ -43,6 +44,13 @@
     <script src="{{ www_address }}static/js/main.js"></script>
     <script src="{{ www_address }}static/js/translate.js"></script>
     <script src="{{ www_address }}static/js/branding.js"></script>
+    <script>
+        let langTrans;
+        async function getTrans(){
+            langTrans = await fetchLanguageData(site_lang.toLowerCase());
+        }
+        getTrans();
+    </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     <!--<script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
@@ -77,13 +85,16 @@
                             <input id="qrt" type="textarea" name="vehicle1" value="_ <nsubj _">
                             <br>
                             <br>
-
-                            <label data-i18n="match_letter_case"><input type="checkbox" id="xcasex"
-                                    name="xcasex">&nbsp;</label><br>
-                            <label data-i18n="short_sentence_only"><input type="checkbox" id="xsmallx"
-                                    name="xsmallx">&nbsp;</label><br>
-                            <label data-i18n="random_results"><input type="checkbox" id="xrandx"
-                                    name="xrandx">&nbsp;</label><br><br>
+                            <div id="parameters">
+                                <label data-i18n="match_letter_case"><input type="checkbox" id="xcasex"
+                                        name="xcasex">&nbsp;</label><br>
+                                <label data-i18n="short_sentence_only"><input type="checkbox" id="xsmallx"
+                                        name="xsmallx">&nbsp;</label><br>
+                                <label data-i18n="random_results"><input type="checkbox" id="xrandx"
+                                        name="xrandx">&nbsp;</label>
+                            </div>
+                            <br>
+                            <br>
                             <label data-i18n="max_results"></label><br>
                             <input id="limitfield" type="textarea" name="vehicle2" value="100"><br>
                         </div>
@@ -109,9 +120,10 @@
                     <div class="card">
                         <div id="search_history">
 
-                            <div class="fiftyfifty" style="margin-bottom: .5rem;">
+                            <div id="search_header" class="threethreethree" style="margin-bottom: .5rem;">
                                 <div data-i18n="search_condition"></div>
                                 <div data-i18n="corpora"></div>
+                                <div data-i18n="parameters"></div>
                             </div>
                             <div id="search_history_results">
                             </div>
@@ -404,7 +416,7 @@
                             }
 
                             const last = sHistory.lastHistoryItem();
-                            sHistory.displayHistoryItem(last, document.querySelector("#search_history_results"));
+                            sHistory.displayHistoryItem(last, document.querySelector("#search_history_results"), 'prepend');
                         });
 
                     } else {
@@ -447,11 +459,30 @@
             }
         })
         //-----------------------------------//
-        const display = sHistory.displayHistory();
+        //const display = sHistory.displayHistory();
+        
 
+        let elapsed = 0;
+        let transInterval = setInterval(() => {
+            if (langTrans){
+                const display = sHistory.displayHistory();
+                clearInterval(transInterval)
+                return;
+            }
+            if (elapsed > 3000){ // no translation for 3 sec...
+                const display = sHistory.displayHistory();
+                clearInterval(transInterval)
+                return;
+            }
+            elapsed = elapsed + 50;
+        }, 50);
+
+        /*
         function hoverIndicator(link){
             const div = link.closest('.fiftyfifty')
-            div.style.backgroundColor = "#f5f5f5";
+            if (div) div.style.backgroundColor = "#f5f5f5";
+            const three = link.closed('.threethreethree');
+            if (three) three.style.backgroundColor = "#f5f5f5";
         }
 
         document.querySelector('#search_history_results').addEventListener('mouseover', (e) => {
@@ -461,10 +492,12 @@
             results.forEach(result => {
                 result.style.backgroundColor = "";;
             })
+            parent.querySelectorAll('.threethreethree').forEach(el => el.style.backgroundColor = "");
             if (self.nodeName === 'A'){
                 hoverIndicator(self);
             }
         })
+        */
 
 
     </script>

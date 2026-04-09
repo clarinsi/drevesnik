@@ -50,6 +50,21 @@
 	"showing": "Showing ",
 	"matches": "matches",
 
+	"parameters": "Parameters",
+	"show_more": "Show more",
+	"xcasex": "Case sensitive search",
+	"xsmallx": "Short sentences only (up to 15 words)",
+	"xrandx": "Randomize results",
+	"display_more": "Display more",
+	"corpus": "Corpus: ",
+	"parameters_used": "Parameters used: ",
+	"### AUDIO PLAYER ###": "",
+	"recording": "Audio recording: ",
+	"unavailable": "not available",
+	"play": "Play",
+	"playing": "Playing...",
+	"loading": "Loading...",
+	"error": "an error occured",
 
 	"-----------------THIS_IS_ABOUT_SECTION----------------" : "just so you know",
 

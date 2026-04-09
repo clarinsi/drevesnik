@@ -45,6 +45,12 @@
     <!-- <link rel="stylesheet" href="http://bionlp-www.utu.fi//css/depsearch.css"> -->
     <script type="text/javascript" src="{{ www_address }}static/js/head.min.js"></script>
     <!-- end annotation visualization stuff -->
+
+    <!--audio framework-->
+    <link rel="preload" href="{{ www_address }}static/js/vendor/howler.min.js" as="script">
+    <script src="{{ www_address }}static/js/vendor/howler.min.js"></script>
+
+
 </head>
 
 <style type="text/css">
@@ -112,12 +118,23 @@
     <div class="white-bar">
         <div class="container">
 
-            <div id="queryinfo">
+            <div id="query_info" style="display: flex; align-items: end; font-size: .7rem;">
+                <div id="queryjs2" style="margin-right: 1rem;"></div>
+                <div id="parameters_used"></div>
+                <!--
+                <div id="isRand"></div>
+                <div id="isCase"></div>
+                <div id="isSmall"></div>
+                -->
+            </div>
+
+            <div id="queryinfo" style="display: none;">
                 <div id="queryjs">
                 </div>
-
+                <!--
                 <div id="queryjs2">
                 </div>
+                -->
 
                 <div id="err">
                 </div>
@@ -260,7 +277,15 @@
     <script src="{{ www_address }}static/js/main.js"></script>
     <script src="{{ www_address }}static/js/translate.js"></script>
     <script src="{{ www_address }}static/js/branding.js"></script>
+    <script src="{{ www_address }}static/js/audio//audio-player.js"></script>
+
     <script>
+
+        let langTrans;
+        async function getTrans(){
+            langTrans = await fetchLanguageData(site_lang.toLowerCase());
+        }
+        getTrans();
 
         var xpagelen = "";
         var start = {{ start }};
@@ -277,6 +302,24 @@
         const goTo = goToFunctions(glob_pagelen); //needed to add/remove event listener for links to the next/prev page
         /* end prev/next/selected button redirects */
 
+        /* audio-player*/
+        var player = null;
+
+        var parametersUpdated = false;
+
+        // used to check query paramter values
+        function convertToBool(value) {
+            if (typeof value === 'string') {
+                value = value.trim().toLowerCase();
+                if (value === 'true' || value === '1') return true;
+                if (value === 'false' || value === '0') return false;
+            }
+        
+            if (value === true || value === 1) return true;
+            if (value === false || value === 0) return false;
+        
+            return false;
+        }
 
         function updatetrees(idx, start, end, lang) {
             var target = document.getElementById("query_result");
@@ -290,6 +333,23 @@
 
                 if (page_tree_count > 0) {
                     query_done = true;
+
+                    let audioItemFound = false;;
+                    let playerInterval = setInterval(() => {
+                        if (audioItemFound) {
+                            clearInterval(playerInterval)
+                            return;
+                        };
+                        const audioItem = document.querySelector('.audio-item');
+                        if (audioItem){
+                            displayCorpus();
+                            if (!player){
+                                player = createAudioPlayer();
+                            }
+                            player.init();
+                            audioItemFound = true;
+                        } 
+                    }, 50);
                 }
 
                 var pagelen = end - start
@@ -309,8 +369,6 @@
                 if (xdata.length > 200) { xdata = xdata.substr(0, 200) + '...' }
                 var text = "";
             });
-
-
 
         }
 
@@ -356,6 +414,7 @@
         }
 
         async function update_stuff() {
+            console.log('update_stuff running');
             if (!query_done) {
                 updatetrees(idx, start, end, lang);
                 $.get("{{ www_address }}query_info/" + idx, function (xdata, status) {
@@ -369,6 +428,16 @@
                         return;
                     }
 
+                    let Xcase = JSON.parse(xdata)['case'];
+                    let Xrand = JSON.parse(xdata)['rand'];
+                    let Xsmall = queryString?.endsWith(" & S=small") ? true : false;
+                    const queryParams = [
+                        {name: 'match_letter_case', value: convertToBool(Xcase), id: '#isCase'},
+                        {name: 'random_results', value: convertToBool(Xrand), id: '#isRand'},
+                        {name: 'short_sentence_only', value: convertToBool(Xsmall), id: '#isSmall'}
+                    ];
+                    
+
                     if (queryString.endsWith(" & S=small")) {
                         queryString = queryString.slice(0, -10);
                     }
@@ -376,6 +445,37 @@
                         $.get("{{ www_address }}translations/" + site_lang + ".json", function (langData, status2) {
                             $('#queryjs2').html("");
                             $('#queryjs2').append(document.createTextNode(queryString));
+
+                            if (!parametersUpdated){
+                                const anyParamters = queryParams.filter(item => item.value === true);
+                                if (anyParamters.length){
+                                    const parameters = document.querySelector('#parameters_used');
+
+                                    if (!parameters) return;
+
+                                    const title = document.createElement('span');
+                                    title.classList.add('param-title');
+                                    const title_txt = langData['parameters_used'] || site_lang === 'sl' ? 'Uporabljeni parametri: ' : 'Parameters used:';
+                                    title.textContent = title_txt;
+                                    title.style.cssText = 'font-size: .8rem; font-weight: 600; margin-right: .2rem'
+
+                                    parameters.append(title);
+
+                                    let idx = 0;
+                                    for (const p of anyParamters){
+                                        if (idx > 0){
+                                            const comma = document.createElement('span');
+                                            comma.textContent = ', ';
+                                            parameters.append(comma);
+                                        }
+                                        const el = document.createElement('span');
+                                        el.textContent = langData[p.name] || p.name;
+                                        parameters.append(el);
+                                        idx++;
+                                    }
+                                }
+                                parametersUpdated = true;
+                            }
                         });
                     }
                 });
@@ -406,14 +506,55 @@
             });
 
             $.get("{{ www_address }}query_info/" + idx, function (xdata, status) {
-
+                console.log('query_info running');
                 let queryString = JSON.parse(xdata)['query'];
+                
+                let Xcase = JSON.parse(xdata)['case'];
+                let Xrand = JSON.parse(xdata)['rand'];
+                let Xsmall = queryString?.endsWith(" & S=small") ? true : false;
+                const queryParams = [
+                    {name: 'match_letter_case', value: convertToBool(Xcase), id: '#isCase'},
+                    {name: 'random_results', value: convertToBool(Xrand), id: '#isRand'},
+                    {name: 'short_sentence_only', value: convertToBool(Xsmall), id: '#isSmall'}
+                ];
+
                 if (queryString.endsWith(" & S=small")) {
                     queryString = queryString.slice(0, -10)
                 }
                 $.get("{{ www_address }}translations/" + site_lang + ".json", function (langData, status2) {
                     $('#queryjs2').html("");
                     $('#queryjs2').append(document.createTextNode(queryString));
+                    
+                    if (!parametersUpdated){
+                        const anyParamters = queryParams.filter(item => item.value === true);
+                        if (anyParamters.length){
+                            const parameters = document.querySelector('#parameters_used');
+
+                            if (!parameters) return;
+
+                            const title = document.createElement('span');
+                            title.classList.add('param-title');
+                            const title_txt = langData['parameters_used'] || site_lang === 'sl' ? 'Uporabljeni parametri: ' : 'Parameters used:';
+                            title.textContent = title_txt;
+                            title.style.cssText = 'font-size: .8rem; font-weight: 600; margin-right: .2rem'
+
+                            parameters.append(title);
+
+                            let idx = 0;
+                            for (const p of anyParamters){
+                                if (idx > 0){
+                                    const comma = document.createElement('span');
+                                    comma.textContent = ', ';
+                                    parameters.append(comma);
+                                }
+                                const el = document.createElement('span');
+                                el.textContent = langData[p.name] || p.name;
+                                parameters.append(el);
+                                idx++;
+                            }
+                        }
+                        parametersUpdated = true;
+                    }
 
                 });
             });
@@ -817,6 +958,15 @@
                     }
                 }
             }
+        }
+
+        function displayCorpus(){
+            console.log('corpus items: ');
+            console.log(document.querySelectorAll(".corpus-item"));
+            document.querySelectorAll(".corpus-item").forEach(el => {
+                const c = el.dataset.corpus;
+                el.textContent = langTrans?.['corpus'] + c || (site_lang.toLowerCase() === 'sl' ? "Korpus: " + c : "Corpus: " + c); 
+            })
         }
     </script>
 </body>

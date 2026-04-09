@@ -425,6 +425,9 @@ main {
 #idx_page input#sbtn:hover {
   background-color: #212121;
 }
+#idx_page #search_history #search_header {
+  font-weight: 600;
+}
 #idx_page #search_history .fiftyfifty {
   transition: all linear 100ms;
   display: flex;
@@ -433,8 +436,44 @@ main {
 #idx_page #search_history .fiftyfifty div {
   width: 50%;
 }
+#idx_page #search_history .threethreethree {
+  transition: all linear 100ms;
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+#idx_page #search_history .threethreethree div {
+  width: 33%;
+  align-self: center;
+}
 #idx_page #search_history a {
   text-decoration: none;
+}
+#idx_page #search_history #search_history_results .threethreethree:hover {
+  background-color: #f5f5f5;
+}
+#idx_page #search_history #search_history_results > * {
+  min-height: 40px;
+}
+#idx_page #search_history #show_more {
+  margin-top: 1rem;
+  border-radius: 1.5rem;
+  display: inline-block;
+  line-height: 3rem;
+  padding: 0 1.5rem;
+  background-color: #161616;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  text-transform: none;
+  height: 54px;
+  font-size: 15px;
+  border: none;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+  transition: all linear 100ms;
+}
+#idx_page #search_history #show_more:hover {
+  background-color: #212121;
 }
 #idx_page #query input#qrt,
 #idx_page #query input#limitfield {
@@ -535,6 +574,9 @@ main {
   font-weight: 600;
   font-size: 1.3rem;
 }
+#query_page #query_result .audio-item .sound {
+  cursor: pointer;
+}
 #query_page #query_result .embedding {
   margin: 0;
 }
@@ -576,13 +618,6 @@ main {
   height: 40px;
   display: flex;
   justify-content: space-between;
-  /* btn color #373737 */
-  /*
-  #bbtn, #fwbtn{
-      padding: .25rem .5rem;
-      border-radius: 4px;
-  }
-  */
 }
 #query_page .center-element .page-data .page-info,
 #query_page .center-element .page-data .page-navigation {
@@ -690,6 +725,9 @@ main {
   margin: 0 4px;
   display: flex;
 }
+#query_page .center-element .page-data {
+  /* btn color #373737 */
+}
 #query_page .center-element .page-data button {
   background-color: #373737;
   transition: background-color linear 300ms;
@@ -710,6 +748,14 @@ main {
 #query_page .center-element .page-data #fwbtn {
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
+}
+#query_page .center-element .page-data {
+  /*
+  #bbtn, #fwbtn{
+      padding: .25rem .5rem;
+      border-radius: 4px;
+  }
+  */
 }
 #query_page #download_and_freq {
   display: flex;
@@ -805,17 +851,19 @@ main {
   display: flex;
   gap: 2rem;
   flex-direction: column;
+}
+@media (min-width: 64rem) {
+  .panel {
+    flex-direction: row;
+  }
+}
+.panel {
   box-shadow: unset;
   background: unset;
   font-size: unset;
   position: static;
   text-align: unset;
   margin-bottom: unset;
-}
-@media (min-width: 64rem) {
-  .panel {
-    flex-direction: row;
-  }
 }
 .panel h1 {
   font-size: 1.5rem;
@@ -884,13 +932,15 @@ main {
   box-shadow: 0 1px 1px 0 #e0e0e0;
   border-radius: 2px;
   cursor: pointer;
+}
+.panel .panel-small.no-content {
+  cursor: unset !important;
+}
+.panel .panel-small {
   transform-origin: center center;
   /* Ensure the scale transformation occurs from the center */
   will-change: transform;
   /* Optimize for the transform property */
-}
-.panel .panel-small.no-content {
-  cursor: unset !important;
 }
 .panel .panel-small:hover {
   border-left: 2px solid #e0e0e0;

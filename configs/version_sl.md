@@ -1,7 +1,7 @@
 ## Različice
 
 Različica<br>
-**Drevesnik 1.2**
+**Drevesnik 1.3**
 
-Datum izdaje posodobitve orodja: 1. 3. 2024<br>
-Datum zadnje posodobitve vmesnika: 22. 5. 2025
+Datum izdaje posodobitve orodja: 10. 5. 2026<br>
+Datum zadnje posodobitve vmesnika: 10. 5. 2026

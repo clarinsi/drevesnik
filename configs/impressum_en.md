@@ -18,4 +18,4 @@ Centre for Language Resources and Technologies, University of Ljubljana
 
 
 **Citation**<br>
-M. Štravs, K. Dobrovoljc, L. Bezgovšek, 2025, Service for querying dependency treebanks Drevesnik 1.2, Slovenian language resource repository CLARIN.SI, [http://hdl.handle.net/11356/2034](http://hdl.handle.net/11356/2034).
+Dobrovoljc, K. (2024). Can’t see the forest for the trees: Tools and services for investigating Slovene dependency treebanks. In _CLARIN Annual Conference Proceedings_ (pp. 107-111).

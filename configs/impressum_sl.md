@@ -4,7 +4,7 @@
 Spletni vmesnik na orodja.cjvt.si<br>
 Zbirka Orodja CJVT  
 
-Ljubljana, 2025  
+Ljubljana, 2026  
 
 Delo je dostopno pod odprto licenco Apache 2.0.
 
@@ -18,4 +18,4 @@ Center za jezikovne vire in tehnologije, Univerza v Ljubljani
 
 
 **Citiranje orodja**<br>
-M. Štravs and K. Dobrovoljc, 2024, Service for querying dependency treebanks Drevesnik 1.1, Slovenian language resource repository CLARIN.SI, [http://hdl.handle.net/11356/1923](http://hdl.handle.net/11356/1923).
+Dobrovoljc, K. (2024). Can’t see the forest for the trees: Tools and services for investigating Slovene dependency treebanks. In _CLARIN Annual Conference Proceedings_ (pp. 107-111).

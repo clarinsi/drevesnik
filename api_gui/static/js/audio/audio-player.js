@@ -58,14 +58,15 @@ function createAudioPlayer() {
 
     const initElement = (el) => {
         const src = el.dataset.audio;
-        el.textContent = langTrans?.['recording'] || (site_lang.toLowerCase() === 'sl' ? 'Audio posnetek: ' : 'Audio recording: ');
+        //el.textContent = langTrans?.['recording'] || (site_lang.toLowerCase() === 'sl' ? 'Audio posnetek: ' : 'Audio recording: ');
         const soundEl = document.createElement('span');
 
         if (src === 'None' || !isUrl(src)) {
             soundEl.style.cssText = 'color: gray;'
             soundEl.textContent = langTrans?.['unavailable'] || (site_lang.toLowerCase() === 'sl' ? 'ni na voljo' : 'not available');
             el.append(soundEl);
-            return
+            el.style.display = "none";
+            return;
         };
 
         soundEl.classList.add('sound');

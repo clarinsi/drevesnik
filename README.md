@@ -89,6 +89,10 @@ to build and run this project. The home page of this service can be accessed at 
 4.) ```docker-compose -f docker-compose-build-dataset.yml up --build```  
 5.) ```docker compose up --build -d```  
 
+NOTES:  
+query retention duration is set in `result_ttl_seconds` inside `/configs/config.json` file  
+corpora descriptions need to be updated inside the output folder, file `dbs.json` - example: copy the decriptions from `/configs/dbs.json` and paste them in `/output/dbs.json`  
+
 ## Project structure
 
 ## dep_search 

@@ -126,6 +126,7 @@
                 <div id="isCase"></div>
                 <div id="isSmall"></div>
                 -->
+                <div id="corpora_used" style="margin-left: .5rem;"></div>
             </div>
 
             <div id="queryinfo" style="display: none;">
@@ -428,6 +429,8 @@
                         return;
                     }
 
+                    let dbsUsed = JSON.parse(xdata)['dbs'];
+
                     let Xcase = JSON.parse(xdata)['case'];
                     let Xrand = JSON.parse(xdata)['rand'];
                     let Xsmall = queryString?.endsWith(" & S=small") ? true : false;
@@ -474,6 +477,27 @@
                                         idx++;
                                     }
                                 }
+
+                                if (dbsUsed && dbsUsed.length){
+                                    const el_corpora = document.querySelector("#corpora_used");
+                                
+                                    if (!el_corpora) return;
+
+                                    const title = document.createElement('span');
+                                    title.classList.add('corpora-title');
+                                    const title_txt = langData['corpus'] || site_lang === 'sl' ? 'Korpus: ' : 'Corpora:';
+                                    title.textContent = title_txt;
+                                    title.style.cssText = 'font-size: .8rem; font-weight: 600; margin-right: .2rem';
+                                
+                                    el_corpora.append(title);
+                                
+                                    let dbs = dbsUsed.split(',').join(', ');
+                                    const el_dbs = document.createElement('span');
+                                    el_dbs.append(dbs);
+                                
+                                    el_corpora.append(el_dbs);
+                                }
+
                                 parametersUpdated = true;
                             }
                         });
@@ -509,6 +533,7 @@
                 console.log('query_info running');
                 let queryString = JSON.parse(xdata)['query'];
                 
+                let dbsUsed = JSON.parse(xdata)['dbs'];
                 let Xcase = JSON.parse(xdata)['case'];
                 let Xrand = JSON.parse(xdata)['rand'];
                 let Xsmall = queryString?.endsWith(" & S=small") ? true : false;
@@ -552,6 +577,27 @@
                                 parameters.append(el);
                                 idx++;
                             }
+                        }
+                        
+                        if (dbsUsed && dbsUsed.length){
+                            console.log('dbsUsed:\n',dbsUsed)
+                            const el_corpora = document.querySelector("#corpora_used");
+
+                            if (!el_corpora) return;
+                            
+                            const title = document.createElement('span');
+                            title.classList.add('corpora-title');
+                            const title_txt = langData['corpus'] || site_lang === 'sl' ? 'Korpus: ' : 'Corpora:';
+                            title.textContent = title_txt;
+                            title.style.cssText = 'font-size: .8rem; font-weight: 600; margin-right: .2rem';        
+
+                            el_corpora.append(title);
+
+                            let dbs = dbsUsed.split(',').join(', ');
+                            const el_dbs = document.createElement('span');
+                            el_dbs.append(dbs);
+
+                            el_corpora.append(el_dbs);
                         }
                         parametersUpdated = true;
                     }
@@ -960,6 +1006,7 @@
             }
         }
 
+        // currently not in use
         function displayCorpus(){
             console.log('corpus items: ');
             console.log(document.querySelectorAll(".corpus-item"));

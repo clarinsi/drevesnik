@@ -33,12 +33,12 @@
         "name": "eseji-gpt",
 	    "sl_desc": "<b>Eseji-GPT</b>: korpus umetno generiranih šolskih esejev (GPT-5, 58k povedi, 1,2M pojavnic, SL-Trankit 1.2)",
 	    "en_desc": "<b>Eseji-GPT</b>: corpus of AI-generated student essays (GPT-5, 58k sentences, 1.2M tokens, SL-Trankit 1.2)",
-        "priority": 5
+        "priority": 6
     },
     "GUM": {
         "name": "GUM",
         "sl_desc": "<b>English-GUM</b>: ročno razčlenjen korpus pisne in govorjene angleščine (v2.17, 13.263 povedi, 229.851 pojavnic)",
         "en_desc": "<b>English-GUM</b>: manually annotated corpus of written and spoken English (v2.17, 13,263 sentences, 229,851 tokens)",
-        "priority": 6
+        "priority": 7
     },
 }
